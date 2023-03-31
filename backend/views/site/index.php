@@ -7,16 +7,15 @@ $this->title = 'ICT Asset App Admin';
 <div class="site-index">
 
     <div class="jumbotron text-center bg-transparent">
-        <h1 class="display-4">Congratulations!</h1>
+        <!-- <h1 class="display-4">ICT Asset Home</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">An equipment control hub.</p> -->
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
     <div class="body-content">
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-lg-4">
                 <h2>Heading</h2>
 
@@ -47,7 +46,7 @@ $this->title = 'ICT Asset App Admin';
 
                 <p><a class="btn btn-outline-secondary" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </div>
