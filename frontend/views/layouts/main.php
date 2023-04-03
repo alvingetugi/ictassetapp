@@ -36,8 +36,8 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
+        // ['label' => 'About', 'url' => ['/site/about']],
+        // ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
@@ -52,7 +52,7 @@ AppAsset::register($this);
     } else {
         echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
             . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
+                'Logout (' . Yii::$app->user->identity->getDisplayName() . ')',
                 ['class' => 'btn btn-link logout text-decoration-none']
             )
             . Html::endForm();
@@ -63,9 +63,9 @@ AppAsset::register($this);
 
 <main role="main" class="flex-shrink-0">
     <div class="container">
-        <?= Breadcrumbs::widget([
+        <!-- <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
+        ]) ?> -->
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
