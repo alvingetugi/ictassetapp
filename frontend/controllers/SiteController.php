@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Product;
+use common\models\UserAddress;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
