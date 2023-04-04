@@ -39,24 +39,35 @@ AppAsset::register($this);
         // ['label' => 'About', 'url' => ['/site/about']],
         // ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+    } else {
+        $menuItems[] = [
+            'label' => Yii::$app->user->identity->getDisplayName(),
+//            'dropDownOptions' => [
+//                'class' => 'dropdown-menu-right'
+//            ],
+            'items' => [
+                [
+                    'label' => 'Profile',
+                    'url' => ['/profile/index'],
+                ],
+                [
+                    'label' => 'Logout',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => [
+                        'data-method' => 'post'
+                    ],
+                ]
+            ]
+        ];
     }
-
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav me-auto mb-2 mb-md-0'],
+        'options' => ['class' => 'navbar-nav ms-auto'],
         'items' => $menuItems,
     ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login',['/site/login'],['class' => ['btn btn-link login text-decoration-none']]),['class' => ['d-flex']]);
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->getDisplayName() . ')',
-                ['class' => 'btn btn-link logout text-decoration-none']
-            )
-            . Html::endForm();
-    }
     NavBar::end();
     ?>
 </header>
