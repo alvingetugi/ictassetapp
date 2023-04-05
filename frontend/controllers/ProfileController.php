@@ -14,7 +14,7 @@ use yii\web\ForbiddenHttpException;
  * @package frontend\controllers
  */
 
-class ProfileController extends Controller
+class ProfileController extends \frontend\base\Controller
 {
     public function behaviors()
     {

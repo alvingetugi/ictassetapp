@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'content' => function ($model) {
                     /** @var \common\models\Product $model */
-                    return Html::tag('span', $model->status ? 'Active' : 'Draft', [
+                    return Html::tag('span', $model->status ? 'Available' : 'Draft', [
                         'class' => $model->status ? 'badge badge-success' : 'badge badge-danger'
                     ]);
                 }

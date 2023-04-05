@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'style' => 'white-space: normal'
                 ]
             ],
-            'description',
+            'description:html',
             [
                 'attribute' => 'image',
                 'format' => ['html'],
