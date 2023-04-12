@@ -55,7 +55,7 @@
             <a href="<?php echo \yii\helpers\Url::to(['/cart/checkout']) ?>" class="btn btn-primary">Add to request</a>
         </div>
         <?php else: ?>
-            <p class="text-muted text-center p-5">There are no assets in your request</p>
+            <p class="text-muted text-center p-5">There are no assets in your request bag</p>
         <?php endif; ?>
 
     </div>

@@ -131,7 +131,7 @@ AppAsset::register($this);
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/product/index']) ?>">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>All Equipment</span></a>
+                        <span>All Assets</span></a>
                 </li>
 
                 <!-- Nav Item - Tables -->

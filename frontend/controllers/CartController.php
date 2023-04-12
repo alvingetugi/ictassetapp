@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
+use yii\filters\VerbFilter;
 
 /**
  * Class CartController
@@ -26,8 +27,13 @@ use yii\filters\ContentNegotiator;
                 'only' => ['add'],
                 'formats' => [
                     'application/json' => Response::FORMAT_JSON,
-                    'application/xml' => Response::FORMAT_XML,
                 ],
+            ],
+            [
+                'class' => VerbFilter::class, 
+                'actions' => [
+                    'delete' => ['POST', 'DELETE'],
+                ]                
             ]
         ];
     }
@@ -61,28 +67,39 @@ use yii\filters\ContentNegotiator;
 
     public function actionAdd()
     {
-        $id = \yii::$app->request->post('id');
-        $product = Product::find()->id($id)->published()->one();
+        $id = \yii::$app->request->post('id'); //get id of the product
+        $product = Product::find()->id($id)->published()->one(); //find one product which has the id and is published
         if (!$product){
             throw new NotFoundHttpException("Product does not exist");
         }
 
         if (\Yii::$app->user->isGuest){
-            // todo Save in session
-            $cartItem = [
-                'id' => $id,
-                'name' => $product->name,
-                'image' => $product->image,
-                'price' => $product->price,
-                'quantity' => 1,
-                'total_price' => $product->price
-            ];
-            $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []);
-            $cartItems[] = $cartItem;
-            \Yii::$app->session->set(CartItem::SESSION_KEY, $cartItems);
+            // Save in session
+            $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []); //find item with product id
+            $found = false; //keep track if item exists with product id and quantity
+            foreach ($cartItems as &$item) {
+                if ($item['id'] == $id) {
+                    $item['quantity']++; //comment this to prevent adding quantities in the cart
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $cartItem = [
+                    'id' => $id,
+                    'name' => $product->name,
+                    'image' => $product->image,
+                    'price' => $product->price,
+                    'quantity' => 1,
+                    'total_price' => $product->price
+                ];
+                $cartItems[] = $cartItem; //create new cart item and adds it into an array
+            }
+
+            \Yii::$app->session->set(CartItem::SESSION_KEY, $cartItems); //set cart item into session
         } else {
             $userId = \Yii::$app->user->id;
-            $cartItem = CartItem::find()->userId($userId)->productId($id)->one();
+            $cartItem = CartItem::find()->userId($userId)->productId($id)->one(); //find cart item for a logged in user
             if ($cartItem){
                 $cartItem->quantity++;
             } else {
@@ -105,4 +122,20 @@ use yii\filters\ContentNegotiator;
         }
     }
 
+    public function actionDelete($id)
+    {
+        if (isGuest()){
+            $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []);
+            foreach ($cartItems as $i => $cartItem){
+                if ($cartItem['id'] == $id){
+                    array_splice($cartItems, $i, 1);
+                    break;
+                }
+            }
+            \Yii::$app->session->set(CartItem::SESSION_KEY, $cartItems);
+        } else {
+            CartItem::deleteAll(['product_id' => $id, 'created_by' => currUserId()]);
+        }
+        return $this->redirect(['index']);
+    }
  }

@@ -42,6 +42,6 @@ class ProductQuery extends \yii\db\ActiveQuery
 
     public function id($id)
     {
-        return $this->andWhere(['id' => $id]);
+        return $this->andWhere(['id' => $id]); //create id that will be used in the cart controller
     }
 }
