@@ -17,8 +17,8 @@ use yii\filters\VerbFilter;
  * @package frontend\controllers
  */
 
- class CartController extends \frontend\base\Controller
- {
+class CartController extends \frontend\base\Controller
+{
     public function behaviors()
     {
         return [
@@ -30,16 +30,16 @@ use yii\filters\VerbFilter;
                 ],
             ],
             [
-                'class' => VerbFilter::class, 
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST', 'DELETE'],
-                ]                
+                ]
             ]
         ];
     }
     public function actionIndex()
     {
-        if (\Yii::$app->user->isGuest){
+        if (\Yii::$app->user->isGuest) {
             //get the items from session
             $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []);
 
@@ -56,8 +56,8 @@ use yii\filters\VerbFilter;
                             FROM cart_items c
                                     LEFT JOIN products p ON p.id = c.product_id
                             WHERE c.created_by = :userId", ['userId' => \Yii::$app->user->id])
-            ->asArray()
-            ->all();
+                ->asArray()
+                ->all();
         }
 
         return $this->render('index', [
@@ -69,11 +69,11 @@ use yii\filters\VerbFilter;
     {
         $id = \yii::$app->request->post('id'); //get id of the product
         $product = Product::find()->id($id)->published()->one(); //find one product which has the id and is published
-        if (!$product){
+        if (!$product) {
             throw new NotFoundHttpException("Product does not exist");
         }
 
-        if (\Yii::$app->user->isGuest){
+        if (\Yii::$app->user->isGuest) {
             // Save in session
             $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []); //find item with product id
             $found = false; //keep track if item exists with product id and quantity
@@ -100,7 +100,7 @@ use yii\filters\VerbFilter;
         } else {
             $userId = \Yii::$app->user->id;
             $cartItem = CartItem::find()->userId($userId)->productId($id)->one(); //find cart item for a logged in user
-            if ($cartItem){
+            if ($cartItem) {
                 $cartItem->quantity++;
             } else {
                 $cartItem = new CartItem();
@@ -108,7 +108,7 @@ use yii\filters\VerbFilter;
                 $cartItem->created_by = \Yii::$app->user->id;
                 $cartItem->quantity = 1;
             }
-            if ($cartItem->save()){
+            if ($cartItem->save()) {
                 return [
                     'success' => true
                 ];
@@ -124,10 +124,10 @@ use yii\filters\VerbFilter;
 
     public function actionDelete($id)
     {
-        if (isGuest()){
+        if (isGuest()) {
             $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []);
-            foreach ($cartItems as $i => $cartItem){
-                if ($cartItem['id'] == $id){
+            foreach ($cartItems as $i => $cartItem) {
+                if ($cartItem['id'] == $id) {
                     array_splice($cartItems, $i, 1);
                     break;
                 }
@@ -138,4 +138,30 @@ use yii\filters\VerbFilter;
         }
         return $this->redirect(['index']);
     }
- }
+    public function actionChangeQuantity()
+    {
+        $id = \yii::$app->request->post('id'); //get id of the product
+        $product = Product::find()->id($id)->published()->one(); //find one product which has the id and is published
+        if (!$product) {
+            throw new NotFoundHttpException("Product does not exist");
+        }
+        $quantity = \Yii::$app->request->post('quantity');
+        if (isGuest()) {
+            $cartItems = \Yii::$app->session->get(CartItem::SESSION_KEY, []);
+            foreach ($cartItems as &$cartItem) {
+                if ($cartItem['id'] === $id) {
+                    $cartItem['quantity'] = $quantity;
+                    break;
+                }
+            }
+            \Yii::$app->session->set(CartItem::SESSION_KEY, $cartItems);
+        } else {
+            $cartItem = CartItem::find()->userId(currUserId())->productId($id)->one();
+            if ($cartItem) {
+                $cartItem->quantity = $quantity;
+                $cartItem->save();
+            }
+        }
+        return CartItem::getTotalQuantityForUser(currUserId());
+    }
+}
