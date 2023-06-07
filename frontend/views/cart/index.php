@@ -4,7 +4,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3>Your Asset List</h3>
+        <h3>Request Bag</h3>
     </div>
     <div class="card-body p-0">
 
@@ -14,9 +14,9 @@
                 <tr>
                     <th>Asset</th>
                     <th>Image</th>
-                    <th>Unit Price</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
+                    <!-- <th>Unit Price</th> -->
+                    <!-- <th>Quantity</th> -->
+                    <!-- <th>Total Price</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -30,15 +30,15 @@
                             <img src="<?php echo \common\models\Product::formatImageUrl($item['image'])  ?>"
                                 style="width: 50px" alt="<?php echo $item['name'] ?>">
                         </td>
-                        <td>
+                        <!-- <td>
                             <?php echo $item['price'] ?>
-                        </td>
-                        <td>
+                        </td> -->
+                        <!-- <td>
                             <input type="number" min="1" class="form-control item-quantity" style="width: 60px" value= "<?php echo $item['quantity'] ?>">
-                        </td>
-                        <td>
+                        </td> -->
+                        <!-- <td>
                             <?php echo $item['total_price'] ?>
-                        </td>
+                        </td> -->
                         <td>
                             <?php echo \yii\helpers\Html::a('Delete', ['/cart/delete', 'id' => $item['id']], [
                                 'class' => 'btn btn-outline-danger btn_sm',

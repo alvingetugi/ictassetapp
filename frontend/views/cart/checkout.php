@@ -18,7 +18,7 @@ use yii\bootstrap5\ActiveForm;
     <div class="col">
         <div class="card mb-3">
             <div class="card-header">
-                Account information
+                Staff Details
             </div>
             <div class="card-body">
                 <div class="row">
@@ -35,7 +35,7 @@ use yii\bootstrap5\ActiveForm;
         </div>
         <div class="card">
             <div class="card-header">
-                Address information
+                Staff Location
             </div>
             <div class="card-body">
                 <?= $form->field($orderAddress, 'address') ?>
@@ -55,14 +55,14 @@ use yii\bootstrap5\ActiveForm;
             <div class="card-body">
                 <table class="table">
                     <tr>
-                        <td colspan="2"><?php echo $productQuantity ?> Products </td>
+                        <td colspan="2"><?php echo $productQuantity ?> Asset(s) </td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>Total Price</td>
                         <td class="text-right">
                             <?php echo Yii::$app->formatter->asCurrency($totalPrice) ?>
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
 
                 <p class="text-end mt-3">
