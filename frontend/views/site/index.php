@@ -1,10 +1,10 @@
 <?php
-use yii\debug\models\timeline\DataProvider;
 
 /** @var yii\web\View $this */
 /** @var \yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'ICT Asset App';
+
 ?>
 <div class="site-index">
     <!-- <div class="p-5 mb-4 bg-transparent rounded-3">
