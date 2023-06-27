@@ -1,5 +1,5 @@
 <?php
-use yii\debug\models\timeline\DataProvider;
+
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -8,26 +8,18 @@ use common\models\Product;
 
 /** @var yii\web\View $this */
 /** @var \yii\data\ActiveDataProvider $dataProvider */
+/** @var \common\models\Product $model*/
 
 $this->title = 'ICT Asset App';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-index">
-    <!-- <div class="p-5 mb-4 bg-transparent rounded-3">
-        <div class="container-fluid py-5 text-center">
-            <h1 class="display-4">Congratulations!</h1>
-            <p class="fs-5 fw-light">You have successfully created your Yii-powered application.</p>
-            <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-        </div>
-    </div> -->
-
-    <div class="body-content">
-
-     
-
+<div class="product-index">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'columns' => [
-                // ['class' => 'yii\grid\SerialColumn'],
+                
+                ['class' => 'yii\grid\CheckboxColumn'],
+                ['class' => 'yii\grid\SerialColumn'],
         
                 [
                     'attribute' => 'id',
@@ -68,14 +60,19 @@ $this->title = 'ICT Asset App';
                 ],
                 //'created_by',
                 //'updated_by',
+                
                 [
-                    'class' => ActionColumn::className(),
-                    'urlCreator' => function ($action, Product $model, $key, $index, $column) {
-                        return Url::toRoute([$action, 'id' => $model->id]);
-                     }
+                    'class' => 'yii\grid\ActionColumn',
+                    'header' => 'Actions',
+                    'headerOptions' => ['style' => 'color:#0d6efd'],
+                    'template' => '{buttonAdd}',
+                    'buttons' => [
+                    'buttonAdd' => function($url, $model, $key) {     
+                        return Html::a('Add', Url::to(['/cart/add']));
+                }
+            ]
                 ],
             ],
         ]); ?>
 
-    </div>
 </div>

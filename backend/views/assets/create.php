@@ -2,14 +2,15 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var common\models\Product $model */
 
-$this->title = 'Create Product';
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
+/** @var yii\web\View $this */
+/** @var common\models\Assets $model */
+
+$this->title = 'Create Assets';
+$this->params['breadcrumbs'][] = ['label' => 'Assets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-create">
+<div class="assets-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

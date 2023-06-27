@@ -10,6 +10,8 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+
+
 // use yii\helpers\Html;
 
 AppAsset::register($this);
@@ -64,7 +66,7 @@ AppAsset::register($this);
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Equipment Categories
+                    Assets Vault
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
@@ -72,13 +74,19 @@ AppAsset::register($this);
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                         aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Laptops</span>
+                        <span>Assets</span>
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Brands:</h6>
-                            <a class="collapse-item" href="buttons.html">HP</a>
-                            <a class="collapse-item" href="cards.html">Dell</a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assets/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Assets</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetmaster/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Asset Master</span>
+                            </a>
                         </div>
                     </div>
                 </li>
@@ -126,13 +134,20 @@ AppAsset::register($this);
                 <div class="sidebar-heading">
                     Vault
                 </div>
-              
+
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
                     <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/product/index']) ?>">
                         <i class="fas fa-fw fa-chart-area"></i>
-                        <span>All Assets</span></a>
+                        <span>Products</span></a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/assets/index']) ?>">
+                        <i class="fas fa-fw fa-chart-area"></i>
+                        <span>Assets</span></a>
+                </li>
+
 
                 <!-- Nav Item - Tables -->
 
