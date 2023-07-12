@@ -26,6 +26,7 @@ class AppAsset extends AssetBundle
         "vendor/chart.js/Chart.min.js",
         "js/demo/chart-area-demo.js",
         "js/demo/chart-pie-demo.js",
+        'js/app.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

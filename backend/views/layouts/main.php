@@ -78,7 +78,7 @@ AppAsset::register($this);
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Brands:</h6>
+                            <h6 class="collapse-header">Asset Actions:</h6>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assets/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Assets</span>
@@ -91,63 +91,35 @@ AppAsset::register($this);
                     </div>
                 </li>
 
-                <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                        aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
-                        <span>Desktops</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Brands:</h6>
-                            <a class="collapse-item" href="utilities-color.html">HP</a>
-                            <a class="collapse-item" href="utilities-border.html">Dell</a>
-                            <a class="collapse-item" href="utilities-animation.html">Lenovo</a>
-                            <a class="collapse-item" href="utilities-other.html">Other</a>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                        aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
-                        <span>Printers</span>
-                    </a>
-                    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Brands:</h6>
-                            <a class="collapse-item" href="utilities-color.html">HP</a>
-                            <a class="collapse-item" href="utilities-border.html">Dell</a>
-                        </div>
-                    </div>
-                </li>
-
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Vault
+                    Actions
                 </div>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/product/index']) ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Products</span></a>
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="true" aria-controls="collapseThree">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Issuances</span>
+                    </a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Issuance Actions:</h6>
+                            <a class="collapse-item" href="#">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Issuance List</span>
+                            </a>
+                            <a class="collapse-item" href="#">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Create Issuance</span>
+                            </a>
+                        </div>
+                    </div>
                 </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/assets/index']) ?>">
-                        <i class="fas fa-fw fa-chart-area"></i>
-                        <span>Assets</span></a>
-                </li>
-
 
                 <!-- Nav Item - Tables -->
 
