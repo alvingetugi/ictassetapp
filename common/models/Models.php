@@ -62,17 +62,26 @@ class Models extends \yii\db\ActiveRecord
         return new \common\models\query\ModelsQuery(get_called_class());
     }
 
-    public static function getModelsList($cat_id, $make_id)//gets all Makes and puts them in an array
+    //Gets model list for the create function
+    public static function getModelsList($cat_id, $make_id)
     {
         $Models = self::find() 
         ->select(['id', 'name'])
         ->where([
             'category_id' => $cat_id,
-            // 'make_id' => $make_id
             ])
         ->asArray()
         ->all();
 
         return $Models;
+    }
+
+    //Gets model list for the update function
+    public static function getModels($cat_id, $make_id){
+        return self::find()
+        ->select(['name', 'id'])
+        ->where(['category_id' => $cat_id])
+        ->indexBy('id')
+        ->column();
     }
 }

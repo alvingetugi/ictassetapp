@@ -5,6 +5,8 @@ use kartik\depdrop\DepDrop;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use common\models\Make;
+use common\models\Models;
 
 /** @var yii\web\View $this */
 /** @var common\models\Asset $model */
@@ -21,6 +23,7 @@ use yii\widgets\ActiveForm;
     ['prompt' => 'Select Category', 'id' => 'cat-id']) ?>
 
     <?= $form->field($model, 'make')->widget(DepDrop::classname(), [
+            'data' => Make::getMakes($model->category),
             'options' => ['id' => 'make-id', 'prompt' => 'Select Category'],
             'pluginOptions' => [
                 'depends' => ['cat-id'],
@@ -30,6 +33,7 @@ use yii\widgets\ActiveForm;
         ]); ?>
 
     <?= $form->field($model, 'model')->widget(DepDrop::classname(), [
+            'data' => Models::getModels($model->category, $model->make),
             'options' => ['prompt' => 'Select Model'],
             'pluginOptions' => [
                 'depends' => ['cat-id', 'make-id'],

@@ -60,15 +60,25 @@ class Make extends \yii\db\ActiveRecord
         return new \common\models\query\MakeQuery(get_called_class());
     }
 
+    //Gets make list for the create function
     public static function getMakesList($cat_id)
     {
         $Makes = self::find()
         ->select(['id', 'name'])
-        ->where(['category_id' => $cat_id])//fetches makes based on category code from Categories
+        ->where(['category_id' => $cat_id])
         ->asArray()
         ->all();
 
         return $Makes;
+    }
+
+    //Gets make list for the update function
+    public static function getMakes($cat_id){
+        return self::find()
+        ->select(['name', 'id'])
+        ->where(['category_id' => $cat_id])
+        ->indexBy('id')
+        ->column();
     }
 
 }

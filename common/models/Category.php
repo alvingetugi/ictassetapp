@@ -58,6 +58,7 @@ class Category extends \yii\db\ActiveRecord
         return new \common\models\query\CategoryQuery(get_called_class());
     }
 
+    //Gets all categories
     public static function getCategories(){
         return self::find()->select(['name', 'code'])->indexBy('code')->column();
     }
