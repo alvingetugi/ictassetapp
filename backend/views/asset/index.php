@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Asset;
+use common\models\Category;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -29,14 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'code',
-            'category',
-            'make',
-            'model',
-            //'name',
-            //'serial_number',
-            //'tag_number',
+            //'id',
+            //'code',
+            //'category',
+            [
+                'label' => 'Category',
+                'value' => function ($data){
+                    return Category::findOne(['code'=>$data->category])->name;
+                }
+            ],
+            //'make',
+            //'model',
+            'name',
+            'serial_number',
+            'tag_number',
             //'details',
             //'date_of_delivery',
             //'location',

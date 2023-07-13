@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Make;
+use common\models\Models;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,8 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'code',
             'category',
-            'make',
-            'model',
+            [
+                'label' => 'Make',
+                'value' => function ($data){
+                    return Make::findOne(['id'=>$data->make])->name;
+                }
+            ],
+            [
+                'label' => 'Model',
+                'value' => function ($data){
+                    return Models::findOne(['id'=>$data->model])->name;
+                }
+            ],
             'name',
             'serial_number',
             'tag_number',

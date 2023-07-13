@@ -79,13 +79,21 @@ AppAsset::register($this);
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Asset Actions:</h6>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assets/index']) ?>">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/asset/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Assets</span>
                             </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetmaster/index']) ?>">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/category/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Asset Master</span>
+                                <span>Categories</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/make/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Makes</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/models/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Models</span>
                             </a>
                         </div>
                     </div>
