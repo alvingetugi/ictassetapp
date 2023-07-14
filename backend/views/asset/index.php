@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Category',
                 'value' => function ($data){
-                    return Category::findOne(['code'=>$data->category])->name;
+                    return Category::findOne(['id'=>$data->category])->name;
                 }
             ],
             //'make',

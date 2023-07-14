@@ -60,6 +60,6 @@ class Category extends \yii\db\ActiveRecord
 
     //Gets all categories
     public static function getCategories(){
-        return self::find()->select(['name', 'code'])->indexBy('code')->column();
+        return self::find()->select(['name', 'id'])->indexBy('id')->column();
     }
 }

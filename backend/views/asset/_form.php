@@ -23,7 +23,7 @@ use common\models\Models;
     ['prompt' => 'Select Category', 'id' => 'cat-id']) ?>
 
     <?= $form->field($model, 'make')->widget(DepDrop::classname(), [
-            'data' => Make::getMakes($model->category),
+            'data' => Make::getMakesList($model->category),
             'options' => ['id' => 'make-id', 'prompt' => 'Select Category'],
             'pluginOptions' => [
                 'depends' => ['cat-id'],
@@ -33,8 +33,8 @@ use common\models\Models;
         ]); ?>
 
     <?= $form->field($model, 'model')->widget(DepDrop::classname(), [
-            'data' => Models::getModels($model->category, $model->make),
-            'options' => ['prompt' => 'Select Model'],
+            'data' => Models::getModelsList($model->category, $model->make),
+            'options' => ['id' => 'model-id', 'prompt' => 'Select Model'],
             'pluginOptions' => [
                 'depends' => ['cat-id', 'make-id'],
                 'placeholder' => 'Select Model',

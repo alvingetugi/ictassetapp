@@ -48,8 +48,8 @@ class Models extends \yii\db\ActiveRecord
             'code' => 'Code',
             'name' => 'Name',
             'description' => 'Description',
-            'category_id' => 'Category ID',
-            'make_id' => 'Make ID',
+            'category_id' => 'Category',
+            'make_id' => 'Make',
         ];
     }
 
@@ -62,26 +62,16 @@ class Models extends \yii\db\ActiveRecord
         return new \common\models\query\ModelsQuery(get_called_class());
     }
 
-    //Gets model list for the create function
-    public static function getModelsList($cat_id, $make_id)
-    {
-        $Models = self::find() 
-        ->select(['id', 'name'])
-        ->where([
-            'category_id' => $cat_id,
-            ])
-        ->asArray()
-        ->all();
-
-        return $Models;
-    }
-
-    //Gets model list for the update function
-    public static function getModels($cat_id, $make_id){
-        return self::find()
-        ->select(['name', 'id'])
+       public static function getModelsList($cat_id, $make_id, $isAjax = false)
+{
+    $model = self::find()
         ->where(['category_id' => $cat_id])
-        ->indexBy('id')
-        ->column();
+        ->andWhere(['make_id' => $make_id]);
+
+    if ($isAjax) {
+        return $model->select(['id', 'name'])->asArray()->all();
+    } else {
+        return $model->select(['name'])->indexBy('id')->column();
     }
+}
 }

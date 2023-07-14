@@ -24,12 +24,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'description')->textInput() ?>
 
     <?= $form->field($model, 'category_id')->dropDownList(
-		        ArrayHelper::map(Category::find()->all(), 'code', 'name'),  // Flat array ('id'=>'label')
+		        ArrayHelper::map(Category::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
 		        ['prompt'=>'Select Category']                          // options
 		    ); ?>
 
     <?= $form->field($model, 'make_id')->dropDownList(
-		        ArrayHelper::map(Make::find()->all(), 'code', 'name'),  // Flat array ('id'=>'label')
+		        ArrayHelper::map(Make::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
 		        ['prompt'=>'Select Make']                          // options
 		    ); ?>
 

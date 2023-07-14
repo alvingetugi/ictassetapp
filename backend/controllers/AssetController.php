@@ -124,28 +124,44 @@ class AssetController extends Controller
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $cat_id = $parents[0];
-                $out = Make::getMakesList($cat_id); //getMakesList function created in Makes Model
+                $out = Make::getMakesList($cat_id, true); //getMakesList function created in Makes Model
                 return json_encode(['output'=>$out, 'selected'=>'']);
             }
         }
         return json_encode(['output'=>'', 'selected'=>'']);
     }
 
+    // public function actionModels() {
+    //     $out = [];
+    //     if (isset($_POST['depdrop_parents'])) {
+    //         $parents = $_POST['depdrop_parents'];
+    //         if (!empty($parents)) {
+    //             $cat_id = (!empty($parents[0])) ? $parents[0] : null;
+    //             $make_id = (!empty($parents[1])) ? $parents[1] : null;
+    //             if($cat_id !== null && $make_id !== null){
+    //                 $out = Models::getModelsList($cat_id, $make_id, true);
+    //                 return json_encode(['output'=>$out, 'selected'=>'']);
+    //             }
+    //         }
+    //     }
+    //     return json_encode(['output'=>'', 'selected'=>'']);
+    // }
+
     public function actionModels() {
+        
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if (!empty($parents)) {
-                $cat_id = (!empty($parents[0])) ? $parents[0] : null;
-                $make_id = (!empty($parents[1])) ? $parents[1] : null;
-                if($cat_id !== null && $make_id !== null){
-                    $out = Models::getModelsList($cat_id, $make_id); //getMakesList function created in Makes Model
-                    return json_encode(['output'=>$out, 'selected'=>'']);
-                }
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $model_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+               $out = Models::getModelsList($cat_id, $model_id, true);            
+               return json_encode(['output'=>$out, 'selected'=>'']);
             }
         }
         return json_encode(['output'=>'', 'selected'=>'']);
     }
+
 
     /**
      * Finds the Asset model based on its primary key value.

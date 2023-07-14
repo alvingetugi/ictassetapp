@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Category;
 use common\models\Make;
 use common\models\Models;
 use yii\helpers\Html;
@@ -33,7 +34,12 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'code',
-            'category',
+            [
+                'label' => 'Category',
+                'value' => function ($data){
+                    return Category::findOne(['id'=>$data->category])->name;
+                }
+            ],
             [
                 'label' => 'Make',
                 'value' => function ($data){

@@ -1,5 +1,7 @@
 <?php
 
+use common\models\Category;
+use common\models\Make;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -29,12 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            // 'id',
             'code',
             'name',
             'description',
-            'category_id',
-            'make_id',
+            [
+                'label' => 'Category',
+                'value' => function ($data){
+                    return Category::findOne(['id'=>$data->category_id])->name;
+                }
+            ],
+            [
+                'label' => 'Make/Brand',
+                'value' => function ($data){
+                    return Make::findOne(['id'=>$data->make_id])->name;
+                }
+            ],
         ],
     ]) ?>
 

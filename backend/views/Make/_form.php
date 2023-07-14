@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'description')->textInput() ?>
 
     <?= $form->field($model, 'category_id')->dropDownList(
-		        ArrayHelper::map(Category::find()->all(), 'code', 'name'),  // Flat array ('id'=>'label')
+		        ArrayHelper::map(Category::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
 		        ['prompt'=>'Select Category']                          // options
 		    ); ?>
 

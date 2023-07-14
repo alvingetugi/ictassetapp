@@ -47,7 +47,7 @@ class Make extends \yii\db\ActiveRecord
             'code' => 'Code',
             'name' => 'Name',
             'description' => 'Description',
-            'category_id' => 'Category ID',
+            'category_id' => 'Category',
         ];
     }
 
@@ -59,26 +59,17 @@ class Make extends \yii\db\ActiveRecord
     {
         return new \common\models\query\MakeQuery(get_called_class());
     }
+    
+    public static function getMakesList($cat_id, $isAjax = false)
+{
+    $Make = self::find()
+        ->where(['category_id' => $cat_id]);
 
-    //Gets make list for the create function
-    public static function getMakesList($cat_id)
-    {
-        $Makes = self::find()
-        ->select(['id', 'name'])
-        ->where(['category_id' => $cat_id])
-        ->asArray()
-        ->all();
-
-        return $Makes;
+    if ($isAjax == true) {
+        return $Make->select(['id', 'name'])->asArray()->all();
+    } else {
+        return $Make->select(['name'])->indexBy('id')->column();
     }
-
-    //Gets make list for the update function
-    public static function getMakes($cat_id){
-        return self::find()
-        ->select(['name', 'id'])
-        ->where(['category_id' => $cat_id])
-        ->indexBy('id')
-        ->column();
-    }
+}
 
 }
