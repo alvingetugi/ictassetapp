@@ -3,11 +3,11 @@
 namespace common\models\query;
 
 /**
- * This is the ActiveQuery class for [[\common\models\Model]].
+ * This is the ActiveQuery class for [[\common\models\Locations]].
  *
- * @see \common\models\Model
+ * @see \common\models\Locations
  */
-class ModelQuery extends \yii\db\ActiveQuery
+class LocationsQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class ModelQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\Model[]|array
+     * @return \common\models\Locations[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class ModelQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\Model|array|null
+     * @return \common\models\Locations|array|null
      */
     public function one($db = null)
     {

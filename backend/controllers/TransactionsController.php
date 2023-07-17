@@ -2,18 +2,21 @@
 
 namespace backend\controllers;
 
-use common\models\Asset;
-use backend\models\search\AssetSearch;
-use common\models\Make;
-use common\models\Models;
+use common\models\Transactiondetails;
+use common\models\Transactions;
+use backend\models\search\TransactionsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\Model;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /**
- * AssetController implements the CRUD actions for Asset model.
+ * TransactionsController implements the CRUD actions for Transactions model.
  */
-class AssetController extends Controller
+class TransactionsController extends Controller
 {
     /**
      * @inheritDoc
@@ -34,13 +37,13 @@ class AssetController extends Controller
     }
 
     /**
-     * Lists all Asset models.
+     * Lists all Transactions models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new AssetSearch();
+        $searchModel = new TransactionsSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +53,7 @@ class AssetController extends Controller
     }
 
     /**
-     * Displays a single Asset model.
+     * Displays a single Transactions model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,13 +66,14 @@ class AssetController extends Controller
     }
 
     /**
-     * Creates a new Asset model.
+     * Creates a new Transactions model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Asset();
+        $model = new Transactions();
+        $modelsTransactionDetails = [new Transactiondetails];
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -81,11 +85,12 @@ class AssetController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'modelsTransactionDetails' => (empty($modelsTransactionDetails)) ? [new Transactiondetails] : $modelsTransactionDetails
         ]);
     }
 
     /**
-     * Updates an existing Asset model.
+     * Updates an existing Transactions model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -105,7 +110,7 @@ class AssetController extends Controller
     }
 
     /**
-     * Deletes an existing Asset model.
+     * Deletes an existing Transactions model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -118,47 +123,16 @@ class AssetController extends Controller
         return $this->redirect(['index']);
     }
 
-     //Handles the dependency action for selecting a make
-    public function actionMakes() {
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $cat_id = $parents[0];
-                $out = Make::getMakesList($cat_id, true);
-                return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-    //Handles the dependency action for selecting a model
-    public function actionModels() {
-        
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $model_id = empty($ids[1]) ? null : $ids[1];
-            if ($cat_id != null) {
-               $out = Models::getModelsList($cat_id, $model_id, true);            
-               return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-
     /**
-     * Finds the Asset model based on its primary key value.
+     * Finds the Transactions model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Asset the loaded model
+     * @return Transactions the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Asset::findOne(['id' => $id])) !== null) {
+        if (($model = Transactions::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
