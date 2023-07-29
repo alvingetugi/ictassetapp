@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'description') ?>
-
     <?= $form->field($model, 'category_id') ?>
 
     <div class="form-group">

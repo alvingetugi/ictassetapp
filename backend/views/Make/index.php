@@ -15,7 +15,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="make-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>
+        <?= Html::encode($this->title) ?>
+    </h1>
 
     <p>
         <?= Html::a('Create Make', ['create'], ['class' => 'btn btn-success']) ?>
@@ -30,16 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
+            
             'code',
             'name',
-            'description',
             // 'category_id',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Make $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                        return Url::toRoute([$action, 'id' => $model->id]);
+                    }
             ],
+
         ],
     ]); ?>
 

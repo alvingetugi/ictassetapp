@@ -17,8 +17,8 @@ class MakeSearch extends Make
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['code', 'name', 'description', 'category_id'], 'safe'],
+            [['id', 'category_id'], 'integer'],
+            [['code', 'name'], 'safe'],
         ];
     }
 
@@ -59,12 +59,11 @@ class MakeSearch extends Make
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'category_id' => $this->category_id,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'category_id', $this->category_id]);
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

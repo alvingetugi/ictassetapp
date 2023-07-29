@@ -5,12 +5,15 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%categories}}".
+ * This is the model class for table "{{%category}}".
  *
  * @property int $id
  * @property string $code
  * @property string $name
- * @property string|null $description
+ *
+ * @property Equipmentmodel[] $equipmentmodels
+ * @property Equipment[] $equipments
+ * @property Make[] $makes
  */
 class Category extends \yii\db\ActiveRecord
 {
@@ -19,7 +22,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%categories}}';
+        return '{{%category}}';
     }
 
     /**
@@ -29,7 +32,6 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['code', 'name'], 'required'],
-            [['description'], 'string'],
             [['code'], 'string', 'max' => 50],
             [['name'], 'string', 'max' => 255],
             [['code'], 'unique'],
@@ -45,8 +47,37 @@ class Category extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'description' => 'Description',
         ];
+    }
+
+    /**
+     * Gets query for [[Equipmentmodels]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\EquipmentmodelQuery
+     */
+    public function getEquipmentmodels()
+    {
+        return $this->hasMany(Equipmentmodel::class, ['category_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Equipments]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\EquipmentQuery
+     */
+    public function getEquipments()
+    {
+        return $this->hasMany(Equipment::class, ['category_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Makes]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\MakeQuery
+     */
+    public function getMakes()
+    {
+        return $this->hasMany(Make::class, ['category_id' => 'id']);
     }
 
     /**
@@ -58,8 +89,9 @@ class Category extends \yii\db\ActiveRecord
         return new \common\models\query\CategoryQuery(get_called_class());
     }
 
-    //Gets all categories
-    public static function getCategories(){
+    //Gets all categories from category model
+    public static function getCategories()
+    {
         return self::find()->select(['name', 'id'])->indexBy('id')->column();
     }
 }

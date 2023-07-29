@@ -1,6 +1,6 @@
 <?php
 
-namespace app\base;
+namespace common\models;
 
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -41,3 +41,4 @@ class Model extends \yii\base\Model
         return $models;
     }
 }
+
