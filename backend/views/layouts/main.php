@@ -112,19 +112,19 @@ AppAsset::register($this);
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
                         aria-expanded="true" aria-controls="collapseThree">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Issuances</span>
+                        <span>Transactions</span>
                     </a>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Issuance Actions:</h6>
-                            <a class="collapse-item" href="#">
+                            <h6 class="collapse-header">Actions:</h6>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/transaction/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Issuance List</span>
+                                <span>Transactions</span>
                             </a>
-                            <a class="collapse-item" href="#">
+                            <!-- <a class="collapse-item" href="#">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Create Issuance</span>
-                            </a>
+                                <span>Surrenders</span>
+                            </a> -->
                         </div>
                     </div>
                 </li>

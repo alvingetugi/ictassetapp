@@ -1,5 +1,8 @@
 <?php
 
+use common\models\Equipment;
+use common\models\Location;
+use common\models\Transactiontype;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -32,14 +35,41 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'code',
             'date',
-            'transaction_type',
+            [
+                'label' => 'Transaction Type',
+                'value' => function ($data){
+                    return Transactiontype::findOne(['id'=>$data->transaction_type])->type;
+                }
+            ],
             'staff',
-            'location_id',
-            'created_at',
-            'updated_at',
-            'created_by',
-            'updated_by',
+            [
+                'label' => 'Location',
+                'value' => function ($data){
+                    return Location::findOne(['id'=>$data->location_id])->name;
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
+            'createdBy.username',
+            'updatedBy.username',
         ],
     ]) ?>
+
+<?php foreach ($modelsTransactionDetail as $modelTransactionDetail):?>
+<?= DetailView::widget([
+        'model' => $modelTransactionDetail,
+        'attributes' => [
+            // 'trans_id',
+            [
+                'label' => 'Asset',
+                'value' => function ($data){
+                    return Equipment::findOne(['id'=>$data->equipment_id])->name;
+                }
+            ],
+            'details:html',
+        ],
+    ]) ?>
+<?php endforeach; ?>
+
 
 </div>

@@ -56,14 +56,17 @@ class TransactionController extends Controller
 
     /**
      * Displays a single Transaction model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
+     * @param integer $id
+     * @return mixed
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $modelsTransactionDetail = $model->transactionDetails;
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'modelsTransactionDetail' => $modelsTransactionDetail,
         ]);
     }
 

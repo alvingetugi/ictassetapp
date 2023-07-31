@@ -57,12 +57,12 @@ use yii\bootstrap5\ActiveForm;
                     <tr>
                         <td colspan="2"><?php echo $productQuantity ?> Asset(s) </td>
                     </tr>
-                    <!-- <tr>
+                    <tr>
                         <td>Total Price</td>
                         <td class="text-right">
                             <?php echo Yii::$app->formatter->asCurrency($totalPrice) ?>
                         </td>
-                    </tr> -->
+                    </tr>
                 </table>
 
                 <p class="text-end mt-3">
