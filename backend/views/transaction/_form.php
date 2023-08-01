@@ -62,7 +62,8 @@ $this->registerJs($js);
     </div>
 
     <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="fa fa-envelope"></i> Details</h4></div>
+        <div class="panel-heading border-bottom border-primary border-5"><h3><i class="fa fa-tasks"></i> Details</h3></div>
+        <br>
         <div class="panel-body">
              <?php DynamicFormWidget::begin([
                 'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
@@ -84,7 +85,7 @@ $this->registerJs($js);
             <?php foreach ($modelsTransactionDetail as $i => $modelTransactionDetail): ?>
                 <div class="item panel panel-default"><!-- widgetBody -->
                     <div class="panel-heading">
-                        <h3 class="panel-title pull-left">Detail:<?= ($i + 1) ?></h3>
+                        <h4 class="panel-title pull-left"><p class="text-primary">Detail:<?= ($i + 1) ?></p></h4>
                         <div class="float-right">
                             <button type="button" class="add-item btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>

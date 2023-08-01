@@ -54,7 +54,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'updatedBy.username',
         ],
     ]) ?>
+<div class="panel-heading"><h4><i class="fa fa-tasks"></i> Details</h4></div>
 
+<div class="card">
 <?php foreach ($modelsTransactionDetail as $modelTransactionDetail):?>
 <?= DetailView::widget([
         'model' => $modelTransactionDetail,
@@ -70,6 +72,5 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 <?php endforeach; ?>
-
-
+    </div>
 </div>
