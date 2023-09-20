@@ -13,7 +13,27 @@ $script = <<<JS
   var calculateDepreciation = function () {
         var purchaseStr = parseInt($('#depreciation-purchase_value').val());
         var purchasevalue = isNaN(purchaseStr) ? 0 : purchaseStr;
-        var currentvalue = purchasevalue * 5;
+        var currentvalue = purchasevalue;
+        if(currentvalue == '' || currentvalue < 1) {
+            document.getElementById("depreciation-purchase_value").style.color = "red";
+            return;
+            }
+            var i;
+            if (currentvalue == 1) {
+                currentvalue = 0;
+                } else {
+                        for(i = 2; i < currentvalue-1; i++) {
+                            if (currentvalue % i == 0) {
+                                currentvalue = 0;
+                                break;
+                            }
+                        }
+                    }
+                if(currentvalue != 0) {
+                    document.getElementById("depreciation-current_value").style.color = "green";
+                    } else {
+                    document.getElementById("depreciation-current_value").style.color = "red";
+            }        
         $('#depreciation-current_value').val(currentvalue);
     };
     $(document).on('click', '#depreciation-current_value', function () {
@@ -40,7 +60,7 @@ $this->registerJs($script);
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-   
-    <?php ActiveForm::end(); ?>
 
-</div>
+        <?php ActiveForm::end(); ?>
+
+    </div>
