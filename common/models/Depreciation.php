@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "{{%depreciation}}".
@@ -12,9 +14,13 @@ use Yii;
  * @property float $purchase_value
  * @property float $current_value
  * @property int|null $created_at
+ * @property int|null $updated_at
  * @property int|null $created_by
+ * @property int|null $updated_by
  *
+ * @property User $createdBy
  * @property Equipment $equipment
+ * @property User $updatedBy
  */
 class Depreciation extends \yii\db\ActiveRecord
 {
@@ -26,6 +32,14 @@ class Depreciation extends \yii\db\ActiveRecord
         return '{{%depreciation}}';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,9 +47,11 @@ class Depreciation extends \yii\db\ActiveRecord
     {
         return [
             [['equipment_id', 'purchase_value', 'current_value'], 'required'],
-            [['equipment_id', 'created_at', 'created_by'], 'integer'],
+            [['equipment_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['purchase_value', 'current_value'], 'number'],
             [['equipment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Equipment::class, 'targetAttribute' => ['equipment_id' => 'id']],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
     }
 
@@ -50,8 +66,20 @@ class Depreciation extends \yii\db\ActiveRecord
             'purchase_value' => 'Purchase Value',
             'current_value' => 'Current Value',
             'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
             'created_by' => 'Created By',
+            'updated_by' => 'Updated By',
         ];
+    }
+
+    /**
+     * Gets query for [[CreatedBy]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
+     */
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
     /**
@@ -62,6 +90,16 @@ class Depreciation extends \yii\db\ActiveRecord
     public function getEquipment()
     {
         return $this->hasOne(Equipment::class, ['id' => 'equipment_id']);
+    }
+
+    /**
+     * Gets query for [[UpdatedBy]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
+     */
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
     /**

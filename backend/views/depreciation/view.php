@@ -33,8 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'equipment_id',
             'purchase_value',
             'current_value',
-            'created_at',
-            'created_by',
+            'created_at:datetime',
+            'updated_at:datetime',
+            'createdBy.username',
+            'updatedBy.username'
         ],
     ]) ?>
 

@@ -60,7 +60,8 @@ $this->registerJs($script);
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-
-        <?php ActiveForm::end(); ?>
-
     </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>

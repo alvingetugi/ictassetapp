@@ -17,7 +17,7 @@ class DepreciationSearch extends Depreciation
     public function rules()
     {
         return [
-            [['id', 'equipment_id', 'created_at', 'created_by'], 'integer'],
+            [['id', 'equipment_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['purchase_value', 'current_value'], 'number'],
         ];
     }
@@ -63,7 +63,9 @@ class DepreciationSearch extends Depreciation
             'purchase_value' => $this->purchase_value,
             'current_value' => $this->current_value,
             'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
+            'updated_by' => $this->updated_by,
         ]);
 
         return $dataProvider;
