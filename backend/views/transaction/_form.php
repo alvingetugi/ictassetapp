@@ -34,29 +34,22 @@ $script = <<<JS
         var tranStr = parseInt($('#transaction-transaction_type').val());
         var transvalue = isNaN(tranStr) ? 0 : tranStr;
         var code = transvalue;
-        if(code == '' || code < 1) {
-            document.getElementById("transaction-transaction_type").style.color = "red";
-            return;
-            }
-            var i;
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
             if (code == 1) {
-                code = 0;
+                while (counter < length) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                    counter += 1;
+                    break;
+                    } 
                 } else {
-                        for(i = 2; i < code-1; i++) {
-                            if (code % i == 0) {
-                                code = 0;
-                                break;
-                            }
-                        }
-                    }
-                if(code != 0) {
-                    document.getElementById("transaction-code").style.color = "green";
-                    } else {
-                    document.getElementById("transaction-code").style.color = "red";
-            }        
-        $('#transaction-code').val(code);
+                    result = 0;
+                    }     
+        $('#transaction-code').val(result);
     };
-    $(document).on('click', '#transaction-code', function () {
+    $(document).on('click', '#transaction-transaction_type', function () {
         getCode();
     });
 JS;
