@@ -115,6 +115,10 @@ AppAsset::register($this);
                     <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Actions:</h6>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/transactiontype/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Transaction Types</span>
+                            </a>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/transaction/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Transactions</span>
@@ -126,6 +130,8 @@ AppAsset::register($this);
                         </div>
                     </div>
                 </li>
+
+                
 
                 <!-- Nav Item - Tables -->
 

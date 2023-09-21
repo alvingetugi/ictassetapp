@@ -31,4 +31,9 @@ class TransactionQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function issued()
+    {
+        return $this->andWhere(['transaction_type' => 1]);
+    }
 }

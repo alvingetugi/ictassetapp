@@ -1,8 +1,13 @@
 <?php
 
 /** @var yii\web\View $this */
+/** @var int $totalUsers */
+/** @var int $totalIssuances */
 
 $this->title = 'ICT Asset App Admin';
+// echo '<pre>';
+// var_dump($totalUsers);
+// echo '</pre>';
 ?>
 <div class="site-index">
 
@@ -21,7 +26,7 @@ $this->title = 'ICT Asset App Admin';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Issuances</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalIssuances ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -39,7 +44,7 @@ $this->title = 'ICT Asset App Admin';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Surrenders</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-times fa-2x text-gray-300"></i>
@@ -57,7 +62,7 @@ $this->title = 'ICT Asset App Admin';
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Maintenance</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-cogs fa-2x text-gray-300"></i>
@@ -74,8 +79,8 @@ $this->title = 'ICT Asset App Admin';
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Disposals</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                    Users</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalUsers ?></div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-arrow-circle-right fa-2x text-gray-300"></i>

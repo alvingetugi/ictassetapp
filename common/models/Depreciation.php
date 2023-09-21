@@ -102,6 +102,7 @@ class Depreciation extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
+
     /**
      * {@inheritdoc}
      * @return \common\models\query\DepreciationQuery the active query used by this AR class.

@@ -28,19 +28,45 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
 ';
 
 $this->registerJs($js);
+
+$script = <<<JS
+  var getCode = function () {
+        var tranStr = parseInt($('#transaction-transaction_type').val());
+        var transvalue = isNaN(tranStr) ? 0 : tranStr;
+        var code = transvalue;
+        if(code == '' || code < 1) {
+            document.getElementById("transaction-transaction_type").style.color = "red";
+            return;
+            }
+            var i;
+            if (code == 1) {
+                code = 0;
+                } else {
+                        for(i = 2; i < code-1; i++) {
+                            if (code % i == 0) {
+                                code = 0;
+                                break;
+                            }
+                        }
+                    }
+                if(code != 0) {
+                    document.getElementById("transaction-code").style.color = "green";
+                    } else {
+                    document.getElementById("transaction-code").style.color = "red";
+            }        
+        $('#transaction-code').val(code);
+    };
+    $(document).on('click', '#transaction-code', function () {
+        getCode();
+    });
+JS;
+$this->registerJs($script);
+
 ?>
 
 <div class="transaction-form">
 
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
-    <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-sm-6">
-            <?= $form->field($model, 'date')->textInput() ?>
-        </div>
-    </div>
     <div class="row">
         <div class="col-sm-8 col-md-4">
             <?= $form->field($model, 'transaction_type')->dropDownList(
@@ -49,6 +75,15 @@ $this->registerJs($js);
                 ['prompt' => 'Select Transaction Type'] // options
             ); ?>
         </div>
+        <div class="col-sm-8 col-md-4">
+            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col-sm-8 col-md-4">
+            <?= $form->field($model, 'date')->textInput() ?>
+        </div>
+    </div>
+    <div class="row">
+        
         <div class="col-sm-8 col-md-4">
             <?= $form->field($model, 'location_id')->dropDownList(
                 ArrayHelper::map(Location::find()->all(), 'id', 'name'),

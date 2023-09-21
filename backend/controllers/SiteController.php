@@ -5,6 +5,8 @@ namespace backend\controllers;
 use common\models\LoginForm;
 use common\models\Makes;
 use common\models\Models;
+use common\models\Transaction;
+use common\models\User;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -64,7 +66,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $totalUsers = User::find()->andWhere(['status' => User::STATUS_ACTIVE])->count();
+        $totalIssuances = Transaction::find()->issued()->count();
+        
+        return $this->render('index', [
+            'totalUsers' => $totalUsers,
+            'totalIssuances' => $totalIssuances            
+        ]);
     }
 
     /**
