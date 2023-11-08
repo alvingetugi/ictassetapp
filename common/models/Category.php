@@ -94,4 +94,5 @@ class Category extends \yii\db\ActiveRecord
     {
         return self::find()->select(['name', 'id'])->indexBy('id')->column();
     }
+
 }

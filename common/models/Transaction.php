@@ -50,7 +50,7 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'date', 'transaction_type', 'staff', 'location_id'], 'required'],
+            [['date', 'transaction_type', 'staff', 'location_id'], 'required'],
             [['date'], 'safe'],
             [['transaction_type', 'location_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 50],
@@ -140,4 +140,9 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return new \common\models\query\TransactionQuery(get_called_class());
     }
+
+    public function getTranstype(){
+        return $this->hasOne(Transactiontype::class, ['ID' => 'transaction_type']);
+    }
+
 }

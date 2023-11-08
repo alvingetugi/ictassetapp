@@ -92,6 +92,8 @@ class TransactionController extends Controller
                     $transaction = Yii::$app->db->beginTransaction();
                     try {
                         if ($flag = $model->save(false)) {
+                            $model->code = $model->transactionType->code . ' - ' . $model->id;
+                            $model->save();
                             foreach ($modelsTransactionDetail as $modelTransactionDetail) {
                                 $modelTransactionDetail->trans_id = $model->id;
                                 if (!($flag = $modelTransactionDetail->save(false))) {

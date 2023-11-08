@@ -27,33 +27,30 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
 });
 ';
 
-$this->registerJs($js);
+// $this->registerJs($js);
 
-$script = <<<JS
-  var getCode = function () {
-        var tranStr = parseInt($('#transaction-transaction_type').val());
-        var transvalue = isNaN(tranStr) ? 0 : tranStr;
-        var code = transvalue;
-        let result = '';
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const charactersLength = characters.length;
-        let counter = 0;
-            if (code == 1) {
-                while (counter < length) {
-                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-                    counter += 1;
-                    break;
-                    } 
-                } else {
-                    result = 0;
-                    }     
-        $('#transaction-code').val(result);
-    };
-    $(document).on('click', '#transaction-transaction_type', function () {
-        getCode();
-    });
-JS;
-$this->registerJs($script);
+// $script = <<<JS
+//   var getCode = function (length) {
+//         var tranStr = parseInt($('#transaction-transaction_type').val());
+//         var transvalue = isNaN(tranStr) ? 0 : tranStr;
+//         var code = transvalue;
+//         var url_string = window.location.href; 
+//         var url = new URL(url_string);
+//         var c = url.searchParams.get("id");
+//         let result = '';
+//         let counter = 0;
+//             if (code == 1) {
+//                 result += "ISS-"+ c;
+//                 } else {
+//                     result = '-';
+//                     }  
+//         $('#transaction-code').val(result);
+//     };
+//     $(document).on('click', '#transaction-transaction_type', function () {
+//         getCode();
+//     });
+// JS;
+// $this->registerJs($script);
 
 ?>
 
