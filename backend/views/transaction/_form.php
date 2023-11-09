@@ -58,18 +58,24 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
 
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
     <div class="row">
+    <div class="col-sm-8 col-md-4">
+            <?= $form->field($model, 'code')->textInput(['maxlength' => true, 'readonly' => true]) ?>
+        </div>
         <div class="col-sm-8 col-md-4">
             <?= $form->field($model, 'transaction_type')->dropDownList(
                 ArrayHelper::map(Transactiontype::find()->all(), 'id', 'type'),
                 // Flat array ('id'=>'label')
                 ['prompt' => 'Select Transaction Type'] // options
             ); ?>
-        </div>
+        </div>        
         <div class="col-sm-8 col-md-4">
-            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-sm-8 col-md-4">
-            <?= $form->field($model, 'date')->textInput() ?>
+            <?= $form->field($model, 'date')->widget(\kartik\date\DatePicker::classname(), [
+            'pluginOptions' => [
+            'autoclose' => true,
+            'format' => 'yyyy-mm-dd',
+            'todayHighlight' => true
+        ]
+    ]); ?>
         </div>
     </div>
     <div class="row">
@@ -131,7 +137,7 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
                                         ArrayHelper::map(Equipment::find()->all(), 'id', 'name'),
                                         // Flat array ('id'=>'label')
                                         ['prompt' => 'Equipment'] // options
-                                    ); ?>
+                                    )->label('Equipment'); ?>
                             </div>
                             <div class="col-sm-8">
                                     <?= $form->field($modelTransactionDetail, "[{$i}]details")->widget(CKEditor::className(), [

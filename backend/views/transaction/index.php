@@ -32,10 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'id',
             'code',
             // 'date',
-            'transaction_type',
+            // 'transaction_type',
             [
-                'value'=>'transtype.type',
-                'label'=>'Type',
+                'attribute' => 'transaction_type',
+                'value' => 'transactionType.type'
             ],
             'staff',
             //'location_id',

@@ -11,14 +11,16 @@ use common\models\Transaction;
  */
 class TransactionSearch extends Transaction
 {
+    public $transaction_type;
+ 
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'transaction_type', 'location_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['code', 'date', 'staff'], 'safe'],
+            [['id', 'location_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['code', 'date', 'staff', 'transaction_type'], 'safe'],
         ];
     }
 
@@ -40,13 +42,22 @@ class TransactionSearch extends Transaction
      */
     public function search($params)
     {
-        $query = Transaction::find();
-
+        $query = Transaction::find()->joinWith(['transactionType']);
+        
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['transaction_type'] = [
+            'asc' => ['transaction_type.type' => SORT_ASC],
+            'desc' => ['transaction_type.type' => SORT_DESC],
+        ];
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
 
         $this->load($params);
 
@@ -54,13 +65,13 @@ class TransactionSearch extends Transaction
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
-        }
+        }     
 
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'date' => $this->date,
-            'transaction_type' => $this->transaction_type,
+            // 'transaction_type' => $this->transaction_type,
             'location_id' => $this->location_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -69,6 +80,7 @@ class TransactionSearch extends Transaction
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'transaction_type.type', $this->transaction_type])
             ->andFilterWhere(['like', 'staff', $this->staff]);
 
         return $dataProvider;

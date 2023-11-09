@@ -140,9 +140,4 @@ class Transaction extends \yii\db\ActiveRecord
     {
         return new \common\models\query\TransactionQuery(get_called_class());
     }
-
-    public function getTranstype(){
-        return $this->hasOne(Transactiontype::class, ['ID' => 'transaction_type']);
-    }
-
 }
