@@ -16,7 +16,7 @@
                     <th>Image</th>
                     <th>Unit Price</th>
                     <th>Quantity</th>
-                    <th>Total Price</th>
+                    <!-- <th>Total Price</th> -->
                     <th>Action</th>
                 </tr>
             </thead>
@@ -36,9 +36,9 @@
                         <td>
                             <input type="number" min="1" class="form-control item-quantity" style="width: 60px" value= "<?php echo $item['quantity'] ?>">
                         </td>
-                        <td>
+                        <!-- <td>
                             <?php echo $item['total_price'] ?>
-                        </td>
+                        </td> -->
                         <td>
                             <?php echo \yii\helpers\Html::a('Delete', ['/cart/delete', 'id' => $item['id']], [
                                 'class' => 'btn btn-outline-danger btn_sm',

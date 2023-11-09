@@ -5,6 +5,7 @@ use common\models\Location;
 use common\models\Transactiontype;
 use dosamigos\ckeditor\CKEditor;
 use wbraganca\dynamicform\DynamicFormWidget;
+use yii\bootstrap5\Button;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -25,9 +26,24 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
         jQuery(this).html("Detail: " + (index + 1))
     });
 });
+
+$(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
+    if (! confirm("Are you sure you want to delete this item?")) {
+        return false;
+    }
+    return true;
+});
+
+$(".dynamicform_wrapper").on("afterDelete", function(e) {
+    console.log("Deleted item!");
+});
+
+jQuery(".dynamicform_wrapper").on("limitReached", function(e, item) {
+    alert("Limit reached");
+});
 ';
 
-// $this->registerJs($js);
+$this->registerJs($js);
 
 // $script = <<<JS
 //   var getCode = function (length) {
@@ -65,13 +81,15 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
             <?= $form->field($model, 'transaction_type')->dropDownList(
                 ArrayHelper::map(Transactiontype::find()->all(), 'id', 'type'),
                 // Flat array ('id'=>'label')
-                ['prompt' => 'Select Transaction Type'] // options
+                ['prompt' => 'Select Transaction Type', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord] // options
             ); ?>
         </div>        
         <div class="col-sm-8 col-md-4">
             <?= $form->field($model, 'date')->widget(\kartik\date\DatePicker::classname(), [
+            'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord,
             'pluginOptions' => [
             'autoclose' => true,
+            'daysOfWeekDisabled' => [0, 6],
             'format' => 'yyyy-mm-dd',
             'todayHighlight' => true
         ]
@@ -84,11 +102,11 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
             <?= $form->field($model, 'location_id')->dropDownList(
                 ArrayHelper::map(Location::find()->all(), 'id', 'name'),
                 // Flat array ('id'=>'label')
-                ['prompt' => 'Select Location'] // options
+                ['prompt' => 'Select Location', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord] // options
             ); ?>
         </div>
         <div class="col-sm-8 col-md-4">
-            <?= $form->field($model, 'staff')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'staff')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
         </div>
     </div>
 
@@ -118,9 +136,14 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
                     <div class="panel-heading">
                         <span class="panel-title-detail">Detail:<?= ($i + 1) ?></span>
                         <div class="float-right">
-                            <button type="button" class="add-item btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-                            <button type="button" class="remove-item btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
+                        <?php if ($model->isNewRecord) {
+                         echo Button::widget(["label" => "+", "options" => ["class" => "add-item btn btn-success btn-xs"]]);
+                         echo Button::widget(["label" => "-", "options" => ["class" => "remove-item btn btn-danger btn-xs"]]);
+                        }?>
                         </div>
+
+                        
+
                         <div class="clearfix"></div>
                     </div>
                     
@@ -136,14 +159,14 @@ jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
                             <?= $form->field($modelTransactionDetail, "[{$i}]equipment_id")->dropDownList(
                                         ArrayHelper::map(Equipment::find()->all(), 'id', 'name'),
                                         // Flat array ('id'=>'label')
-                                        ['prompt' => 'Equipment'] // options
+                                        ['prompt' => 'Equipment', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord] // options
                                     )->label('Equipment'); ?>
                             </div>
                             <div class="col-sm-8">
                                     <?= $form->field($modelTransactionDetail, "[{$i}]details")->widget(CKEditor::className(), [
-                                        'options' => ['rows' => 6],
+                                        'options' => ['rows' => 6, 'readonly' => !$model->isNewRecord],
                                         'preset' => 'basic'
-                                    ]) ?>
+                                    ])->label('Reason for Issuance/Surrender'); ?>
                                 </div>
                         </div><!-- .row -->
                     </div>
