@@ -68,10 +68,14 @@ class SiteController extends Controller
     {
         $totalUsers = User::find()->andWhere(['status' => User::STATUS_ACTIVE])->count();
         $totalIssuances = Transaction::find()->issued()->count();
+        $totalSurrenders = Transaction::find()->surrendered()->count();
+        $totalMaintenances = Transaction::find()->maintenance()->count();
         
         return $this->render('index', [
             'totalUsers' => $totalUsers,
-            'totalIssuances' => $totalIssuances            
+            'totalIssuances' => $totalIssuances,
+            'totalSurrenders' => $totalSurrenders,
+            'totalMaintenances' => $totalMaintenances           
         ]);
     }
 

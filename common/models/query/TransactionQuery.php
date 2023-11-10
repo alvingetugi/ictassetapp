@@ -36,4 +36,14 @@ class TransactionQuery extends \yii\db\ActiveQuery
     {
         return $this->andWhere(['transaction_type' => 1]);
     }
+
+    public function surrendered()
+    {
+        return $this->andWhere(['transaction_type' => 2]);
+    }
+
+    public function maintenance()
+    {
+        return $this->andWhere(['transaction_type' => 3]);
+    }
 }
