@@ -17,7 +17,7 @@ class DepreciationSearch extends Depreciation
     public function rules()
     {
         return [
-            [['id', 'equipment_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'assetID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['purchase_value', 'current_value'], 'number'],
         ];
     }
@@ -59,7 +59,7 @@ class DepreciationSearch extends Depreciation
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'equipment_id' => $this->equipment_id,
+            'assetID' => $this->assetID,
             'purchase_value' => $this->purchase_value,
             'current_value' => $this->current_value,
             'created_at' => $this->created_at,

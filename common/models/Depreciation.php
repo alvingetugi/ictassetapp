@@ -3,14 +3,12 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "{{%depreciation}}".
+ * This is the model class for table "depreciation".
  *
  * @property int $id
- * @property int $equipment_id
+ * @property int $assetID
  * @property float $purchase_value
  * @property float $current_value
  * @property int|null $created_at
@@ -18,8 +16,8 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $created_by
  * @property int|null $updated_by
  *
+ * @property Ictassets $asset
  * @property User $createdBy
- * @property Equipment $equipment
  * @property User $updatedBy
  */
 class Depreciation extends \yii\db\ActiveRecord
@@ -29,15 +27,7 @@ class Depreciation extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%depreciation}}';
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            BlameableBehavior::class
-        ];
+        return 'depreciation';
     }
 
     /**
@@ -46,10 +36,10 @@ class Depreciation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['equipment_id', 'purchase_value', 'current_value'], 'required'],
-            [['equipment_id', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['assetID', 'purchase_value', 'current_value'], 'required'],
+            [['assetID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['purchase_value', 'current_value'], 'number'],
-            [['equipment_id'], 'exist', 'skipOnError' => true, 'targetClass' => Equipment::class, 'targetAttribute' => ['equipment_id' => 'id']],
+            [['assetID'], 'exist', 'skipOnError' => true, 'targetClass' => Ictassets::class, 'targetAttribute' => ['assetID' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
         ];
@@ -62,7 +52,7 @@ class Depreciation extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'equipment_id' => 'Equipment ID',
+            'assetID' => 'Asset ID',
             'purchase_value' => 'Purchase Value',
             'current_value' => 'Current Value',
             'created_at' => 'Created At',
@@ -73,9 +63,19 @@ class Depreciation extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Asset]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAsset()
+    {
+        return $this->hasOne(Ictassets::class, ['id' => 'assetID']);
+    }
+
+    /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getCreatedBy()
     {
@@ -83,32 +83,12 @@ class Depreciation extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Equipment]].
-     *
-     * @return \yii\db\ActiveQuery|\common\models\query\EquipmentQuery
-     */
-    public function getEquipment()
-    {
-        return $this->hasOne(Equipment::class, ['id' => 'equipment_id']);
-    }
-
-    /**
      * Gets query for [[UpdatedBy]].
      *
-     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     * @return \common\models\query\DepreciationQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \common\models\query\DepreciationQuery(get_called_class());
     }
 }

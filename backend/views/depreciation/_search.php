@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'equipment_id') ?>
+    <?= $form->field($model, 'assetID') ?>
 
     <?= $form->field($model, 'purchase_value') ?>
 

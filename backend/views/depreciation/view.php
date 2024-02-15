@@ -1,6 +1,5 @@
 <?php
 
-use common\models\Equipment;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -31,18 +30,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            [
-                'label' => 'Asset',
-                'value' => function ($data){
-                    return Equipment::findOne(['id'=>$data->equipment_id])->name;
-                }
-            ],
+            'assetID',
             'purchase_value',
             'current_value',
-            'created_at:datetime',
-            'updated_at:datetime',
-            'createdBy.username',
-            'updatedBy.username'
+            'created_at',
+            'updated_at',
+            'created_by',
+            'updated_by',
         ],
     ]) ?>
 

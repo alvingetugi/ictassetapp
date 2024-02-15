@@ -1,7 +1,6 @@
 <?php
 
 use common\models\Depreciation;
-use common\models\Equipment;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
@@ -30,20 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            // 'id',
-            [
-
-                'attribute' => 'equipment_id',
-                'value' => 'equipment.name'
-
-            ],
+            'id',
+            'assetID',
             'purchase_value',
             'current_value',
-            [
-                'attribute' => 'created_at',
-                'format' => ['datetime'],
-                'contentOptions' => ['style' => 'white-space: nowrap']
-            ],
+            'created_at',
             //'updated_at',
             //'created_by',
             //'updated_by',

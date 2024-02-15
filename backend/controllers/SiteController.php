@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\Issuances;
 use common\models\LoginForm;
 use common\models\Makes;
 use common\models\Models;
+use common\models\Surrenders;
 use common\models\Transaction;
 use common\models\User;
 use Yii;
@@ -67,15 +69,13 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $totalUsers = User::find()->andWhere(['status' => User::STATUS_ACTIVE])->count();
-        $totalIssuances = Transaction::find()->issued()->count();
-        $totalSurrenders = Transaction::find()->surrendered()->count();
-        $totalMaintenances = Transaction::find()->maintenance()->count();
+        $totalIssuances = Issuances::find()->Where(['IS NOT', 'code', null])->count();
+        $totalSurrenders = Surrenders::find()->Where(['IS NOT', 'code', null])->count();
         
         return $this->render('index', [
             'totalUsers' => $totalUsers,
             'totalIssuances' => $totalIssuances,
-            'totalSurrenders' => $totalSurrenders,
-            'totalMaintenances' => $totalMaintenances           
+            'totalSurrenders' => $totalSurrenders,       
         ]);
     }
 
