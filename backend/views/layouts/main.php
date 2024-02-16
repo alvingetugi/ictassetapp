@@ -69,12 +69,12 @@ AppAsset::register($this);
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseTwo">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
+                        aria-expanded="true" aria-controls="collapseOne">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Manage Asset Info</span>
                     </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Asset Management:</h6>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetcategories/index']) ?>">
@@ -102,43 +102,17 @@ AppAsset::register($this);
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Location Management
-                </div>
-
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
-                        aria-expanded="true" aria-controls="collapseThree">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Manage Locations</span>
-                    </a>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Location Management:</h6>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/locations/index']) ?>">
-                                <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Locations</span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
                     Asset Movements
                 </div>
 
                 <!-- Nav Item - Charts -->
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour"
-                        aria-expanded="true" aria-controls="collapseFour">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
                         <i class="fas fa-fw fa-cog"></i>
                         <span>Transactions</span>
                     </a>
-                    <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Actions:</h6>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/issuances/index']) ?>">
@@ -157,7 +131,35 @@ AppAsset::register($this);
                     </div>
                 </li>
 
-                
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    General Settings
+                </div>
+
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
+                        aria-expanded="true" aria-controls="collapseThree">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Options:</h6>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/locations/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Locations</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetstatus/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Asset Status</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>                
 
                 <!-- Nav Item - Tables -->
 

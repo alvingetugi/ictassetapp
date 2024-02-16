@@ -1,6 +1,9 @@
 <?php
 
 use common\models\Assetcategories;
+use common\models\Assetmodels;
+use common\models\Ictassets;
+use common\models\User;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -30,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            // 'id',
             'code',
             'issuancedate',
             [
@@ -39,9 +42,24 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Assetcategories::findOne(['id'=>$data->categoryID])->name;
                 }
             ],
-            'modelID',
-            'serialnumber',
-            'userID',
+            [
+                'label' => 'Model',
+                'value' => function ($data){
+                    return Assetmodels::findOne(['id'=>$data->modelID])->name;
+                }
+            ],
+            [
+                'label' => 'Serial Number',
+                'value' => function ($data){
+                    return Ictassets::findOne(['id'=>$data->serialnumber])->name;
+                }
+            ],
+            [
+                'label' => 'Staff',
+                'value' => function ($data){
+                    return User::findOne(['id'=>$data->userID])->username;
+                }
+            ],
             'comments',
             'created_at:datetime',
             'updated_at:datetime',

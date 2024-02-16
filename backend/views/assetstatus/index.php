@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var backend\models\search\AssetstatusSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Assetstatuses';
+$this->title = 'Asset Status';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="assetstatus-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Assetstatus', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Status', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'code',
             'name',
             [

@@ -11,10 +11,15 @@ use yii\widgets\ActiveForm;
 <div class="assetstatus-form">
 
     <?php $form = ActiveForm::begin(); ?>
+    <div class="row">
+        <div class="col">
+            <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
+        </div>
+        <div class="col">
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'code')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

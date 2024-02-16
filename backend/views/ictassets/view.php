@@ -4,6 +4,7 @@ use common\models\Assetaccessories;
 use common\models\Assetcategories;
 use common\models\Assetmakes;
 use common\models\Assetmodels;
+use common\models\Assetstatus;
 use common\models\Ictassets;
 use common\models\Locations;
 use yii\helpers\Html;
@@ -62,12 +63,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'operating_system',
             'date_of_delivery',
             [
-                'label' => 'LocationID',
+                'label' => 'Location',
                 'value' => function ($data){
                     return Locations::findOne(['id'=>$data->locationID])->name;
                 }
             ],
-            'assetstatus',
+            [
+                'label' => 'Asset Status',
+                'value' => function ($data){
+                    return Assetstatus::findOne(['id'=>$data->assetstatus])->name;
+                }
+            ],
             'assetcondition',
             'created_at:datetime',
             'updated_at:datetime',
