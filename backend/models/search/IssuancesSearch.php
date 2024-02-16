@@ -17,8 +17,8 @@ class IssuancesSearch extends Issuances
     public function rules()
     {
         return [
-            [['id', 'categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['code', 'issuancedate', 'comments'], 'safe'],
+            [['id', 'categoryID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['code', 'issuancedate', 'comments', 'modelID', 'serialnumber','userID'], 'safe'],
         ];
     }
 
@@ -40,13 +40,28 @@ class IssuancesSearch extends Issuances
      */
     public function search($params)
     {
-        $query = Issuances::find();
+        $query = Issuances::find()->joinWith(['model'])->joinWith(['serials'])->joinWith(['user']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
+        $dataProvider->sort->attributes['modelID'] = [
+            'asc' => ['modelID' => SORT_ASC],
+            'desc' => ['modelID' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['serialnumber'] = [
+            'asc' => ['serialnumber' => SORT_ASC],
+            'desc' => ['serialnumber' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['userID'] = [
+            'asc' => ['userID' => SORT_ASC],
+            'desc' => ['userID' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -61,9 +76,9 @@ class IssuancesSearch extends Issuances
             'id' => $this->id,
             'issuancedate' => $this->issuancedate,
             'categoryID' => $this->categoryID,
-            'modelID' => $this->modelID,
-            'serialnumber' => $this->serialnumber,
-            'userID' => $this->userID,
+            // 'modelID' => $this->modelID,
+            // 'serialnumber' => $this->serialnumber,
+            // 'userID' => $this->userID,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
@@ -71,6 +86,9 @@ class IssuancesSearch extends Issuances
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
+            ->andFilterWhere(['like', 'assetmodels.name', $this->modelID])
+            ->andFilterWhere(['like', 'ictassets.name', $this->serialnumber])
+            ->andFilterWhere(['like', 'user.username', $this->userID])
             ->andFilterWhere(['like', 'comments', $this->comments]);
 
         return $dataProvider;

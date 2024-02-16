@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "issuances".
@@ -36,6 +38,14 @@ class Issuances extends \yii\db\ActiveRecord
         return 'issuances';
     }
 
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -64,7 +74,7 @@ class Issuances extends \yii\db\ActiveRecord
             'issuancedate' => 'Issuance date',
             'categoryID' => 'Category',
             'modelID' => 'Model',
-            'serialnumber' => 'Serialnumber',
+            'serialnumber' => 'Serial Number',
             'userID' => 'Staff',
             'comments' => 'Comments',
             'created_at' => 'Created At',
@@ -102,5 +112,20 @@ class Issuances extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function getModel()
+    {
+        return $this->hasOne(Assetmodels::class, ['id' => 'modelID']);
+    }
+
+    public function getSerials()
+    {
+        return $this->hasOne(Ictassets::class, ['id' => 'serialnumber']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'userID']);
     }
 }

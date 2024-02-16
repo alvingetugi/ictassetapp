@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "surrenders".
@@ -31,6 +33,14 @@ class Surrenders extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'surrenders';
+    }
+
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+            BlameableBehavior::class
+        ];
     }
 
     /**
@@ -89,5 +99,20 @@ class Surrenders extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function getModel()
+    {
+        return $this->hasOne(Assetmodels::class, ['id' => 'modelID']);
+    }
+
+    public function getSerials()
+    {
+        return $this->hasOne(Ictassets::class, ['id' => 'serialnumber']);
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'userID']);
     }
 }

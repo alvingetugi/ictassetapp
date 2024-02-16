@@ -1,12 +1,13 @@
 <?php
 
+use common\models\Assetcategories;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Issuances $model */
 
-$this->title = $model->id;
+$this->title = $model->code;
 $this->params['breadcrumbs'][] = ['label' => 'Issuances', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -32,15 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'code',
             'issuancedate',
-            'categoryID',
+            [
+                'label' => 'Category',
+                'value' => function ($data){
+                    return Assetcategories::findOne(['id'=>$data->categoryID])->name;
+                }
+            ],
             'modelID',
             'serialnumber',
             'userID',
             'comments',
-            'created_at',
-            'updated_at',
-            'created_by',
-            'updated_by',
+            'created_at:datetime',
+            'updated_at:datetime',
+            'createdBy.username',
+            'updatedBy.username',
         ],
     ]) ?>
 

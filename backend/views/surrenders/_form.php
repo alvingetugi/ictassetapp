@@ -3,7 +3,9 @@
 use common\models\Assetcategories;
 use common\models\Assetmodels;
 use common\models\Ictassets;
+use common\models\User;
 use kartik\depdrop\DepDrop;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -65,9 +67,12 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-<?= $form->field($model, 'userID')->textInput() ?>
+<?= $form->field($model, 'userID')->dropDownList(
+        ArrayHelper::map(User::find()->all(), 'id', 'username'),  // Flat array ('id'=>'label')
+        ['prompt' => 'Select User', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]                          // options
+    ); ?>
 
-<?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
+<?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
 
 
 <div class="form-group">

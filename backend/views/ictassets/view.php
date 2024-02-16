@@ -72,7 +72,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at:datetime',
             'updated_at:datetime',
             'createdBy.username',
-            'updatedBy.username'
+            'updatedBy.username',
         ],
     ]) ?>
 

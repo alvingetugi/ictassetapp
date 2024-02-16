@@ -200,6 +200,7 @@ class Ictassets extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
 
+
     /**
      * {@inheritdoc}
      * @return \common\models\query\IctassetsQuery the active query used by this AR class.
@@ -214,7 +215,9 @@ class Ictassets extends \yii\db\ActiveRecord
         $model = self::find()
             ->where(['categoryID' => $cat_id])
             ->andWhere(['modelID' => $model_id])
-            ->andWhere(['assetstatus' => 2]);
+            ->andWhere(['assetstatus' => 2])
+            ->orWhere(['assetstatus' => 3])
+            ->orWhere(['assetstatus' => 4]);
 
         if ($isAjax) {
             return $model->select(['id', 'name'])->asArray()->all();

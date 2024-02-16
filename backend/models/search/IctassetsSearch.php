@@ -94,7 +94,7 @@ class IctassetsSearch extends Ictassets
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID])
             ->andFilterWhere(['like', 'assetmakes.name', $this->makeID])
-            ->andFilterWhere(['like', 'assetmodels.name', $this->makeID])
+            ->andFilterWhere(['like', 'assetmodels.name', $this->modelID])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'tag_number', $this->tag_number])
             ->andFilterWhere(['like', 'operating_system', $this->operating_system])
