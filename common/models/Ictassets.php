@@ -215,9 +215,7 @@ class Ictassets extends \yii\db\ActiveRecord
         $model = self::find()
             ->where(['categoryID' => $cat_id])
             ->andWhere(['modelID' => $model_id])
-            ->andWhere(['assetstatus' => 2])
-            ->orWhere(['assetstatus' => 3])
-            ->orWhere(['assetstatus' => 4]);
+            ->andWhere(['assetstatus' => [2,3,4]]);
 
         if ($isAjax) {
             return $model->select(['id', 'name'])->asArray()->all();

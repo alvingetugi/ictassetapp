@@ -54,12 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Ictassets::findOne(['id'=>$data->serialnumber])->name;
                 }
             ],
-            [
-                'label' => 'Staff',
-                'value' => function ($data){
-                    return User::findOne(['id'=>$data->userID])->username;
-                }
-            ],
+            'user.displayName',
             'comments',
             'created_at:datetime',
             'updated_at:datetime',

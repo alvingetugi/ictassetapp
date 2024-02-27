@@ -1,24 +1,24 @@
 <?php
 
-use common\models\Issuances;
+use common\models\User;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\search\IssuancesSearch $searchModel */
+/** @var backend\models\search\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Issuances';
+$this->title = 'Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="issuances-index">
+<div class="user-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Issuance', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,29 +30,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-            'code',
-            'issuancedate',
-            // 'categoryID',
-            [
-                'attribute' => 'modelID',
-                'value' => 'model.name'
-            ],
-            [
-                'attribute' => 'serialnumber',
-                'value' => 'serials.name'
-            ],
-            [
-                'attribute' => 'userID',
-                'value' => 'user.displayName'
-            ],
-            //'comments',
+            'username',
+            'firstname',
+            'lastname',
+            // 'auth_key',
+            // 'password_hash',
+            // 'password_reset_token',
+            'email:email',
+            'status',
             //'created_at',
             //'updated_at',
-            //'created_by',
-            //'updated_by',
+            //'verification_token',
+            //'firstname',
+            //'lastname',
+            //'department',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Issuances $model, $key, $index, $column) {
+                'urlCreator' => function ($action, User $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

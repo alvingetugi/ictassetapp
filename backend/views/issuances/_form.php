@@ -66,9 +66,9 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?= $form->field($model, 'userID')->dropDownList(
-        ArrayHelper::map(User::find()->all(), 'id', 'username'),  // Flat array ('id'=>'label')
-        ['prompt' => 'Select User', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]                          // options
+    <?= $form->field($model, 'userID')->dropDownList(        
+        ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
+        ['prompt' => 'Select User', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]
     ); ?>
 
     <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>

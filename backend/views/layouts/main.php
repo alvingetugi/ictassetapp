@@ -157,6 +157,10 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Asset Status</span>
                             </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/user/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Users</span>
+                            </a>
                         </div>
                     </div>
                 </li>                
