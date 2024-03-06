@@ -44,14 +44,15 @@ class IctassetsController extends Controller
      * Lists all Ictassets models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($pageSize = 10)
     {
         $searchModel = new IctassetsSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams, $pageSize);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'pageSize' => $pageSize,
         ]);
     }
 

@@ -52,6 +52,13 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'updated_by') ?>
 
     <div class="form-group">
+        <?= Html::label('Page Size') ?>
+        <?= Html::dropDownList('pageSize', $pageSize, 
+            [0 => 'ALL', 10 => '10', 20 => '20', 50 => '50'],
+            ['class' => 'form-control']) ?>
+    </div>
+
+    <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>

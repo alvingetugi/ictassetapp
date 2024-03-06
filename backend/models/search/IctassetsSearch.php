@@ -17,8 +17,8 @@ class IctassetsSearch extends Ictassets
     public function rules()
     {
         return [
-            [['id', 'categoryID', 'makeID', 'modelID', 'storage', 'ram', 'locationID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['code', 'name', 'tag_number', 'operating_system', 'date_of_delivery', 'assetstatus', 'assetcondition'], 'safe'],
+            [['id', 'categoryID', 'makeID', 'storage', 'ram', 'locationID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['code', 'name', 'tag_number', 'operating_system', 'date_of_delivery', 'assetstatus', 'assetcondition','modelID'], 'safe'],
         ];
     }
 
@@ -38,7 +38,7 @@ class IctassetsSearch extends Ictassets
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $pageSize = 10)
     {
         $query = Ictassets::find()->joinWith(['category'])->joinWith(['make'])->joinWith(['model']);
 
@@ -46,6 +46,9 @@ class IctassetsSearch extends Ictassets
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => $pageSize,  // no pagination if it is 0
+            ],
         ]);
 
         $dataProvider->sort->attributes['categoryID'] = [
@@ -61,6 +64,11 @@ class IctassetsSearch extends Ictassets
         $dataProvider->sort->attributes['modelID'] = [
             'asc' => ['modelID' => SORT_ASC],
             'desc' => ['modelID' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['name'] = [
+            'asc' => ['name' => SORT_ASC],
+            'desc' => ['name' => SORT_DESC],
         ];
 
         if (!($this->load($params) && $this->validate())) {
@@ -81,6 +89,7 @@ class IctassetsSearch extends Ictassets
             // 'categoryID' => $this->categoryID,
             // 'makeID' => $this->makeID,
             // 'modelID' => $this->modelID,
+            // 'name' => $this->name,
             'storage' => $this->storage,
             'ram' => $this->ram,
             'date_of_delivery' => $this->date_of_delivery,
@@ -95,7 +104,7 @@ class IctassetsSearch extends Ictassets
             ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID])
             ->andFilterWhere(['like', 'assetmakes.name', $this->makeID])
             ->andFilterWhere(['like', 'assetmodels.name', $this->modelID])
-            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'ictassets.name', $this->name])
             ->andFilterWhere(['like', 'tag_number', $this->tag_number])
             ->andFilterWhere(['like', 'operating_system', $this->operating_system])
             ->andFilterWhere(['like', 'assetstatus', $this->assetstatus])
