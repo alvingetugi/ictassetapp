@@ -88,7 +88,7 @@ class IssuancesSearch extends Issuances
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'assetmodels.name', $this->modelID])
             ->andFilterWhere(['like', 'ictassets.name', $this->serialnumber])
-            ->andFilterWhere(['like', 'user.username', $this->userID])
+            ->andFilterWhere(['like', 'user.firstname', $this->userID])
             ->andFilterWhere(['like', 'comments', $this->comments]);
 
         return $dataProvider;
