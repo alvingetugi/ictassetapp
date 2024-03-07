@@ -62,7 +62,7 @@ class Ictassets extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['categoryID', 'makeID', 'modelID', 'name', 'tag_number', 'storage', 'ram', 'operating_system', 'date_of_delivery', 'locationID', 'assetcondition'], 'required'],
+            [['categoryID', 'makeID', 'modelID', 'name','storage', 'ram', 'operating_system', 'date_of_delivery', 'locationID', 'assetcondition'], 'required'],
             [['categoryID', 'makeID', 'modelID', 'storage', 'ram', 'locationID', 'created_at', 'updated_at', 'created_by', 'updated_by','assetstatus'], 'integer'],
             [['date_of_delivery'], 'safe'],
             [['code', 'name', 'tag_number', 'operating_system',  'assetcondition'], 'string', 'max' => 50],

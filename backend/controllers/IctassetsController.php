@@ -98,6 +98,7 @@ class IctassetsController extends Controller
                     if ($flag = $model->save(false)) {
                         $model->code = 'AST' . '-' . $model->model->code . '-' . $model->id;
                         $model->assetstatus = 3;
+                        $model->tag_number = 'RBA' . '-' . $model->model->code . '-' . $model->id;
                         $model->save();
                         foreach ($modelsAssetaccessories as $modelAssetaccessories) {
                             $modelAssetaccessories->assetID = $model->id;

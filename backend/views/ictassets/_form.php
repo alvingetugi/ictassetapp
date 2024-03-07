@@ -114,9 +114,10 @@ $this->registerJs($js);
         <div class="col">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
         </div>
-        <div class="col">
-            <?= $form->field($model, 'tag_number')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
-        </div>
+    </div>
+
+    <div class="col">
+            <?= $form->field($model, 'tag_number')->hiddenInput()->label(false) ?>
     </div>
 
     <div class="row">
@@ -147,13 +148,13 @@ $this->registerJs($js);
             ]); ?>
         </div>
         <div class="col">
-            <?= $form->field($model, 'assetcondition')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'assetcondition')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
         </div>
 
         <div class="col">
             <?= $form->field($model, 'locationID')->dropDownList(
                 ArrayHelper::map(Locations::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
-                ['prompt' => 'Select Location']                          // options
+                ['prompt' => 'Select Location', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]                          // options
             ); ?>
         </div>
 
@@ -210,10 +211,10 @@ $this->registerJs($js);
 
                         <div class="row">
                             <div class="col">
-                                <?= $form->field($modelAssetaccessories, "[{$index}]name")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelAssetaccessories, "[{$index}]name")->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
                             </div>
                             <div class="col">
-                                <?= $form->field($modelAssetaccessories, "[{$index}]description")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelAssetaccessories, "[{$index}]description")->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
                             </div>
                         </div><!-- end:row -->
                     </div>
