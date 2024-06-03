@@ -31,7 +31,9 @@ $this->title = 'ICT Asset App Admin';
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalIssuances ?></div>
                             </div>
                             <div class="col-auto">
+                                <a href="<?php echo \yii\helpers\Url::to(['/issuances/index']) ?>">
                                 <i class="fas fa-check fa-2x text-gray-300"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -49,7 +51,9 @@ $this->title = 'ICT Asset App Admin';
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalSurrenders ?></div>
                             </div>
                             <div class="col-auto">
+                                <a href="<?php echo \yii\helpers\Url::to(['/surrenders/index']) ?>">
                                 <i class="fas fa-times fa-2x text-gray-300"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -85,7 +89,9 @@ $this->title = 'ICT Asset App Admin';
                                 <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $totalUsers ?></div>
                             </div>
                             <div class="col-auto">
+                                <a href="<?php echo \yii\helpers\Url::to(['/user/index']) ?>">
                                 <i class="fas fa-arrow-circle-right fa-2x text-gray-300"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
