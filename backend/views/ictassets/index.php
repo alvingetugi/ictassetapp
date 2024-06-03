@@ -31,10 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             // 'code',
-            // [
-            //     'attribute' => 'categoryID',
-            //     'value' => 'category.name'
-            // ],
+            [
+                'attribute' => 'categoryID',
+                'value' => 'category.name'
+            ],
             // [
             //     'attribute' => 'makeID',
             //     'value' => 'make.name'
@@ -62,6 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'updated_by',
             [
                 'class' => ActionColumn::className(),
+                'template'=>'{view}{update}',
                 'urlCreator' => function ($action, Ictassets $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
