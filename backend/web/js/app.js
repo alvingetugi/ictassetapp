@@ -8,6 +8,8 @@
     //Now go ahead do catch the keyup events
     $(document).on('keypress', '#current_value', function () {
         calculateDepreciation();
-    });on('keypress', '#purchase_value', function () {
+    }).on('keypress', '#purchase_value', function () {
         calculateDepreciation();
     });
+
+    
