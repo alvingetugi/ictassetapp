@@ -2,8 +2,10 @@
 
 /** @var \yii\web\View $this */
 /** @var string $content */
+/** @var int $department */
 
 use backend\assets\AppAsset;
+use common\models\User;
 use common\widgets\Alert;
 use yii\bootstrap5\Breadcrumbs;
 use yii\bootstrap5\Html;
@@ -51,14 +53,14 @@ AppAsset::register($this);
 
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
-
+              
                 <!-- Nav Item - Dashboard -->
                 <li class="nav-item active">
                     <a class="nav-link" href="<?php echo Yii::$app->homeUrl ?>">
                         <i class="fas fa-fw fa-tachometer-alt"></i>
                         <span>Dashboard</span></a>
                 </li>
-
+                
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 

@@ -14,13 +14,28 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
 
-    <?= $form->field($model, 'email')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+   
+    <?= $form->field($model, 'status')->radioList([0 => 'Deleted', 9 => 'Inactive', 10 => 'Active']) ?>
 
-    <?= $form->field($model, 'status')->textInput(['readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'firstname')->textInput([]) ?>
 
-    <?= $form->field($model, 'firstname')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'lastname')->textInput([]) ?>
 
-    <?= $form->field($model, 'lastname')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'department')->dropDownList([1 => 'Finance and Accounts', 
+                                                            2 => 'Internal Audit and Risk Assurance', 
+                                                            3 => 'Corporation Secretary and Legal Services', 
+                                                            4 => 'Information and Communication Technology', 
+                                                            5 => 'Market Conduct and Industry Development', 
+                                                            6 => 'Supervision', 
+                                                            7 => 'Corporate Communications', 
+                                                            8 => 'Procurement and Supply Chain', 
+                                                            9 => 'Human Resource and Administration', 
+                                                            10 => 'Research, Strategy and Planning', 
+                                                            11 => 'Executive', 
+                                                            12 => 'Management Representative', 
+                                                            13 => 'Tribunal', 
+                                                            14 => 'Board']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

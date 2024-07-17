@@ -5,6 +5,7 @@
 /** @var int $totalIssuances */
 /** @var int $totalSurrenders */
 /** @var int $totalMaintenances */
+/** @var int $department */
 
 $this->title = 'ICT Asset App Admin';
 // echo '<pre>';

@@ -75,7 +75,7 @@ class SiteController extends Controller
         return $this->render('index', [
             'totalUsers' => $totalUsers,
             'totalIssuances' => $totalIssuances,
-            'totalSurrenders' => $totalSurrenders,       
+            'totalSurrenders' => $totalSurrenders, 
         ]);
     }
 

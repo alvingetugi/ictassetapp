@@ -23,6 +23,7 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $department
  * @property string $password write-only password
  * @property \common\models\UserAddress[] $addresses
  */
@@ -62,6 +63,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['firstname', 'lastname', 'username', 'email'], 'required'],
             [['firstname', 'lastname', 'username', 'email'], 'string', 'max' => 255],
+            [['department'], 'integer', 'max' => 50],
             [['username', 'email'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
@@ -76,7 +78,8 @@ class User extends ActiveRecord implements IdentityInterface
             'lastname' => 'Last Name',
             'username' => 'username',
             'email' => 'E-Mail',    
-            'status' => 'Status',           
+            'status' => 'Status',   
+            'department' => 'Department', 
         ];
     }
 
