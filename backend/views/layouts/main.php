@@ -163,6 +163,10 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Users</span>
                             </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/departments/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Departments</span>
+                            </a>
                         </div>
                     </div>
                 </li>

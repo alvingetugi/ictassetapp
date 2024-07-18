@@ -72,7 +72,7 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'verification_token', $this->verification_token])
             ->andFilterWhere(['like', 'firstname', $this->firstname])
             ->andFilterWhere(['like', 'lastname', $this->lastname])
-            ->andFilterWhere(['like', 'department', $this->department]);
+            ->andFilterWhere(['like', 'department.name', $this->department]);
 
         return $dataProvider;
     }

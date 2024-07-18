@@ -43,7 +43,10 @@ $this->params['breadcrumbs'][] = $this->title;
             //'verification_token',
             //'firstname',
             //'lastname',
-            //'department',
+            [
+                'attribute' => 'department',
+                'value' => 'departments.name',
+            ],
             [
                 'class' => ActionColumn::className(),
                 'template'=>'{view}',
