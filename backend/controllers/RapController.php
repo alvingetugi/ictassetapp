@@ -2,10 +2,12 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\Rap;
 use backend\models\search\RapSearch;
 use common\models\Schemes;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -68,20 +70,26 @@ class RapController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Rap();
+        if(Yii::$app->user->can('createRap'))
+        {
+            $model = new Rap();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($this->request->isPost) {
+                if ($model->load($this->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
+    
+            return $this->render('create', [
+                'model' => $model,
+                'schemes' => Schemes::find()->all(),
+            ]);
+        }else{
+            throw new ForbiddenHttpException;
         }
-
-        return $this->render('create', [
-            'model' => $model,
-            'schemes' => Schemes::find()->all(),
-        ]);
+        
     }
 
     /**

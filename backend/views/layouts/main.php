@@ -135,7 +135,7 @@ AppAsset::register($this);
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-
+                <?php if (Yii::$app->user->can('admin', [], true)): ?>
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     General Settings
@@ -170,10 +170,11 @@ AppAsset::register($this);
                         </div>
                     </div>
                 </li>
+                <?php endif ?>
                 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-
+                <?php if (Yii::$app->user->can('createRap', [], true)): ?>
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Remedial Action Plans
@@ -208,7 +209,7 @@ AppAsset::register($this);
                         </div>
                     </div>
                 </li>
-
+                <?php endif ?>
                 <!-- Nav Item - Tables -->
 
                 <!-- Divider -->
