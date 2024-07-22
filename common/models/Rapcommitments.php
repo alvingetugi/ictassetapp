@@ -42,7 +42,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
             [['rapID'], 'integer'],
             [['date'], 'safe'],
             [['expectedamount'], 'number'],
-            [['imageFile'], 'image', 'extensions' => 'png, jpg, jpeg, webp, pdf', 'maxSize' => 10 * 1024 * 1024],
+            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg, webp, pdf', 'maxFiles' => '1'],
             [['comments'], 'string', 'max' => 50],
             [['document'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -121,4 +121,6 @@ class Rapcommitments extends \yii\db\ActiveRecord
             FileHelper::removeDirectory($dir);
         }
     }
+
+
 }

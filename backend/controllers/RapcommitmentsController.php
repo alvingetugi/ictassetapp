@@ -112,6 +112,7 @@ class RapcommitmentsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
         $raps = Schemes::findBySql("
                     SELECT 
                         s.id as scheme_id, 

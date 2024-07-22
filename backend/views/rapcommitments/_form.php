@@ -1,5 +1,6 @@
 <?php
 
+use kartik\file\FileInput;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
