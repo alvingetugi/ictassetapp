@@ -22,7 +22,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
     /**
      * @var \yii\web\UploadedFile
      */
-    public $imageFile;
+    public $commitmentfile;
 
     /**
      * {@inheritdoc}
@@ -42,7 +42,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
             [['rapID'], 'integer'],
             [['date'], 'safe'],
             [['expectedamount'], 'number'],
-            [['imageFile'], 'file', 'extensions' => 'png, jpg, jpeg, webp, pdf', 'maxFiles' => '1'],
+            [['commitmentfile'], 'file', 'extensions' => 'pdf'],
             [['comments'], 'string', 'max' => 50],
             [['document'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -61,7 +61,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
             'expectedamount' => 'Expected Amount',
             'comments' => 'Comments',
             'document' => 'Document',
-            'imageFile' => 'Document',
+            'commitmentfile' => 'Document',
         ];
     }
 
@@ -75,52 +75,14 @@ class Rapcommitments extends \yii\db\ActiveRecord
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
 
-    public function save($runValidation = true, $attributeNames = null)
-    {
-        if ($this->imageFile) {
-            $this->document = '/commitmentfiles/' . Yii::$app->security->generateRandomString() . '/' . $this->imageFile->name;
-        }
-
-        $transaction = Yii::$app->db->beginTransaction();
-        $ok = parent::save($runValidation, $attributeNames);
-
-        if ($ok && $this->imageFile) {
-            $fullPath = Yii::getAlias('@backend/web/storage' . $this->document);
-            $dir = dirname($fullPath);
-            if (!FileHelper::createDirectory($dir) | !$this->imageFile->saveAs($fullPath)) {
-                $transaction->rollBack();
-
-                return false;
-            }
-        }
-
-        $transaction->commit();
-
-        return $ok;
-    }
-
-    public function getImageUrl()
-    {
-        return self::formatImageUrl($this->document);
-    }
-
-    public static function formatImageUrl($imagePath)
-    {
-        if ($imagePath) {
-            return Yii::$app->params['backendUrl'] . '/storage' . $imagePath;
-        }
-
-        return Yii::$app->params['backendUrl'] . '/img/no_image.svg';
-    }
-
-    public function afterDelete()
-    {
-        parent::afterDelete();
-        if ($this->document) {
-            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->document);
-            FileHelper::removeDirectory($dir);
-        }
-    }
-
+    // public function upload()
+    // {
+    //     if ($this->validate()) {
+    //         $this->commitmentfile->saveAs('uploads/' . $this->commitmentfile->baseName . '.' . $this->commitmentfile->extension);
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
 }

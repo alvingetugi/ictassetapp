@@ -17,8 +17,7 @@ use yii\widgets\ActiveForm;
 
 <div class="rapcommitments-form">
 
-    <?php $form = ActiveForm::begin([
-        'options' => ['enctype' => 'multipart/form-data']
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']
     ]); ?>
 
     <?= $form->field($model, 'rapID')->widget(Select2::classname(), [
@@ -47,17 +46,16 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'imageFile', [
-        'template' => '
-                <div class="custom-file">
-                    {input}
-                    {label}
-                    {error}
-                </div>
-            ',
-        'labelOptions' => ['class' => 'custom-file-label'],
-        'inputOptions' => ['class' => 'custom-file-input']
-    ])->textInput(['type' => 'file']) ?>
+    <?= $form->field($model, 'commitmentfile')->widget(FileInput::classname(), [
+        'pluginOptions' => [
+                'showCaption' => false,
+                'showRemove' => false,
+                'showUpload' => false,
+                'browseClass' => 'btn btn-info  btn-block',
+                'browseIcon' => '<i class="fas fa-camera"></i> ',
+                'browseLabel' =>  'Select commitment file'
+            ],
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

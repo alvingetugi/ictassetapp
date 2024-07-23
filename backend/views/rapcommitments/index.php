@@ -34,15 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
             'expectedamount',
             'comments',
-            // 'document',
-            [
-                'label' => 'Document',
-                'attribute' => 'document',
-                'content' => function ($model) {
-                    /** @var \common\models\Rapcommitments $model */
-                    return Html::img($model->getImageUrl(), ['style' => 'width: 70px']);
-                }
-            ], 
+            'document', 
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -34,12 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
             'expectedamount',
             'comments',
-            [
-                'attribute' => 'document',
-                'format' => ['html'],
-                'value' => fn() => Html::img($model->getImageUrl(), ['style' => 'width: 50px']),
-            ],
             // 'document',
+            ['attribute' => 'document',
+            'format' => 'raw',
+            'value' => function($model){
+                // return Html::img(Url::to('uploads/'.$model->document));
+                return Html::a('PDF', ['rapcommitments/pdf', 'id' => $model->id,], ['class' => 'btn btn-primary',
+                    'target' => '_blank',]);
+            }],
+            
         ],
     ]) ?>
 
