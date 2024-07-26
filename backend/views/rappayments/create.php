@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Rappayments $model */
 
-$this->title = 'Create Rappayments';
+$this->title = 'Create Payment';
 $this->params['breadcrumbs'][] = ['label' => 'Rappayments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'raps' => $raps,
     ]) ?>
 
 </div>

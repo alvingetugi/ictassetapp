@@ -1,6 +1,5 @@
 <?php
 
-use kartik\file\FileInput;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -11,7 +10,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 // echo '<pre>';
-// print_r($raps);
+// print_r($commitmentfile);
 // exit;
 ?>
 
@@ -46,16 +45,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'commitmentfile')->widget(FileInput::classname(), [
-        'pluginOptions' => [
-                'showCaption' => false,
-                'showRemove' => false,
-                'showUpload' => false,
-                'browseClass' => 'btn btn-info  btn-block',
-                'browseIcon' => '<i class="fas fa-camera"></i> ',
-                'browseLabel' =>  'Select commitment file'
-            ],
-    ]); ?>
+    <?= $form->field($model, 'commitmentfile', [
+        'template' => '
+                <div class="custom-file">
+                    {input}
+                    {label}
+                    {error}
+                </div>
+            ',
+        'labelOptions' => ['class' => 'custom-file-label'],
+        'inputOptions' => ['class' => 'custom-file-input']
+    ])->textInput(['type' => 'file']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

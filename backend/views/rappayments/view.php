@@ -34,7 +34,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
             'amount',
             'comments',
-            'proof',
+            [
+                'attribute' => 'proof',
+                'format' => ['html'],
+                'value' => fn() => Html::a('Download', [
+                    'rappayments/pdf',
+                    'id' => $model->id,
+                ], [
+                    'class' => 'btn btn-primary',
+                    'target' => '_blank',
+                ]),
+            ],
         ],
     ]) ?>
 

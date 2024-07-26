@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "rappayments".
@@ -18,6 +19,11 @@ use Yii;
  */
 class Rappayments extends \yii\db\ActiveRecord
 {
+    /**
+     * @var \yii\web\UploadedFile
+     */
+    public $paymentfile;
+
     /**
      * {@inheritdoc}
      */
@@ -36,6 +42,7 @@ class Rappayments extends \yii\db\ActiveRecord
             [['rapID'], 'integer'],
             [['date'], 'safe'],
             [['amount'], 'number'],
+            [['paymentfile'], 'file', 'extensions' => 'pdf, jpg'],
             [['comments'], 'string', 'max' => 50],
             [['proof'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -49,11 +56,12 @@ class Rappayments extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'rapID' => 'Rap ID',
+            'rapID' => 'Remedial Action Plan',
             'date' => 'Date',
             'amount' => 'Amount',
             'comments' => 'Comments',
             'proof' => 'Proof',
+            'paymentfile' => 'Proof',
         ];
     }
 
@@ -65,5 +73,52 @@ class Rappayments extends \yii\db\ActiveRecord
     public function getRap()
     {
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->paymentfile) {
+            $this->proof = '/uploads/' . Yii::$app->security->generateRandomString() . '/' . $this->paymentfile->name;
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        $ok = parent::save($runValidation, $attributeNames);
+
+        if ($ok && $this->paymentfile) {
+            $fullPath = Yii::getAlias('@backend/web/storage' . $this->proof);
+            $dir = dirname($fullPath);
+            if (!FileHelper::createDirectory($dir) | !$this->paymentfile->saveAs($fullPath)) {
+                $transaction->rollBack();
+
+                return false;
+            }
+        }
+
+        $transaction->commit();
+
+        return $ok;
+    }
+
+    public function getProofUrl()
+    {
+        return self::formatProofUrl($this->proof);
+    }
+
+    public static function formatProofUrl($proofPath)
+    {
+        if ($proofPath) {
+            return Yii::$app->params['backendUrl'] . '/storage' . $proofPath;
+        }
+
+        return Yii::$app->params['backendUrl'] . '/img/no_image.svg';
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        if ($this->proof) {
+            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->proof);
+            FileHelper::removeDirectory($dir);
+        }
     }
 }

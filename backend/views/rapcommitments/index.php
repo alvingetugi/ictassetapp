@@ -34,7 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'date',
             'expectedamount',
             'comments',
-            'document', 
+            // 'document', 
+            [
+                'label' => 'Document',
+                'attribute' => 'document',
+                'content' => function ($model) {
+                    /** @var \common\models\Rapcommitments $model */
+                    return  Html::a('Download', [
+                        'rapcommitments/pdf',
+                        'id' => $model->id,
+                    ], [
+                        'class' => 'btn btn-primary',
+                        'target' => '_blank',
+                    ]);
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}',

@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
+use Yii;
 use common\models\Rappayments;
 use backend\models\search\RappaymentsSearch;
+use common\models\Schemes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * RappaymentsController implements the CRUD actions for Rappayments model.
@@ -68,8 +71,24 @@ class RappaymentsController extends Controller
     public function actionCreate()
     {
         $model = new Rappayments();
+        $model->paymentfile = UploadedFile::getInstance($model, 'paymentfile');
+
+        $raps = Schemes::findBySql("
+                    SELECT 
+                        s.id as scheme_id, 
+                        s.ref as scheme_ref, 
+                        s.name as scheme_name, 
+                        r.id as id, 
+                        r.amount as rap_amount, 
+                        r.status as rap_status 
+                    FROM schemes s 
+                    LEFT JOIN rap r on s.id = r.schemeID 
+                    WHERE r.status=1")
+                    ->asArray()
+                    ->all();
 
         if ($this->request->isPost) {
+
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -79,6 +98,7 @@ class RappaymentsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'raps' => $raps,
         ]);
     }
 
@@ -92,6 +112,21 @@ class RappaymentsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->paymentfile = UploadedFile::getInstance($model, 'paymentfile');
+
+        $raps = Schemes::findBySql("
+                    SELECT 
+                        s.id as scheme_id, 
+                        s.ref as scheme_ref, 
+                        s.name as scheme_name, 
+                        r.id as id, 
+                        r.amount as rap_amount, 
+                        r.status as rap_status 
+                    FROM schemes s 
+                    LEFT JOIN rap r on s.id = r.schemeID 
+                    WHERE r.status=1")
+                    ->asArray()
+                    ->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -99,6 +134,7 @@ class RappaymentsController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'raps' => $raps,
         ]);
     }
 
@@ -130,5 +166,16 @@ class RappaymentsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionPdf($id) {
+        $model = Rappayments::findOne($id);
+    
+        // This will need to be the path relative to the root of your app.
+        $filePath = '/payments';
+        // Might need to change '@app' for another alias
+        $completePath = Yii::getAlias('@backend/web/storage'.$model->proof);
+    
+        return Yii::$app->response->sendFile($completePath, $model->proof);
     }
 }

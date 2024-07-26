@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Rapcommitments $model */
 
-$this->title = $model->id;
+$this->title = 'Commitment:'. ' '.$model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Rapcommitments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -30,20 +30,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            // 'id',
             'rapID',
             'date',
             'expectedamount',
             'comments',
-            // 'document',
-            ['attribute' => 'document',
-            'format' => 'raw',
-            'value' => function($model){
-                // return Html::img(Url::to('uploads/'.$model->document));
-                return Html::a('PDF', ['rapcommitments/pdf', 'id' => $model->id,], ['class' => 'btn btn-primary',
-                    'target' => '_blank',]);
-            }],
-            
+            [
+                'attribute' => 'document',
+                'format' => ['html'],
+                'value' => fn() => Html::a('Download', [
+                    'rapcommitments/pdf',
+                    'id' => $model->id,
+                ], [
+                    'class' => 'btn btn-primary',
+                    'target' => '_blank',
+                ]),
+            ],            
         ],
     ]) ?>
 

@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var backend\models\search\RappaymentsSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Rappayments';
+$this->title = 'Remedial Action Plan Payments';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="rappayments-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Rappayments', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -29,18 +29,41 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'rapID',
             'date',
             'amount',
-            'comments',
-            //'proof',
+            // 'comments',
+            // 'proof',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Rappayments $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'label' => 'Proof',
+                'attribute' => 'proof',
+                'content' => function ($model) {
+                    /** @var \common\models\Rappayments $model */
+                    return  Html::a('Download', [
+                        'rappayments/pdf',
+                        'id' => $model->id,
+                    ], [
+                        'class' => 'btn btn-primary',
+                        'target' => '_blank',
+                    ]);
+                }
             ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
+            ],
+            // [
+            //     'class' => ActionColumn::className(),
+            //     'urlCreator' => function ($action, Rappayments $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id' => $model->id]);
+            //      }
+            // ],
         ],
     ]); ?>
 

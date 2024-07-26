@@ -3,7 +3,6 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Rap;
 use common\models\Rapcommitments;
 use backend\models\search\RapcommitmentsSearch;
 use common\models\Schemes;
@@ -72,6 +71,7 @@ class RapcommitmentsController extends Controller
     public function actionCreate()
     {
         $model = new Rapcommitments();
+        $model->commitmentfile = UploadedFile::getInstance($model, 'commitmentfile');
 
         $raps = Schemes::findBySql("
                     SELECT 
@@ -88,14 +88,6 @@ class RapcommitmentsController extends Controller
                     ->all();
             
         if ($this->request->isPost) {
-            
-        //get instance of the uploaded file
-        $filename = Yii::$app->security->generateRandomString();
-        $model->commitmentfile = UploadedFile::getInstance($model, 'commitmentfile');
-        $model->commitmentfile->saveAs('uploads/' .$filename. '.' .$model->commitmentfile->extension);
-
-        //save path in the db column
-        $model->document = 'uploads/' .$filename. '.' .$model->commitmentfile->extension;
 
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -106,8 +98,7 @@ class RapcommitmentsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'raps' => $raps,
-            
+            'raps' => $raps,            
         ]);
     }
 
@@ -121,6 +112,8 @@ class RapcommitmentsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->commitmentfile = UploadedFile::getInstance($model, 'commitmentfile');
+        
         $raps = Schemes::findBySql("
                     SELECT 
                         s.id as scheme_id, 
@@ -175,14 +168,14 @@ class RapcommitmentsController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionPdf($id) {
-        $model = Rapcommitments::findOne($id);
-    
-        // This will need to be the path relative to the root of your app.
-        $filePath = 'uploads/';
-        // Might need to change '@app' for another alias
-        $completePath = Yii::getAlias('@app'.$filePath.'/'.$model->commitmentfile);
-    
-        return Yii::$app->response->sendFile($completePath, $model->commitmentfile);
-    }
+public function actionPdf($id) {
+    $model = Rapcommitments::findOne($id);
+
+    // This will need to be the path relative to the root of your app.
+    $filePath = '/uploads';
+    // Might need to change '@app' for another alias
+    $completePath = Yii::getAlias('@backend/web/storage'.$model->document);
+
+    return Yii::$app->response->sendFile($completePath, $model->document);
+}
 }

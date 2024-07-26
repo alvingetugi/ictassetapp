@@ -42,7 +42,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
             [['rapID'], 'integer'],
             [['date'], 'safe'],
             [['expectedamount'], 'number'],
-            [['commitmentfile'], 'file', 'extensions' => 'pdf'],
+            [['commitmentfile'], 'file', 'extensions' => 'pdf, jpg'],
             [['comments'], 'string', 'max' => 50],
             [['document'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -75,14 +75,51 @@ class Rapcommitments extends \yii\db\ActiveRecord
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
 
-    // public function upload()
-    // {
-    //     if ($this->validate()) {
-    //         $this->commitmentfile->saveAs('uploads/' . $this->commitmentfile->baseName . '.' . $this->commitmentfile->extension);
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->commitmentfile) {
+            $this->document = '/uploads/' . Yii::$app->security->generateRandomString() . '/' . $this->commitmentfile->name;
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        $ok = parent::save($runValidation, $attributeNames);
+
+        if ($ok && $this->commitmentfile) {
+            $fullPath = Yii::getAlias('@backend/web/storage' . $this->document);
+            $dir = dirname($fullPath);
+            if (!FileHelper::createDirectory($dir) | !$this->commitmentfile->saveAs($fullPath)) {
+                $transaction->rollBack();
+
+                return false;
+            }
+        }
+
+        $transaction->commit();
+
+        return $ok;
+    }
+
+    public function getDocumentUrl()
+    {
+        return self::formatDocumentUrl($this->document);
+    }
+
+    public static function formatDocumentUrl($documentPath)
+    {
+        if ($documentPath) {
+            return Yii::$app->params['backendUrl'] . '/storage' . $documentPath;
+        }
+
+        return Yii::$app->params['backendUrl'] . '/img/no_image.svg';
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        if ($this->document) {
+            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->document);
+            FileHelper::removeDirectory($dir);
+        }
+    }
 
 }
