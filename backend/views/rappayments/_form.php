@@ -16,7 +16,8 @@ use yii\widgets\ActiveForm;
 
 <div class="rappayments-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']
+    ]); ?>
 
     <?= $form->field($model, 'rapID')->widget(Select2::classname(), [
         'data' => ArrayHelper::map($raps, 'id', function ($model) {
