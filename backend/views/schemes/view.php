@@ -40,4 +40,40 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+<div class="row" style="overflow: scroll">
+    <table class="table" >
+        <tr>
+            <th>RAP ID</th>
+            <th>RAP Type</th>       
+            <th>RAP status</th> 
+            <th>RAP Amount</th> 
+            <th>RAP Start</th>   
+            <th>Total Commitments</th>  
+        </tr>
+    <?php foreach ($schemeraps as $schemerap): ?>
+        <tr>
+            <td>
+                <p><?= $schemerap['rap_id'] ?> </p>
+            </td>
+            <td>
+                <p><?= $schemerap['typeID'] ?> </p>
+            </td>
+            <td>
+                <p><?= $schemerap['status'] ?> </p>
+            </td>
+            <td>
+                <p><?= $schemerap['amount'] ?> </p>
+            </td>
+            <td>
+                <p><?= $schemerap['start'] ?> </p>
+            </td>
+            <td>
+                <p><?= $schemerap['expectedamount'] ?> </p>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>
+    </table>
+</div>
+
 </div>

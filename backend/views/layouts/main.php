@@ -190,6 +190,10 @@ AppAsset::register($this);
                     <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <h6 class="collapse-header">Options:</h6>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/schemes/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Schemes</span>
+                            </a>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/rap/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>RAPs</span>

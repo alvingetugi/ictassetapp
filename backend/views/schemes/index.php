@@ -38,11 +38,20 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_by',
             //'updated_by',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Schemes $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
+            // [
+            //     'class' => ActionColumn::className(),
+            //     'urlCreator' => function ($action, Schemes $model, $key, $index, $column) {
+            //         return Url::toRoute([$action, 'id' => $model->id]);
+            //      }
+            // ],
         ],
     ]); ?>
 

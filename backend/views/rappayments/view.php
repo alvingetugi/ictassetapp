@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Rappayments $model */
 
-$this->title = $model->id;
+$this->title = 'Payment:'. ' '.$model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Rappayments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            // 'id',
             'rapID',
             'date',
             'amount',
