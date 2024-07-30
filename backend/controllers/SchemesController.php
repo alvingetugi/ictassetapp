@@ -5,6 +5,8 @@ namespace backend\controllers;
 use common\models\Rap;
 use common\models\Schemes;
 use backend\models\search\SchemesSearch;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,35 +58,31 @@ class SchemesController extends Controller
      */
     public function actionView($id)
     {
-        // $schemeraps = Rap::find()->all();  
-        
-    //    $schemeraps = Rap::findBySql("
-    //                 SELECT 
-    //                     r.id as rap_id, 
-    //                     r.schemeID as scheme_id, 
-    //                     r.typeID as typeID, 
-    //                     r.status as status, 
-    //                     r.amount as amount, 
-    //                     r.start as start, 
-    //                     sum(c.expectedamount) as expectedamount 
-    //                 FROM rap r
-    //                 LEFT JOIN rapcommitments c on r.id = c.rapID 
-    //                 WHERE r.status=1
-    //                 GROUP BY r.id, r.typeID, r.status, r.amount, r.start")
-    //                 ->asArray()
-    //                 ->all();
+        $schemeraps = (new Query())
+            ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.start as start', 'sum(c.expectedamount) AS expectedamount'])
+            ->from(['rap r'])
+            ->join('LEFT JOIN', 'rapcommitments c', 'r.id = c.rapID')
+            ->where(['r.schemeID'=> $id])
+            ->groupBy('r.id, r.schemeID, r.typeID, r.status, r.amount, r.start')
+            ->all();
 
-        $schemeraps = (new \yii\db\Query())
-        ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.start as start', 'sum(c.expectedamount) AS expectedamount'])
-        ->from(['rap r'])
-        ->join('LEFT JOIN', 'rapcommitments c', 'r.id = c.rapID')
-        ->where(['r.schemeID'=> $id])
-        ->groupBy('r.id, r.schemeID, r.typeID, r.status, r.amount, r.start')
-        ->all();
+            $dataProvider = new ActiveDataProvider([
+
+                'query' => (new Query())
+                ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.start as start', 'sum(c.expectedamount) AS expectedamount', 'sum(p.amount) AS paidamount'])
+                ->from(['rap r'])
+                ->join('JOIN', 'rapcommitments c', 'r.id = c.rapID')
+                ->join('JOIN', 'rappayments p', 'r.id = p.rapID')
+                ->where(['r.schemeID'=> $id])
+                ->groupBy('r.id, r.schemeID, r.typeID, r.status, r.amount, r.start')
+
+    
+                ]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'schemeraps' => $schemeraps,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

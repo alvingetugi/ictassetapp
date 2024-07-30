@@ -1,5 +1,6 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -40,40 +41,20 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-<div class="row" style="overflow: scroll">
-    <table class="table" >
-        <tr>
-            <th>RAP ID</th>
-            <th>RAP Type</th>       
-            <th>RAP status</th> 
-            <th>RAP Amount</th> 
-            <th>RAP Start</th>   
-            <th>Total Commitments</th>  
-        </tr>
-    <?php foreach ($schemeraps as $schemerap): ?>
-        <tr>
-            <td>
-                <p><?= $schemerap['rap_id'] ?> </p>
-            </td>
-            <td>
-                <p><?= $schemerap['typeID'] ?> </p>
-            </td>
-            <td>
-                <p><?= $schemerap['status'] ?> </p>
-            </td>
-            <td>
-                <p><?= $schemerap['amount'] ?> </p>
-            </td>
-            <td>
-                <p><?= $schemerap['start'] ?> </p>
-            </td>
-            <td>
-                <p><?= $schemerap['expectedamount'] ?> </p>
-            </td>
-        </tr>
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        // 'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
-    <?php endforeach; ?>
-    </table>
-</div>
+            'rap_id',
+            'typeID',
+            'status',
+            'amount',
+            'start', 
+            'expectedamount', 
+            'paidamount',  
+        ],
+    ]); ?>
 
 </div>
