@@ -1,6 +1,6 @@
 <?php
 
-use kartik\select2\Select2;
+use common\models\Rap;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -16,20 +16,16 @@ use yii\widgets\ActiveForm;
 
 <div class="rapcommitments-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']
-    ]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'rapID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map($raps, 'id', function ($model) {
-                return $model['scheme_name'] . ' - ' . $model['rap_amount'];
-            }),
-        'options' => ['placeholder' => '--SELECT--', 'data-validation' => 'required'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
+    <?= $form->field($model, 'rapID')->dropDownList(
+                Rap::getRaps(),
+                ['prompt' => 'Select RAP']
+            ) ?>
 
-    <?= $form->field($model, 'date')->widget(\kartik\date\DatePicker::classname(), [
+    <?= $form->field($model, 'name')->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'duedate')->widget(\kartik\date\DatePicker::classname(), [
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'yyyy-mm-dd',

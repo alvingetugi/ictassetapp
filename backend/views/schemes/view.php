@@ -41,19 +41,36 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-<?= GridView::widget([
+    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         // 'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'rap_id',
-            'typeID',
-            'status',
-            'amount',
-            'start', 
-            'expectedamount', 
-            'paidamount',  
+            [
+                'label' => 'RAP',
+                'attribute' => 'rap'
+            ],
+            [
+                'label' => 'RAP Type',
+                'attribute' => 'type'
+            ],
+            [
+                'label' => 'Deficit Amount',
+                'attribute' => 'amount'
+            ],
+            [
+                'label' => 'Start',
+                'attribute' => 'startdate'
+            ], 
+            [
+                'label' => 'Commitment',
+                'attribute' => 'expectedamount'
+            ], 
+            [
+                'label' => 'Paid',
+                'attribute' => 'paidamount'
+            ],   
         ],
     ]); ?>
 

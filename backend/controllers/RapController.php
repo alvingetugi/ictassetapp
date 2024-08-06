@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use yii\web\UploadedFile;
 use Yii;
 use common\models\Rap;
 use backend\models\search\RapSearch;
@@ -73,9 +74,13 @@ class RapController extends Controller
         if(Yii::$app->user->can('createRap'))
         {
             $model = new Rap();
+            $model->rapfile = UploadedFile::getInstance($model, 'rapfile');
 
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save()) {
+                    $scheme = Schemes::find()->where(['id'=>$model->schemeID])->one();
+                    $model->name = 'RAP' . '-' . $model->id . '-' . $scheme->name;
+                    $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } else {
@@ -89,7 +94,6 @@ class RapController extends Controller
         }else{
             throw new ForbiddenHttpException;
         }
-        
     }
 
     /**
@@ -102,6 +106,7 @@ class RapController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->rapfile = UploadedFile::getInstance($model, 'rapfile');
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -125,6 +130,17 @@ class RapController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionPdf($id) {
+        $model = Rap::findOne($id);
+    
+        // This will need to be the path relative to the root of your app.
+        $filePath = '/uploads';
+        // Might need to change '@app' for another alias
+        $completePath = Yii::getAlias('@backend/web/storage'.$model->rapdocument);
+    
+        return Yii::$app->response->sendFile($completePath, $model->rapdocument);
     }
 
     /**

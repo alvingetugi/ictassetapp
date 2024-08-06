@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Rap;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
@@ -7,7 +8,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Rapcommitments $model */
 
-$this->title = 'Commitment:'. ' '.$model->id;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Rapcommitments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -31,8 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'id',
-            'rapID',
-            'date',
+            // 'rapID',
+            // 'name',
+            [
+                'label' => 'RAP',
+                'value' => function ($data){
+                    return Rap::findOne(['id'=>$data->rapID])->name;
+                }
+            ],
+            'duedate',
             'expectedamount',
             'comments',
             [
@@ -45,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'btn btn-primary',
                     'target' => '_blank',
                 ]),
-            ],            
+            ],
         ],
     ]) ?>
 

@@ -15,10 +15,9 @@ use yii\widgets\ActiveForm;
 // exit;
 ?>
 
-
 <div class="rap-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <div class="row">
         <div class="col">
@@ -38,19 +37,24 @@ use yii\widgets\ActiveForm;
                 ],
             ]); ?>
         </div>
-        
     </div>
 
-    <?= $form->field($model, 'amount')->textInput([
-                'maxlength' => true,
-                'type' => 'number',
-                'step' => '0.01'
-            ]) ?>
+    <?= $form->field($model, 'name')->hiddenInput()->label(false) ?>
+
+    <div class="row">
+        <div class="col">
+            <?= $form->field($model, 'amount')->textInput([
+                    'maxlength' => true,
+                    'type' => 'number',
+                    'step' => '0.01'
+                ]) ?>
+            </div>
+    </div>
 
     <div class="row">
         <div class="col">
 
-            <?= $form->field($model, 'start')->widget(\kartik\date\DatePicker::classname(), [
+            <?= $form->field($model, 'startdate')->widget(\kartik\date\DatePicker::classname(), [
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'yyyy-mm-dd',
@@ -60,7 +64,7 @@ use yii\widgets\ActiveForm;
         </div>
 
         <div class="col">
-            <?= $form->field($model, 'end')->widget(\kartik\date\DatePicker::classname(), [
+            <?= $form->field($model, 'enddate')->widget(\kartik\date\DatePicker::classname(), [
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'yyyy-mm-dd',
@@ -71,10 +75,30 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?= $form->field($model, 'status')->radioList([1 => 'In Progress', 0 => 'Inactive']) ?>
+    <div class="row">
+        <div class="col">
+            <?= $form->field($model, 'status')->radioList([1 => 'Active', 0 => 'Inactive']) ?>
+        </div>
+
+        <div class="col">
+        <?= $form->field($model, 'rapfile', [
+        'template' => '
+                <div class="custom-file">
+                    {input}
+                    {label}
+                    {error}
+                </div>
+            ',
+        'labelOptions' => ['class' => 'custom-file-label'],
+        'inputOptions' => ['class' => 'custom-file-input']
+    ])->textInput(['type' => 'file']) ?>
+        </div>
+    </div>
+
+    <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
-    <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

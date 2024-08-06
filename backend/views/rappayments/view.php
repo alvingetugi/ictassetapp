@@ -1,12 +1,14 @@
 <?php
 
+use common\models\Rap;
+use common\models\Rapcommitments;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Rappayments $model */
 
-$this->title = 'Payment:'. ' '.$model->id;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Rappayments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -30,15 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'id',
-            'rapID',
-            'date',
+            [
+                'label' => 'RAP',
+                'value' => function ($data){
+                    return Rap::findOne(['id'=>$data->rapID])->name;
+                }
+            ],
+            [
+                'label' => 'Commitment',
+                'value' => function ($data){
+                    return Rapcommitments::findOne(['id'=>$data->commitmentID])->name;
+                }
+            ],
+            // 'name',
+            'paymentdate',
             'amount',
             'comments',
             [
-                'attribute' => 'proof',
+                'attribute' => 'document',
                 'format' => ['html'],
                 'value' => fn() => Html::a('Download', [
-                    'rappayments/pdf',
+                    'rapcommitments/pdf',
                     'id' => $model->id,
                 ], [
                     'class' => 'btn btn-primary',

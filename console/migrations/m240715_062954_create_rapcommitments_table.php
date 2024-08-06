@@ -15,7 +15,8 @@ class m240715_062954_create_rapcommitments_table extends Migration
         $this->createTable('{{%rapcommitments}}', [
             'id' => $this->primaryKey(),
             'rapID' => $this->integer()->notNull(),
-            'date' => $this->date()->notNull(),
+            'name' => $this->string(255)->notNull(),
+            'duedate' => $this->date()->notNull(),
             'expectedamount' => $this->decimal(10, 2)->notNull(),
             'comments' => $this->string(50)->notNull(),
             'document' => $this->string(2000)->notNull(),

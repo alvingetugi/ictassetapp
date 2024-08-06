@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Payment', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,11 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-            'rapID',
-            'date',
+            [
+                'attribute' => 'rapID',
+                'value' => 'rap.name'
+            ],
+            [
+                'attribute' => 'commitmentID',
+                'value' => 'rapcommitments.name'
+            ],
+            // 'name',
+            'paymentdate',
             'amount',
-            // 'comments',
-            // 'proof',
+            //'comments',
             [
                 'label' => 'Proof',
                 'attribute' => 'proof',
@@ -58,12 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 ],
             ],
-            // [
-            //     'class' => ActionColumn::className(),
-            //     'urlCreator' => function ($action, Rappayments $model, $key, $index, $column) {
-            //         return Url::toRoute([$action, 'id' => $model->id]);
-            //      }
-            // ],
         ],
     ]); ?>
 

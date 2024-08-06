@@ -18,7 +18,7 @@ class RapcommitmentsSearch extends Rapcommitments
     {
         return [
             [['id', 'rapID'], 'integer'],
-            [['date', 'comments', 'document'], 'safe'],
+            [['name', 'duedate', 'comments', 'document'], 'safe'],
             [['expectedamount'], 'number'],
         ];
     }
@@ -61,11 +61,12 @@ class RapcommitmentsSearch extends Rapcommitments
         $query->andFilterWhere([
             'id' => $this->id,
             'rapID' => $this->rapID,
-            'date' => $this->date,
+            'duedate' => $this->duedate,
             'expectedamount' => $this->expectedamount,
         ]);
 
-        $query->andFilterWhere(['like', 'comments', $this->comments])
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'comments', $this->comments])
             ->andFilterWhere(['like', 'document', $this->document]);
 
         return $dataProvider;

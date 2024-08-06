@@ -1,8 +1,12 @@
 <?php
 
+use common\models\Rap;
+use common\models\Rapcommitments;
+use kartik\depdrop\DepDrop;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -16,20 +20,24 @@ use yii\widgets\ActiveForm;
 
 <div class="rappayments-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']
-    ]); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?= $form->field($model, 'rapID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map($raps, 'id', function ($model) {
-                return $model['scheme_name'] . ' - ' . $model['rap_amount'];
-            }),
-        'options' => ['placeholder' => '--SELECT--', 'data-validation' => 'required'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]); ?>
+    <?= $form->field($model, 'rapID')->dropDownList(Rap::getRaps(),
+        ['prompt' => 'Select RAP', 'id' => 'rap-id']) ?>
 
-    <?= $form->field($model, 'date')->widget(\kartik\date\DatePicker::classname(), [
+    <?= $form->field($model, 'commitmentID')->widget(DepDrop::classname(), [
+            'data' => Rapcommitments::getCommitmentsList($model->commitmentID),
+            'options' => ['id' => 'commitment-id', 'prompt' => 'Select Commitment'],
+            'pluginOptions' => [
+                'depends' => ['rap-id'],
+                'placeholder' => 'Select Commitment',
+                'url' => Url::to(['/rappayments/commitments']) //Url::to(['/controller/action'])
+            ]
+        ]); ?>
+
+    <?= $form->field($model, 'name')->hiddenInput()->label(false) ?>
+
+    <?= $form->field($model, 'paymentdate')->widget(\kartik\date\DatePicker::classname(), [
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'yyyy-mm-dd',
@@ -46,16 +54,16 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'paymentfile', [
-        'template' => '
-                <div class="custom-file">
-                    {input}
-                    {label}
-                    {error}
-                </div>
-            ',
-        'labelOptions' => ['class' => 'custom-file-label'],
-        'inputOptions' => ['class' => 'custom-file-input']
-    ])->textInput(['type' => 'file']) ?>
+            'template' => '
+                    <div class="custom-file">
+                        {input}
+                        {label}
+                        {error}
+                    </div>
+                ',
+            'labelOptions' => ['class' => 'custom-file-label'],
+            'inputOptions' => ['class' => 'custom-file-input']
+        ])->textInput(['type' => 'file']) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

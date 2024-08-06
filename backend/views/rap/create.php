@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Rap $model */
 
-$this->title = 'Create Remedial Action Plan';
+$this->title = 'Create Rap';
 $this->params['breadcrumbs'][] = ['label' => 'Raps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

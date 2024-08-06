@@ -21,13 +21,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'schemeID') ?>
 
+    <?= $form->field($model, 'name') ?>
+
     <?= $form->field($model, 'status') ?>
 
-    <?= $form->field($model, 'amount') ?>
+    <?php // echo $form->field($model, 'amount') ?>
 
-    <?php // echo $form->field($model, 'start') ?>
+    <?php // echo $form->field($model, 'startdate') ?>
 
-    <?php // echo $form->field($model, 'end') ?>
+    <?php // echo $form->field($model, 'enddate') ?>
+
+    <?php // echo $form->field($model, 'comments') ?>
+
+    <?php // echo $form->field($model, 'rapdocument') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

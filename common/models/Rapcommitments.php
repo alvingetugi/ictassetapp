@@ -10,7 +10,8 @@ use yii\helpers\FileHelper;
  *
  * @property int $id
  * @property int $rapID
- * @property string $date
+ * @property string $name
+ * @property string $duedate
  * @property float $expectedamount
  * @property string $comments
  * @property string $document
@@ -38,11 +39,12 @@ class Rapcommitments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rapID', 'date', 'expectedamount', 'comments', 'document'], 'required'],
+            [['rapID', 'duedate', 'expectedamount', 'comments', 'document'], 'required'],
             [['rapID'], 'integer'],
-            [['date'], 'safe'],
+            [['duedate'], 'safe'],
             [['expectedamount'], 'number'],
             [['commitmentfile'], 'file', 'extensions' => 'pdf, jpg'],
+            [['name'], 'string', 'max' => 255],
             [['comments'], 'string', 'max' => 50],
             [['document'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -57,7 +59,8 @@ class Rapcommitments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'rapID' => 'Remedial Action Plan',
-            'date' => 'Due Date',
+            'name' => 'Name',
+            'duedate' => 'Due Date',
             'expectedamount' => 'Expected Amount',
             'comments' => 'Comments',
             'document' => 'Document',
@@ -68,7 +71,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Rap]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\RapQuery
      */
     public function getRap()
     {
@@ -87,7 +90,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
         if ($ok && $this->commitmentfile) {
             $fullPath = Yii::getAlias('@backend/web/storage' . $this->document);
             $dir = dirname($fullPath);
-            if (!FileHelper::createDirectory($dir) | !$this->commitmentfile->saveAs($fullPath)) {
+            if (!FileHelper::createDirectory($dir) | !$this->commitmentfile->saveAs($fullPath, false)) {
                 $transaction->rollBack();
 
                 return false;
@@ -122,4 +125,24 @@ class Rapcommitments extends \yii\db\ActiveRecord
         }
     }
 
+    public static function getCommitmentsList($rap_id, $isAjax = false)
+    {
+        $Commitment = self::find()
+            ->where(['rapID' => $rap_id]);
+
+        if ($isAjax == true) {
+            return $Commitment->select(['id', 'name'])->asArray()->all();
+        } else {
+            return $Commitment->select(['name'])->indexBy('id')->column();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\RapcommitmentsQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\RapcommitmentsQuery(get_called_class());
+    }
 }

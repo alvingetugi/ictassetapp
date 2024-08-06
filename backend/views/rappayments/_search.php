@@ -19,11 +19,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rapID') ?>
 
-    <?= $form->field($model, 'date') ?>
+    <?= $form->field($model, 'commitmentID') ?>
 
-    <?= $form->field($model, 'amount') ?>
+    <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'comments') ?>
+    <?= $form->field($model, 'paymentdate') ?>
+
+    <?php // echo $form->field($model, 'amount') ?>
+
+    <?php // echo $form->field($model, 'comments') ?>
 
     <?php // echo $form->field($model, 'proof') ?>
 

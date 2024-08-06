@@ -18,8 +18,8 @@ class RapSearch extends Rap
     {
         return [
             [['id', 'typeID', 'schemeID', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['name', 'startdate', 'enddate', 'comments', 'rapdocument'], 'safe'],
             [['amount'], 'number'],
-            [['start', 'end'], 'safe'],
         ];
     }
 
@@ -64,13 +64,17 @@ class RapSearch extends Rap
             'schemeID' => $this->schemeID,
             'status' => $this->status,
             'amount' => $this->amount,
-            'start' => $this->start,
-            'end' => $this->end,
+            'startdate' => $this->startdate,
+            'enddate' => $this->enddate,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'created_by' => $this->created_by,
             'updated_by' => $this->updated_by,
         ]);
+
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'comments', $this->comments])
+            ->andFilterWhere(['like', 'rapdocument', $this->rapdocument]);
 
         return $dataProvider;
     }

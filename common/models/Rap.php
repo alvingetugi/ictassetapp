@@ -3,8 +3,7 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "rap".
@@ -12,10 +11,13 @@ use yii\behaviors\TimestampBehavior;
  * @property int $id
  * @property int $typeID
  * @property int $schemeID
+ * @property string $name
  * @property int $status
  * @property float $amount
- * @property string $start
- * @property string $end
+ * @property string $startdate
+ * @property string $enddate
+ * @property string $comments
+ * @property string $rapdocument
  * @property int|null $created_at
  * @property int|null $updated_at
  * @property int|null $created_by
@@ -31,19 +33,16 @@ use yii\behaviors\TimestampBehavior;
 class Rap extends \yii\db\ActiveRecord
 {
     /**
+     * @var \yii\web\UploadedFile
+     */
+    public $rapfile;
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'rap';
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            BlameableBehavior::class
-        ];
     }
 
     /**
@@ -52,10 +51,13 @@ class Rap extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['typeID', 'schemeID', 'status', 'amount', 'start', 'end'], 'required'],
+            [['typeID', 'schemeID', 'status', 'amount', 'startdate', 'enddate', 'comments', 'rapdocument'], 'required'],
             [['typeID', 'schemeID', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
-            [['start', 'end'], 'safe'],
+            [['startdate', 'enddate'], 'safe'],
+            [['name', 'comments'], 'string', 'max' => 255],
+            [['rapdocument'], 'string', 'max' => 2000],
+            [['rapfile'], 'file', 'extensions' => 'pdf, jpg'],
             [['typeID'], 'exist', 'skipOnError' => true, 'targetClass' => Raptypes::class, 'targetAttribute' => ['typeID' => 'id']],
             [['schemeID'], 'exist', 'skipOnError' => true, 'targetClass' => Schemes::class, 'targetAttribute' => ['schemeID' => 'id']],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
@@ -72,10 +74,14 @@ class Rap extends \yii\db\ActiveRecord
             'id' => 'ID',
             'typeID' => 'Type',
             'schemeID' => 'Scheme',
+            'name' => 'Name',
             'status' => 'Status',
             'amount' => 'Amount',
-            'start' => 'Start',
-            'end' => 'End',
+            'startdate' => 'Start Date',
+            'enddate' => 'End Date',
+            'comments' => 'Comments',
+            'rapdocument' => 'Documentation',
+            'rapfile' => 'Documentation',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -86,7 +92,7 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
      */
     public function getCreatedBy()
     {
@@ -96,7 +102,7 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Rapcommitments]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery
      */
     public function getRapcommitments()
     {
@@ -106,7 +112,7 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Rappayments]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\RappaymentsQuery
      */
     public function getRappayments()
     {
@@ -116,7 +122,7 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Scheme]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\SchemesQuery
      */
     public function getScheme()
     {
@@ -126,7 +132,7 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Type]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\RaptypesQuery
      */
     public function getType()
     {
@@ -136,10 +142,71 @@ class Rap extends \yii\db\ActiveRecord
     /**
      * Gets query for [[UpdatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
      */
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function save($runValidation = true, $attributeNames = null)
+    {
+        if ($this->rapfile) {
+            $this->rapdocument = '/uploads/' . Yii::$app->security->generateRandomString() . '/' . $this->rapfile->name;
+        }
+
+        $transaction = Yii::$app->db->beginTransaction();
+        $ok = parent::save($runValidation, $attributeNames);
+
+        if ($ok && $this->rapfile) {
+            $fullPath = Yii::getAlias('@backend/web/storage' . $this->rapdocument);
+            $dir = dirname($fullPath);
+            if (!FileHelper::createDirectory($dir) | !$this->rapfile->saveAs($fullPath, false)) {
+                $transaction->rollBack();
+
+                return false;
+            }
+        }
+
+        $transaction->commit();
+
+        return $ok;
+    }
+
+    public function getDocumentUrl()
+    {
+        return self::formatDocumentUrl($this->rapdocument);
+    }
+
+    public static function formatDocumentUrl($documentPath)
+    {
+        if ($documentPath) {
+            return Yii::$app->params['backendUrl'] . '/storage' . $documentPath;
+        }
+
+        return Yii::$app->params['backendUrl'] . '/img/no_image.svg';
+    }
+
+    public function afterDelete()
+    {
+        parent::afterDelete();
+        if ($this->rapdocument) {
+            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->rapdocument);
+            FileHelper::removeDirectory($dir);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\RapQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\RapQuery(get_called_class());
+    }
+
+    public static function getRaps()
+    {
+        return self::find()->select(['name', 'id'])->indexBy('id')->column();
     }
 }

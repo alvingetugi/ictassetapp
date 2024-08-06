@@ -30,11 +30,15 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-            'rapID',
-            'date',
+            [
+                'attribute' => 'rapID',
+                'value' => 'rap.name'
+            ],
+            'name',
+            'duedate',
             'expectedamount',
-            'comments',
-            // 'document', 
+            //'comments',
+            //'document',
             [
                 'label' => 'Document',
                 'attribute' => 'document',
@@ -58,12 +62,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 ],
             ],
-            // [
-            //     'class' => ActionColumn::className(),
-            //     'urlCreator' => function ($action, Rapcommitments $model, $key, $index, $column) {
-            //         return Url::toRoute([$action, 'id' => $model->id]);
-            //      }
-            // ],
         ],
     ]); ?>
 

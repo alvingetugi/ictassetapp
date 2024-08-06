@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Rap $model */
 
-$this->title = 'Remedial Action Plan: '. $model->id;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Raps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Schemes::findOne(['id'=>$data->schemeID])->name;
                 }
             ],
+            // 'name',
             // ['attribute'=>'status','value'=>function($model){
             //     return $model->status ? 'Active' : 'Inactive';
             // }],
@@ -55,8 +56,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]),
             ],
             'amount',
-            'start',
-            'end',
+            'startdate',
+            'enddate',
+            'comments',
+            [
+                'attribute' => 'rapdocument',
+                'format' => ['html'],
+                'value' => fn() => Html::a('Download', [
+                    'rap/pdf',
+                    'id' => $model->id,
+                ], [
+                    'class' => 'btn btn-primary',
+                    'target' => '_blank',
+                ]),
+            ],
             // 'created_at',
             // 'updated_at',
             // 'created_by',

@@ -10,7 +10,9 @@ use yii\helpers\FileHelper;
  *
  * @property int $id
  * @property int $rapID
- * @property string $date
+ * @property int $commitmentID
+ * @property string $name
+ * @property string $paymentdate
  * @property float $amount
  * @property string $comments
  * @property string $proof
@@ -38,11 +40,12 @@ class Rappayments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rapID', 'date', 'amount', 'comments', 'proof'], 'required'],
-            [['rapID'], 'integer'],
-            [['date'], 'safe'],
+            [['rapID', 'commitmentID', 'paymentdate', 'amount', 'comments', 'proof'], 'required'],
+            [['rapID', 'commitmentID'], 'integer'],
+            [['paymentdate'], 'safe'],
             [['amount'], 'number'],
             [['paymentfile'], 'file', 'extensions' => 'pdf, jpg'],
+            [['name'], 'string', 'max' => 255],
             [['comments'], 'string', 'max' => 50],
             [['proof'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
@@ -57,7 +60,9 @@ class Rappayments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'rapID' => 'Remedial Action Plan',
-            'date' => 'Date',
+            'commitmentID' => 'Commitment',
+            'name' => 'Name',
+            'paymentdate' => 'Payment Date',
             'amount' => 'Amount',
             'comments' => 'Comments',
             'proof' => 'Proof',
@@ -68,11 +73,21 @@ class Rappayments extends \yii\db\ActiveRecord
     /**
      * Gets query for [[Rap]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\RapQuery
      */
     public function getRap()
     {
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
+    }
+
+    /**
+     * Gets query for [[Commitment]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery
+     */
+    public function getRapcommitments()
+    {
+        return $this->hasOne(Rapcommitments::class, ['id' => 'commitmentID']);
     }
 
     public function save($runValidation = true, $attributeNames = null)
@@ -87,7 +102,7 @@ class Rappayments extends \yii\db\ActiveRecord
         if ($ok && $this->paymentfile) {
             $fullPath = Yii::getAlias('@backend/web/storage' . $this->proof);
             $dir = dirname($fullPath);
-            if (!FileHelper::createDirectory($dir) | !$this->paymentfile->saveAs($fullPath)) {
+            if (!FileHelper::createDirectory($dir) | !$this->paymentfile->saveAs($fullPath, false)) {
                 $transaction->rollBack();
 
                 return false;
@@ -120,5 +135,14 @@ class Rappayments extends \yii\db\ActiveRecord
             $dir = Yii::getAlias('@backend/web/storage'). dirname($this->proof);
             FileHelper::removeDirectory($dir);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\RappaymentsQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\RappaymentsQuery(get_called_class());
     }
 }

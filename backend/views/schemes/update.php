@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Schemes $model */
 
-$this->title = 'Update Schemes: ' . $model->name;
+$this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Schemes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -15,7 +15,9 @@ class m240715_063015_create_rappayments_table extends Migration
         $this->createTable('{{%rappayments}}', [
             'id' => $this->primaryKey(),
             'rapID' => $this->integer()->notNull(),
-            'date' => $this->date()->notNull(),
+            'commitmentID' => $this->integer()->notNull(),
+            'name' => $this->string(255)->notNull(),
+            'paymentdate' => $this->date()->notNull(),
             'amount' => $this->decimal(10, 2)->notNull(),
             'comments' => $this->string(50)->notNull(),
             'proof' => $this->string(2000)->notNull(),

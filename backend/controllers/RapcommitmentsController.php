@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Rap;
 use Yii;
 use common\models\Rapcommitments;
 use backend\models\search\RapcommitmentsSearch;
@@ -86,10 +87,12 @@ class RapcommitmentsController extends Controller
                     WHERE r.status=1")
                     ->asArray()
                     ->all();
-            
-        if ($this->request->isPost) {
 
+        if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $rap = Rap::find()->where(['id'=>$model->rapID])->one();
+                $model->name = 'CMT' . '-' . $model->id . '-' . $rap->name;
+                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -98,7 +101,7 @@ class RapcommitmentsController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'raps' => $raps,            
+            'raps' => $raps,
         ]);
     }
 
@@ -168,14 +171,14 @@ class RapcommitmentsController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-public function actionPdf($id) {
-    $model = Rapcommitments::findOne($id);
-
-    // This will need to be the path relative to the root of your app.
-    $filePath = '/uploads';
-    // Might need to change '@app' for another alias
-    $completePath = Yii::getAlias('@backend/web/storage'.$model->document);
-
-    return Yii::$app->response->sendFile($completePath, $model->document);
-}
+    public function actionPdf($id) {
+        $model = Rapcommitments::findOne($id);
+    
+        // This will need to be the path relative to the root of your app.
+        $filePath = '/uploads';
+        // Might need to change '@app' for another alias
+        $completePath = Yii::getAlias('@backend/web/storage'.$model->document);
+    
+        return Yii::$app->response->sendFile($completePath, $model->document);
+    }
 }

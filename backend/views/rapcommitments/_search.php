@@ -19,11 +19,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'rapID') ?>
 
-    <?= $form->field($model, 'date') ?>
+    <?= $form->field($model, 'name') ?>
+
+    <?= $form->field($model, 'duedate') ?>
 
     <?= $form->field($model, 'expectedamount') ?>
 
-    <?= $form->field($model, 'comments') ?>
+    <?php // echo $form->field($model, 'comments') ?>
 
     <?php // echo $form->field($model, 'document') ?>
 

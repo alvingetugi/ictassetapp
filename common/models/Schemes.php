@@ -3,8 +3,6 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "schemes".
@@ -17,6 +15,8 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  * @property int|null $created_by
  * @property int|null $updated_by
+ *
+ * @property Rap[] $raps
  */
 class Schemes extends \yii\db\ActiveRecord
 {
@@ -26,14 +26,6 @@ class Schemes extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'schemes';
-    }
-
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-            BlameableBehavior::class
-        ];
     }
 
     /**
@@ -67,8 +59,22 @@ class Schemes extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getRap()
+    /**
+     * Gets query for [[Raps]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\RapQuery
+     */
+    public function getRaps()
     {
-        return $this->hasOne(Rap::class, ['schemeID' => 'id']);
+        return $this->hasMany(Rap::class, ['schemeID' => 'id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\SchemesQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\SchemesQuery(get_called_class());
     }
 }
