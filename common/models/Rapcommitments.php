@@ -17,6 +17,7 @@ use yii\helpers\FileHelper;
  * @property string $document
  *
  * @property Rap $rap
+ * @property Rappayments[] $rappayments 
  */
 class Rapcommitments extends \yii\db\ActiveRecord
 {
@@ -78,6 +79,17 @@ class Rapcommitments extends \yii\db\ActiveRecord
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
 
+    /**
+     * Gets query for [[Rappayments]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\RappaymentsQuery
+     */
+    public function getRappayments()
+    {
+        return $this->hasMany(Rappayments::class, ['commitmentID' => 'id']);
+    }
+
+  
     public function save($runValidation = true, $attributeNames = null)
     {
         if ($this->commitmentfile) {
@@ -120,7 +132,7 @@ class Rapcommitments extends \yii\db\ActiveRecord
     {
         parent::afterDelete();
         if ($this->document) {
-            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->document);
+            $dir = Yii::getAlias('@backend/web/storage') . dirname($this->document);
             FileHelper::removeDirectory($dir);
         }
     }

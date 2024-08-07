@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Rap;
 use common\models\Schemes;
 use backend\models\search\SchemesSearch;
 use yii\data\ActiveDataProvider;
@@ -68,13 +69,13 @@ class SchemesController extends Controller
             $dataProvider = new ActiveDataProvider([
 
                 'query' => (new Query())
-                ->select(['r.name AS rap', 't.name AS type', 'r.amount As amount', 'r.startdate as startdate', 'sum(c.expectedamount) AS expectedamount', 'sum(p.amount) AS paidamount'])
+                ->select(['r.id as rapID', 'r.name AS rapref', 'r.amount As deficit', 'r.startdate as startdate', 't.name AS type', 'sum(c.expectedamount) AS totalcommitments', 'sum(p.amount) AS totalpaid'])
                 ->from(['rap r'])
-                ->join('FULL JOIN', 'raptypes t', 'r.typeID = t.id')
+                ->join('FULL JOIN', 'raptypes t', 't.id = r.typeID')
                 ->join('FULL JOIN', 'rapcommitments c', 'r.id = c.rapID')
                 ->join('FULL JOIN', 'rappayments p', 'c.id = p.commitmentID')
                 ->where(['r.schemeID'=> $id])
-                ->groupBy('r.name, t.name, r.amount, r.startdate')
+                ->groupBy('r.id, r.name, t.name, r.amount, r.startdate')
             
                 ]);
 

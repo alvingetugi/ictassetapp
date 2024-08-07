@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveQuery;
 use yii\helpers\FileHelper;
 
 /**
@@ -17,6 +18,7 @@ use yii\helpers\FileHelper;
  * @property string $comments
  * @property string $proof
  *
+ * @property Rapcommitments $commitment 
  * @property Rap $rap
  */
 class Rappayments extends \yii\db\ActiveRecord
@@ -49,6 +51,7 @@ class Rappayments extends \yii\db\ActiveRecord
             [['comments'], 'string', 'max' => 50],
             [['proof'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
+            [['commitmentID'], 'exist', 'skipOnError' => true, 'targetClass' => Rapcommitments::class, 'targetAttribute' => ['commitmentID' => 'id']],
         ];
     }
 
@@ -80,12 +83,12 @@ class Rappayments extends \yii\db\ActiveRecord
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
 
-    /**
-     * Gets query for [[Commitment]].
-     *
-     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery
+    /** 
+     * Gets query for [[Commitment]]. 
+     * 
+     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery 
      */
-    public function getRapcommitments()
+    public function getCommitment()
     {
         return $this->hasOne(Rapcommitments::class, ['id' => 'commitmentID']);
     }
@@ -132,7 +135,7 @@ class Rappayments extends \yii\db\ActiveRecord
     {
         parent::afterDelete();
         if ($this->proof) {
-            $dir = Yii::getAlias('@backend/web/storage'). dirname($this->proof);
+            $dir = Yii::getAlias('@backend/web/storage') . dirname($this->proof);
             FileHelper::removeDirectory($dir);
         }
     }

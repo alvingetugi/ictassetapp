@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
         <div class="col">
         <?= $form->field($model, 'typeID')->dropDownList(
 		        ArrayHelper::map(Raptypes::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
-		        ['prompt'=>'Select Category']                          // options
+		        ['prompt'=>'Select Type']                          // options
 		    ); ?>
         </div>
         <div class="col">

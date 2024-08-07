@@ -39,6 +39,23 @@ class m240715_063015_create_rappayments_table extends Migration
             'id',
             'CASCADE'
         );
+
+        //creates index for column commitmentID
+        $this->createIndex(
+            '{{%idx-rappayments-commitmentID}}',
+            '{{%rappayments}}',
+            'commitmentID'
+        );
+
+        //adds foreign key for table {{rapcommitments}}
+        $this->addForeignKey(
+            '{{%fk-rappayments-commitmentID}}',
+            '{{%rappayments}}',
+            'commitmentID',
+            '{{%rapcommitments}}',
+            'id',
+            'NO ACTION'
+        );
     }
 
     /**
@@ -55,6 +72,18 @@ class m240715_063015_create_rappayments_table extends Migration
         // drops the index for column rapID
         $this->dropIndex(
             '{{%idx-rappayments-rapID}}',
+            '{{%rappayments}}'
+        );
+
+        // drops the foreign key for table `{{%rapcommitments}}`
+        $this->dropForeignKey(
+            '{{%fk-rappayments-commitmentID}}',
+            '{{%rappayments}}'
+        );
+
+        // drops the index for column commitmentID
+        $this->dropIndex(
+            '{{%idx-rappayments-commitmentID}}',
             '{{%rappayments}}'
         );
 

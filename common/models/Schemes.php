@@ -69,6 +69,7 @@ class Schemes extends \yii\db\ActiveRecord
         return $this->hasMany(Rap::class, ['schemeID' => 'id']);
     }
 
+
     /**
      * {@inheritdoc}
      * @return \common\models\query\SchemesQuery the active query used by this AR class.

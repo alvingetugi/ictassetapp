@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'commitmentID',
-                'value' => 'rapcommitments.name'
+                'value' => 'commitment.name'
             ],
             // 'name',
             'paymentdate',
