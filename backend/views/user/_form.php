@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
    
@@ -22,6 +22,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'firstname')->textInput([]) ?>
 
     <?= $form->field($model, 'lastname')->textInput([]) ?>
+
+    <?= $form->field($model, 'password')->passwordInput() ?>
 
     <?= $form->field($model, 'department')->dropDownList(ArrayHelper::map(\common\models\Departments::find()->all(),'id','name'),['prompt'=>'Select']) ?>
 

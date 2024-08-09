@@ -68,14 +68,16 @@ class SchemesController extends Controller
 
             $dataProvider = new ActiveDataProvider([
 
-                'query' => (new Query())
-                ->select(['r.id as rapID', 'r.name AS rapref', 'r.amount As deficit', 'r.startdate as startdate', 't.name AS type', 'sum(c.expectedamount) AS totalcommitments', 'sum(p.amount) AS totalpaid'])
+                'subquery' => (new Query())
+                ->select(['r.id as rapID', 'r.name AS rapref', 'r.amount As deficit', 'r.startdate as startdate', 't.name AS type', 'sum(c.expectedamount) AS totalcommitments'])
                 ->from(['rap r'])
                 ->join('FULL JOIN', 'raptypes t', 't.id = r.typeID')
                 ->join('FULL JOIN', 'rapcommitments c', 'r.id = c.rapID')
-                ->join('FULL JOIN', 'rappayments p', 'c.id = p.commitmentID')
                 ->where(['r.schemeID'=> $id])
-                ->groupBy('r.id, r.name, t.name, r.amount, r.startdate')
+                ->groupBy('r.id, r.name, t.name, r.amount, r.startdate'),
+
+                'query' => (new Query())                
+                ->from(['subquery'])
             
                 ]);
 

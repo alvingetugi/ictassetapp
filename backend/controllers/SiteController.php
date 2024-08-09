@@ -9,6 +9,7 @@ use common\models\Models;
 use common\models\Surrenders;
 use common\models\Transaction;
 use common\models\User;
+use common\models\SignupForm;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -26,7 +27,7 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+            'access' => [ 
                 'class' => AccessControl::class,
                 'rules' => [
                     [
@@ -34,7 +35,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index', 'signup'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

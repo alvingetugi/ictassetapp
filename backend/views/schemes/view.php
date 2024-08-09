@@ -70,7 +70,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Total Paid',
                 'attribute' => 'totalpaid'
-            ],  
+            ], 
+            [
+                'label' => 'Balance',
+                'attribute' => 'balance'
+            ], 
         ],
     ]); ?>
 
