@@ -49,11 +49,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'label' => 'RAP',
-                'attribute' => 'rapref'
+                'attribute' => 'rapREF'
             ],
             [
                 'label' => 'Type',
-                'attribute' => 'type'
+                'attribute' => 'raptype'
+            ],
+            [
+                'label' => 'Status',
+                'attribute' => 'rapstatus'
             ],
             [
                 'label' => 'Deficit',
@@ -68,8 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'totalcommitments'
             ], 
             [
-                'label' => 'Total Paid',
-                'attribute' => 'totalpaid'
+                'label' => 'Paid',
+                'attribute' => 'totalpayments'
             ], 
             [
                 'label' => 'Balance',

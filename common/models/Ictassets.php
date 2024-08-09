@@ -7,7 +7,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "{{%ictassets}}".
+ * This is the model class for table "ictassets".
  *
  * @property int $id
  * @property string $code
@@ -21,7 +21,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $operating_system
  * @property string $date_of_delivery
  * @property int $locationID
- * @property string $assetstatus
+ * @property int $assetstatus
  * @property string $assetcondition
  * @property int|null $created_at
  * @property int|null $updated_at
@@ -45,7 +45,7 @@ class Ictassets extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%ictassets}}';
+        return 'ictassets';
     }
 
     public function behaviors()

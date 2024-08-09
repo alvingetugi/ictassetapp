@@ -70,7 +70,15 @@ $this->registerJs($script);
     </div>
 
     <div class="col">
-    <?= $form->field($model, 'planend')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'planend')->widget(\kartik\date\DatePicker::classname(), [
+            'readonly' => !$model->isNewRecord,
+            'pluginOptions' => [
+                'autoclose' => true,
+                'daysOfWeekDisabled' => [0, 6],
+                'format' => 'yyyy-mm-dd',
+                'todayHighlight' => true
+            ]
+        ]); ?>
     </div>
 </div>
 
@@ -86,11 +94,11 @@ $this->registerJs($script);
             ]); ?>
 
     <div class="col">
-    <?= $form->field($model, 'installmentamount')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'installmentamount')->textInput() ?>
     </div>
 
     <div class="col">
-    <?= $form->field($model, 'runningbalance')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'runningbalance')->textInput() ?>
     </div>
 </div>  
 
