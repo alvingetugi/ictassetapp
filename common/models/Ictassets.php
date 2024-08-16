@@ -16,10 +16,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int $modelID
  * @property string $name
  * @property string $tag_number
- * @property int $storage
- * @property int $ram
- * @property string $operating_system
- * @property string $date_of_delivery
+ * @property int $storageID
+ * @property int $ramID
+ * @property int $osID
  * @property int $locationID
  * @property int $assetstatus
  * @property string $assetcondition
@@ -32,10 +31,12 @@ use yii\behaviors\TimestampBehavior;
  * @property Assetcategories $category
  * @property User $createdBy
  * @property Depreciation[] $depreciations
- * @property Issuances[] $issuances
  * @property Locations $location
  * @property Assetmakes $make
  * @property Assetmodels $model
+ * @property Operatingsystem $os
+ * @property Ram $ram
+ * @property Storage $storage
  * @property User $updatedBy
  */
 class Ictassets extends \yii\db\ActiveRecord
@@ -62,19 +63,21 @@ class Ictassets extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['categoryID', 'makeID', 'modelID', 'name','storage', 'ram', 'operating_system', 'date_of_delivery', 'locationID', 'assetcondition'], 'required'],
-            [['categoryID', 'makeID', 'modelID', 'storage', 'ram', 'locationID', 'created_at', 'updated_at', 'created_by', 'updated_by','assetstatus'], 'integer'],
-            [['date_of_delivery'], 'safe'],
-            [['code', 'name', 'tag_number', 'operating_system',  'assetcondition'], 'string', 'max' => 50],
+            [['categoryID', 'makeID', 'modelID', 'name', 'tag_number', 'storageID', 'ramID', 'osID', 'locationID', 'assetcondition'], 'required'],
+            [['categoryID', 'makeID', 'modelID', 'storageID', 'ramID', 'osID', 'locationID', 'assetstatus', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['code', 'name', 'tag_number', 'assetcondition'], 'string', 'max' => 50],
             [['tag_number'], 'unique'],
             [['name'], 'unique'],
             [['code'], 'unique'],
+            [['osID'], 'exist', 'skipOnError' => true, 'targetClass' => Operatingsystem::class, 'targetAttribute' => ['osID' => 'id']],
+            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
+            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
             [['categoryID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetcategories::class, 'targetAttribute' => ['categoryID' => 'id']],
             [['makeID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetmakes::class, 'targetAttribute' => ['makeID' => 'id']],
             [['modelID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetmodels::class, 'targetAttribute' => ['modelID' => 'id']],
             [['locationID'], 'exist', 'skipOnError' => true, 'targetClass' => Locations::class, 'targetAttribute' => ['locationID' => 'id']],
-            [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
-            [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
+            [['storageID'], 'exist', 'skipOnError' => true, 'targetClass' => Storage::class, 'targetAttribute' => ['storageID' => 'id']],
+            [['ramID'], 'exist', 'skipOnError' => true, 'targetClass' => Ram::class, 'targetAttribute' => ['ramID' => 'id']],
         ];
     }
 
@@ -89,15 +92,14 @@ class Ictassets extends \yii\db\ActiveRecord
             'categoryID' => 'Category',
             'makeID' => 'Make',
             'modelID' => 'Model',
-            'name' => 'Serial number',
+            'name' => 'Serial Number',
             'tag_number' => 'Tag Number',
-            'storage' => 'Storage',
-            'ram' => 'Ram',
-            'operating_system' => 'Operating System',
-            'date_of_delivery' => 'Date Of Delivery',
+            'storageID' => 'Storage',
+            'ramID' => 'RAM',
+            'osID' => 'Operating System',
             'locationID' => 'Location',
-            'assetstatus' => 'Asset Status',
-            'assetcondition' => 'Asset Condition',
+            'assetstatus' => 'Status',
+            'assetcondition' => 'Condition',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'created_by' => 'Created By',
@@ -191,6 +193,36 @@ class Ictassets extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Os]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\OperatingsystemQuery
+     */
+    public function getOs()
+    {
+        return $this->hasOne(Operatingsystem::class, ['id' => 'osID']);
+    }
+
+    /**
+     * Gets query for [[Ram]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\RamQuery
+     */
+    public function getRam()
+    {
+        return $this->hasOne(Ram::class, ['id' => 'ramID']);
+    }
+
+    /**
+     * Gets query for [[Storage]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\StorageQuery
+     */
+    public function getStorage()
+    {
+        return $this->hasOne(Storage::class, ['id' => 'storageID']);
+    }
+
+    /**
      * Gets query for [[UpdatedBy]].
      *
      * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
@@ -199,7 +231,6 @@ class Ictassets extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
     }
-
 
     /**
      * {@inheritdoc}
@@ -215,7 +246,7 @@ class Ictassets extends \yii\db\ActiveRecord
         $model = self::find()
             ->where(['categoryID' => $cat_id])
             ->andWhere(['modelID' => $model_id])
-            ->andWhere(['assetstatus' => [2,3,4]]);
+            ->andWhere(['assetstatus' => [1,3]]);
 
         if ($isAjax) {
             return $model->select(['id', 'name'])->asArray()->all();
@@ -229,7 +260,7 @@ class Ictassets extends \yii\db\ActiveRecord
         $model = self::find()
             ->where(['categoryID' => $cat_id])
             ->andWhere(['modelID' => $model_id])
-            ->andWhere(['assetstatus' => 1]);
+            ->andWhere(['assetstatus' => 2]);
 
         if ($isAjax) {
             return $model->select(['id', 'name'])->asArray()->all();

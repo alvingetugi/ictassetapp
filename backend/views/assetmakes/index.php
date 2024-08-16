@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'category.name'
             ],
             'name',
-            'description',
             
             [
                 'class' => ActionColumn::className(),

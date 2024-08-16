@@ -16,6 +16,8 @@ use common\models\Model;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
 
 /**
  * IctassetsController implements the CRUD actions for Ictassets model.
@@ -61,19 +63,34 @@ class IctassetsController extends Controller
      * @param integer $id
      * @return mixed
      */
-
     public function actionView($id)
     {
         $model = $this->findModel($id);
         $modelsAssetaccessories = $model->assetaccessories;
 
+        // Get all accessories
+        $query = new Query();        
+        $query = Assetaccessories::find()
+         ->select('assetaccessories.*')
+         ->leftJoin('accessorylist', 'accessorylist.id = assetaccessories.accessorylistID')
+         ->where(['assetaccessories.assetID' => $id])
+         ->with('accessorylist');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
+
         return $this->render('view', [
             'model' => $model,
             'modelsAssetaccessories' => $modelsAssetaccessories,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
-     /**
+    /**
      * Creates a new Ict Assets model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -97,12 +114,9 @@ class IctassetsController extends Controller
                 try {
                     if ($flag = $model->save(false)) {
                         $model->code = 'AST' . '-' . $model->model->code . '-' . $model->id;
-                        $model->assetstatus = 3;
-                        $model->tag_number = 'RBA' . '-' . $model->model->code . '-' . $model->id;
                         $model->save();
                         foreach ($modelsAssetaccessories as $modelAssetaccessories) {
                             $modelAssetaccessories->assetID = $model->id;
-                            $modelAssetaccessories->code = 'ACC' . '-' . $model->id;
                             $model->save();
                             if (!($flag = $modelAssetaccessories->save(false))) {
                                 $transaction->rollBack();
@@ -118,12 +132,12 @@ class IctassetsController extends Controller
                     $transaction->rollBack();
                 }
             }
-    } else {
-        return $this->render('create', [
-            'model' => $model,
-            'modelsAssetaccessories' => (empty($modelsAssetaccessories)) ? [new Assetaccessories] : $modelsAssetaccessories
-        ]);
-    }
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                'modelsAssetaccessories' => (empty($modelsAssetaccessories)) ? [new Assetaccessories] : $modelsAssetaccessories
+            ]);
+        }
     }
 
     /**
@@ -152,14 +166,13 @@ class IctassetsController extends Controller
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
-                        if (! empty($deletedIDs)) {
+                        if (!empty($deletedIDs)) {
                             Assetaccessories::deleteAll(['id' => $deletedIDs]);
                         }
                         foreach ($modelsAssetaccessories as $modelAssetaccessories) {
                             $modelAssetaccessories->assetID = $model->id;
-                            $modelAssetaccessories->code = 'ACC' . '-' . $model->id;
                             $model->save();
-                            if (! ($flag = $modelAssetaccessories->save(false))) {
+                            if (!($flag = $modelAssetaccessories->save(false))) {
                                 $transaction->rollBack();
                                 break;
                             }
@@ -181,93 +194,18 @@ class IctassetsController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Deletes an existing Ictassets model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    //Handles the dependency action for selecting a make
-    public function actionMakes() {
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $cat_id = $parents[0];
-                $out = Assetmakes::getMakesList($cat_id, true);
-                return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-    //Handles the dependency action for selecting a model
-    public function actionModels() {
-        
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $model_id = empty($ids[1]) ? null : $ids[1];
-            if ($cat_id != null) {
-               $out = Assetmodels::getModelsList($cat_id, $model_id, true);            
-               return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-    //Handles the dependency action for selecting a model for issuance
-    public function actionModelissuances() {
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $cat_id = $parents[0];
-                $out = Assetmodels::getModelListissuance($cat_id, true);
-                return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-    //Handles the dependency action for selecting a serial number
-    public function actionSerialnumbers() {
-        
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $model_id = empty($ids[1]) ? null : $ids[1];
-            if ($cat_id != null) {
-               $out = Ictassets::getSerialsList($cat_id, $model_id, true);            
-               return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
-    }
-
-    //Handles the dependency action for selecting a serial number
-    public function actionIssuedserials() {
-        
-        $out = [];
-        if (isset($_POST['depdrop_parents'])) {
-            $ids = $_POST['depdrop_parents'];
-            $cat_id = empty($ids[0]) ? null : $ids[0];
-            $model_id = empty($ids[1]) ? null : $ids[1];
-            if ($cat_id != null) {
-               $out = Ictassets::getIssuedAssets($cat_id, $model_id, true);            
-               return json_encode(['output'=>$out, 'selected'=>'']);
-            }
-        }
-        return json_encode(['output'=>'', 'selected'=>'']);
     }
 
     /**
@@ -284,5 +222,86 @@ class IctassetsController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    //Handles the dependency action for selecting a make
+    public function actionMakes()
+    {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = Assetmakes::getMakesList($cat_id, true);
+                return json_encode(['output' => $out, 'selected' => '']);
+            }
+        }
+        return json_encode(['output' => '', 'selected' => '']);
+    }
+
+    //Handles the dependency action for selecting a model
+    public function actionModels()
+    {
+
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $model_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $out = Assetmodels::getModelsList($cat_id, $model_id, true);
+                return json_encode(['output' => $out, 'selected' => '']);
+            }
+        }
+        return json_encode(['output' => '', 'selected' => '']);
+    }
+
+    //Handles the dependency action for selecting a model for issuance
+    public function actionModelissuances()
+    {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = Assetmodels::getModelListissuance($cat_id, true);
+                return json_encode(['output' => $out, 'selected' => '']);
+            }
+        }
+        return json_encode(['output' => '', 'selected' => '']);
+    }
+
+    //Handles the dependency action for selecting a serial number
+    public function actionSerialnumbers()
+    {
+
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $model_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $out = Ictassets::getSerialsList($cat_id, $model_id, true);
+                return json_encode(['output' => $out, 'selected' => '']);
+            }
+        }
+        return json_encode(['output' => '', 'selected' => '']);
+    }
+
+    //Handles the dependency action for selecting a serial number
+    public function actionIssuedserials()
+    {
+
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $ids = $_POST['depdrop_parents'];
+            $cat_id = empty($ids[0]) ? null : $ids[0];
+            $model_id = empty($ids[1]) ? null : $ids[1];
+            if ($cat_id != null) {
+                $out = Ictassets::getIssuedAssets($cat_id, $model_id, true);
+                return json_encode(['output' => $out, 'selected' => '']);
+            }
+        }
+        return json_encode(['output' => '', 'selected' => '']);
     }
 }

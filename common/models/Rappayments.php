@@ -11,14 +11,14 @@ use yii\helpers\FileHelper;
  *
  * @property int $id
  * @property int $rapID
- * @property int $commitmentID
+ * @property int $scheduleID
  * @property string $name
  * @property string $paymentdate
  * @property float $amount
  * @property string $comments
  * @property string $proof
  *
- * @property Rapcommitments $commitment 
+ * @property Rapschedules $schedule 
  * @property Rap $rap
  */
 class Rappayments extends \yii\db\ActiveRecord
@@ -42,8 +42,8 @@ class Rappayments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rapID', 'commitmentID', 'paymentdate', 'amount', 'comments', 'proof'], 'required'],
-            [['rapID', 'commitmentID'], 'integer'],
+            [['rapID', 'scheduleID', 'paymentdate', 'amount', 'comments', 'proof'], 'required'],
+            [['rapID', 'scheduleID'], 'integer'],
             [['paymentdate'], 'safe'],
             [['amount'], 'number'],
             [['paymentfile'], 'file', 'extensions' => 'pdf, jpg'],
@@ -51,7 +51,7 @@ class Rappayments extends \yii\db\ActiveRecord
             [['comments'], 'string', 'max' => 50],
             [['proof'], 'string', 'max' => 2000],
             [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
-            [['commitmentID'], 'exist', 'skipOnError' => true, 'targetClass' => Rapcommitments::class, 'targetAttribute' => ['commitmentID' => 'id']],
+            [['scheduleID'], 'exist', 'skipOnError' => true, 'targetClass' => Rapschedules::class, 'targetAttribute' => ['scheduleID' => 'id']],
         ];
     }
 
@@ -63,7 +63,7 @@ class Rappayments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'rapID' => 'Remedial Action Plan',
-            'commitmentID' => 'Commitment',
+            'scheduleID' => 'Schedule',
             'name' => 'Name',
             'paymentdate' => 'Payment Date',
             'amount' => 'Amount',
@@ -83,14 +83,14 @@ class Rappayments extends \yii\db\ActiveRecord
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
 
-    /** 
-     * Gets query for [[Commitment]]. 
-     * 
-     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery 
-     */
-    public function getCommitment()
+    /**
+    * Gets query for [[Schedule]].
+    *
+    * @return \yii\db\ActiveQuery|\common\models\query\RapschedulesQuery
+    */
+    public function getSchedule()
     {
-        return $this->hasOne(Rapcommitments::class, ['id' => 'commitmentID']);
+        return $this->hasOne(Rapschedules::class, ['id' => 'scheduleID']);
     }
 
     public function save($runValidation = true, $attributeNames = null)

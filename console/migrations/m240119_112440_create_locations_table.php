@@ -15,8 +15,7 @@ class m240119_112440_create_locations_table extends Migration
         $this->createTable('{{%locations}}', [
             'id' => $this->primaryKey(),
             'code' => $this->string(50)->notNull()->unique(),
-            'name' => $this->string(255)->notNull(),
-            'description' => $this->string(255)->notNull(),
+            'name' => $this->string(255)->notNull()->unique(),
         ]);
     }
 

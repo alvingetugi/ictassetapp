@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Rap;
 use common\models\Rapcommitments;
+use common\models\Rapschedules;
 use Yii;
 use common\models\Rappayments;
 use common\models\Schemes;
@@ -78,8 +79,8 @@ class RappaymentsController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $rap = Rap::find()->where(['id'=>$model->rapID])->one();
-                $cmt = Rapcommitments::find()->where(['id'=>$model->commitmentID])->one();
-                $model->name = 'PMT' . '-' . $model->id . '-' . $rap->name . '-' . $cmt->name;
+                $sch = Rapschedules::find()->where(['id'=>$model->scheduleID])->one();
+                $model->name = 'PMT' . '-' . $model->id . '-' . $rap->name . '-' . $sch->name;
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -155,13 +156,13 @@ class RappaymentsController extends Controller
     }
 
     //Handles the dependency action for selecting a make
-    public function actionCommitments() {
+    public function actionSchedules() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $parents = $_POST['depdrop_parents'];
             if ($parents != null) {
                 $rap_id = $parents[0];
-                $out = Rapcommitments::getCommitmentsList($rap_id, true);
+                $out = Rapschedules::getSchedulesList($rap_id, true);
                 return json_encode(['output'=>$out, 'selected'=>'']);
             }
         }

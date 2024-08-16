@@ -21,8 +21,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name') ?>
 
-    <?= $form->field($model, 'description') ?>
-
     <?= $form->field($model, 'categoryID') ?>
 
     <?php // echo $form->field($model, 'makeID') ?>

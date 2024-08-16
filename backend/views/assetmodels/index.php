@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Assetmodels', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -40,8 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'make.name'
             ],
             'name',
-            'description',
-
             [
                 'class' => ActionColumn::className(),
                 'template'=>'{view}{update}',

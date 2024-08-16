@@ -5,12 +5,11 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%assetcategories}}".
+ * This is the model class for table "assetcategories".
  *
  * @property int $id
  * @property string $code
  * @property string $name
- * @property string $description
  *
  * @property Assetmakes[] $assetmakes
  * @property Assetmodels[] $assetmodels
@@ -23,7 +22,7 @@ class Assetcategories extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%assetcategories}}';
+        return 'assetcategories';
     }
 
     /**
@@ -32,9 +31,10 @@ class Assetcategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description'], 'required'],
+            [['name'], 'required'],
             [['code'], 'string', 'max' => 50],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
             [['code'], 'unique'],
         ];
     }
@@ -48,7 +48,6 @@ class Assetcategories extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'description' => 'Description',
         ];
     }
 
@@ -84,16 +83,15 @@ class Assetcategories extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\AssetaccessoriesQuery the active query used by this AR class.
+     * @return \common\models\query\AssetcategoriesQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\AssetaccessoriesQuery(get_called_class());
+        return new \common\models\query\AssetcategoriesQuery(get_called_class());
     }
 
     public static function getCategories()
     {
         return self::find()->select(['name', 'id'])->indexBy('id')->column();
     }
-
 }

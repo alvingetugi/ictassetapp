@@ -75,13 +75,9 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <div class="row">
-        <div class="col">
-            <?= $form->field($model, 'status')->radioList([1 => 'Active', 0 => 'Inactive']) ?>
-        </div>
+    <?= $form->field($model, 'status')->hiddenInput(['value' => $model->isNewRecord ? 1 : $model->status])->label(false)  ?>
 
-        <div class="col">
-        <?= $form->field($model, 'rapfile', [
+    <?= $form->field($model, 'rapfile', [
         'template' => '
                 <div class="custom-file">
                     {input}
@@ -92,10 +88,8 @@ use yii\widgets\ActiveForm;
         'labelOptions' => ['class' => 'custom-file-label'],
         'inputOptions' => ['class' => 'custom-file-input']
     ])->textInput(['type' => 'file']) ?>
-        </div>
-    </div>
 
-    <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-success']) ?>

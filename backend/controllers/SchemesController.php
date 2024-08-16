@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use common\models\Rap;
+use common\models\Rapreport;
+use common\models\Rapsbypayments;
 use common\models\Schemes;
 use backend\models\search\SchemesSearch;
 use yii\data\ActiveDataProvider;
@@ -59,21 +61,25 @@ class SchemesController extends Controller
     public function actionView($id)
     {
             $schemeraps = (new Query())
-                ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.startdate as startdate', 'sum(c.expectedamount) AS expectedamount'])
+                ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.startdate as startdate', 'sum(s.expectedamount) AS expectedamount'])
                 ->from(['rap r'])
-                ->join('LEFT JOIN', 'rapcommitments c', 'r.id = c.rapID')
+                ->join('LEFT JOIN', 'rapschedules s', 'r.id = s.rapID')
                 ->where(['r.schemeID'=> $id])
                 ->groupBy('r.id, r.schemeID, r.typeID, r.status, r.amount, r.startdate')
                 ->all();
 
-            $dataProvider = new ActiveDataProvider([
+        // Get all raps
+        $query = new Query();        
+        $query = Rapreport::find()
+         ->select('*')
+         ->where(['schemeID'=> $id]);
 
-                'query' => (new Query())
-                ->select(['*, (deficit-totalpayments) As balance'])
-                ->from(['rapswithpayments'])
-                ->where(['schemeID'=> $id]),
-            
-                ]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),

@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'label' => 'RAP',
-                'attribute' => 'rapREF'
+                'attribute' => 'rapref'
             ],
             [
                 'label' => 'Type',
@@ -68,8 +68,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'startdate'
             ], 
             [
-                'label' => 'Commitments',
-                'attribute' => 'totalcommitments'
+                'label' => 'Schedule Amount',
+                'attribute' => 'expectedamount'
             ], 
             [
                 'label' => 'Paid',

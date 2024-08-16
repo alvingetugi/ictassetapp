@@ -33,7 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'id',
             'code',
             'name',
-            'description',
             [
                 'label' => 'Category',
                 'value' => function ($data){

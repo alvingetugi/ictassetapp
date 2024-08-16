@@ -68,14 +68,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'userID')->dropDownList(        
         ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
-        ['prompt' => 'Select User', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]
+        ['prompt' => 'Select Staff', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]
     ); ?>
 
     <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
 
 
     <div class="form-group">
-        <!-- <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?> -->
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-success']) ?>
     </div>
 

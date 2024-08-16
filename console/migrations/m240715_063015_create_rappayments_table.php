@@ -15,7 +15,7 @@ class m240715_063015_create_rappayments_table extends Migration
         $this->createTable('{{%rappayments}}', [
             'id' => $this->primaryKey(),
             'rapID' => $this->integer()->notNull(),
-            'commitmentID' => $this->integer()->notNull(),
+            'scheduleID' => $this->integer()->notNull(),
             'name' => $this->string(255)->notNull(),
             'paymentdate' => $this->date()->notNull(),
             'amount' => $this->decimal(10, 2)->notNull(),
@@ -40,19 +40,19 @@ class m240715_063015_create_rappayments_table extends Migration
             'CASCADE'
         );
 
-        //creates index for column commitmentID
+        //creates index for column scheduleID
         $this->createIndex(
-            '{{%idx-rappayments-commitmentID}}',
+            '{{%idx-rappayments-scheduleID}}',
             '{{%rappayments}}',
-            'commitmentID'
+            'scheduleID'
         );
 
-        //adds foreign key for table {{rapcommitments}}
+        //adds foreign key for table {{rapschedules}}
         $this->addForeignKey(
-            '{{%fk-rappayments-commitmentID}}',
+            '{{%fk-rappayments-scheduleID}}',
             '{{%rappayments}}',
-            'commitmentID',
-            '{{%rapcommitments}}',
+            'scheduleID',
+            '{{%rapschedules}}',
             'id',
             'NO ACTION'
         );
@@ -75,15 +75,15 @@ class m240715_063015_create_rappayments_table extends Migration
             '{{%rappayments}}'
         );
 
-        // drops the foreign key for table `{{%rapcommitments}}`
+        // drops the foreign key for table `{{%rapschedules}}`
         $this->dropForeignKey(
-            '{{%fk-rappayments-commitmentID}}',
+            '{{%fk-rappayments-scheduleID}}',
             '{{%rappayments}}'
         );
 
-        // drops the index for column commitmentID
+        // drops the index for column scheduleID
         $this->dropIndex(
-            '{{%idx-rappayments-commitmentID}}',
+            '{{%idx-rappayments-scheduleID}}',
             '{{%rappayments}}'
         );
 

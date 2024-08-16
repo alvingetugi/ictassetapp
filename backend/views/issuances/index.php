@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Issuance', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'serials.name'
             ],
             [
+                'label' => 'Staff Allocated',
                 'attribute' => 'userID',
                 'value' => 'user.displayName'
             ],
@@ -51,11 +52,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_by',
             //'updated_by',
             [
-                'class' => ActionColumn::className(),
-                'template'=>'{view}',
-                'urlCreator' => function ($action, Issuances $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
         ],
     ]); ?>

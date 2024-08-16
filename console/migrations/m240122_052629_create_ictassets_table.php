@@ -20,10 +20,9 @@ class m240122_052629_create_ictassets_table extends Migration
             'modelID' => $this->integer()->notNull(),
             'name' => $this->string(50)->notNull()->unique(),
             'tag_number' => $this->string(50)->notNull()->unique(),
-            'storage' => $this->integer()->notNull(),
-            'ram' => $this->integer()->notNull(),
-            'operating_system' => $this->string(50)->notNull(),
-            'date_of_delivery' => $this->date()->notNull(),
+            'storageID' => $this->integer()->notNull(),
+            'ramID' => $this->integer()->notNull(),
+            'osID' => $this->integer()->notNull(),
             'locationID' => $this->integer()->notNull(),
             'assetstatus' => $this->integer()->notNull(),
             'assetcondition' => $this->string(50)->notNull(),
@@ -98,7 +97,58 @@ class m240122_052629_create_ictassets_table extends Migration
             'locationID',
             '{{%locations}}',
             'id',
-            'CASCADE'
+            'NO ACTION'
+        );
+
+        //creates index for column storageID
+        $this->createIndex(
+            '{{%idx-ictassets-storageID}}',
+            '{{%ictassets}}',
+            'storageID'
+        );
+
+        //adds foreign key for table {{storage}}
+        $this->addForeignKey(
+            '{{%fk-ictassets-storageID}}',
+            '{{%ictassets}}',
+            'storageID',
+            '{{%storage}}',
+            'id',
+            'NO ACTION'
+        );
+
+        //creates index for column ramID
+        $this->createIndex(
+            '{{%idx-ictassets-ramID}}',
+            '{{%ictassets}}',
+            'ramID'
+        );
+
+        //adds foreign key for table {{ram}}
+        $this->addForeignKey(
+            '{{%fk-ictassets-ramID}}',
+            '{{%ictassets}}',
+            'ramID',
+            '{{%ram}}',
+            'id',
+            'NO ACTION'
+        );
+
+        //creates index for column osID
+        $this->createIndex(
+            '{{%idx-ictassets-osID}}',
+            '{{%ictassets}}',
+            'osID'
+        );
+
+        //adds foreign key for table {{operatingsystem}}
+        $this->addForeignKey(
+            '{{%fk-ictassets-osID}}',
+            '{{%ictassets}}',
+            'osID',
+            '{{%operatingsystem}}',
+            'id',
+            'NO ACTION'
         );
 
         //creates index for column created_by
@@ -115,7 +165,7 @@ class m240122_052629_create_ictassets_table extends Migration
             'created_by',
             '{{%user}}',
             'id',
-            'CASCADE'
+            'NO ACTION'
         );
 
         //creates index for column updated_by
@@ -132,7 +182,7 @@ class m240122_052629_create_ictassets_table extends Migration
             'updated_by',
             '{{%user}}',
             'id',
-            // 'CASCADE'
+            'NO ACTION'
         );
     }
 
@@ -186,6 +236,42 @@ class m240122_052629_create_ictassets_table extends Migration
         // drops the index for column locationID
         $this->dropIndex(
             '{{%idx-ictassets-locationID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the foreign key for table `{{%storage}}`
+        $this->dropForeignKey(
+            '{{%fk-ictassets-storageID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the index for column storageID
+        $this->dropIndex(
+            '{{%idx-ictassets-storageID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the foreign key for table `{{%ram}}`
+        $this->dropForeignKey(
+            '{{%fk-ictassets-ramID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the index for column ramID
+        $this->dropIndex(
+            '{{%idx-ictassets-ramID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the foreign key for table `{{%operatingsystem}}`
+        $this->dropForeignKey(
+            '{{%fk-ictassets-osID}}',
+            '{{%ictassets}}'
+        );
+
+        // drops the index for column osID
+        $this->dropIndex(
+            '{{%idx-ictassets-osID}}',
             '{{%ictassets}}'
         );
         

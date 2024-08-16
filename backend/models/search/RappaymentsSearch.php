@@ -17,7 +17,7 @@ class RappaymentsSearch extends Rappayments
     public function rules()
     {
         return [
-            [['id', 'rapID', 'commitmentID'], 'integer'],
+            [['id', 'rapID', 'scheduleID'], 'integer'],
             [['name', 'paymentdate', 'comments', 'proof'], 'safe'],
             [['amount'], 'number'],
         ];
@@ -61,7 +61,7 @@ class RappaymentsSearch extends Rappayments
         $query->andFilterWhere([
             'id' => $this->id,
             'rapID' => $this->rapID,
-            'commitmentID' => $this->commitmentID,
+            'scheduleID' => $this->scheduleID,
             'paymentdate' => $this->paymentdate,
             'amount' => $this->amount,
         ]);

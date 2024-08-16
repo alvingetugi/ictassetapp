@@ -27,7 +27,7 @@ class Assetstatus extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name'], 'required'],
+            [['name'], 'required'],
             [['code', 'name'], 'string', 'max' => 50],
             [['name'], 'unique'],
             [['code'], 'unique'],

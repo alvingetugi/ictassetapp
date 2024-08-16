@@ -75,7 +75,7 @@ class IssuancesController extends Controller
                 $model->code = 'ISS' . '-' . $model->id;
                 $model->save();
                 $asset = Ictassets::find()->where(['id'=>$model->serialnumber])->one();//finds the asset being issued based on serial number
-                $asset->assetstatus = 1;//sets the asset status to issued
+                $asset->assetstatus = 2;//sets the asset status to issued
                 $asset->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }

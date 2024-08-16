@@ -17,8 +17,7 @@ class AssetaccessoriesSearch extends Assetaccessories
     public function rules()
     {
         return [
-            [['id', 'assetID'], 'integer'],
-            [['code', 'name', 'description'], 'safe'],
+            [['id', 'accessorylistID', 'assetID'], 'integer'],
         ];
     }
 
@@ -59,12 +58,9 @@ class AssetaccessoriesSearch extends Assetaccessories
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'accessorylistID' => $this->accessorylistID,
             'assetID' => $this->assetID,
         ]);
-
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;
     }

@@ -19,7 +19,7 @@ class AssetmakesSearch extends Assetmakes
     {
         return [
             [['id'], 'integer'],
-            [['code', 'name', 'description','categoryID'], 'safe'],
+            [['code', 'name', 'categoryID'], 'safe'],
         ];
     }
 
@@ -74,8 +74,7 @@ class AssetmakesSearch extends Assetmakes
 
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID]);
 
         return $dataProvider;
     }

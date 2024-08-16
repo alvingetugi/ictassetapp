@@ -18,10 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Asset', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Ictassets', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel, 'pageSize' => $pageSize]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -44,13 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'model.name'
             ],
             'name',
-            //'tag_number',
-            //'storage',
-            //'ram',
-            //'operating_system',
-            //'date_of_delivery',
+            'tag_number',
+            //'storageID',
+            //'ramID',
+            //'osID',
             //'locationID',
-            // 'assetstatus',
             [
                 'attribute' => 'assetstatus',
                 'value' => 'assetStatus.name'
@@ -61,11 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_by',
             //'updated_by',
             [
-                'class' => ActionColumn::className(),
-                'template'=>'{view}{update}',
-                'urlCreator' => function ($action, Ictassets $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
         ],
     ]); ?>

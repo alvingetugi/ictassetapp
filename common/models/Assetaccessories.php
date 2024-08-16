@@ -8,11 +8,10 @@ use Yii;
  * This is the model class for table "assetaccessories".
  *
  * @property int $id
- * @property string $code
- * @property string $name
- * @property string $description
- * @property int $assetID
+ * @property int|null $accessorylistID
+ * @property int|null $assetID
  *
+ * @property Accessorylist $accessorylist
  * @property Ictassets $asset
  */
 class Assetaccessories extends \yii\db\ActiveRecord
@@ -31,10 +30,8 @@ class Assetaccessories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description'], 'required'],
-            [['assetID'], 'integer'],
-            [['code'], 'string', 'max' => 50],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['accessorylistID', 'assetID'], 'integer'],
+            [['accessorylistID'], 'exist', 'skipOnError' => true, 'targetClass' => Accessorylist::class, 'targetAttribute' => ['accessorylistID' => 'id']],
             [['assetID'], 'exist', 'skipOnError' => true, 'targetClass' => Ictassets::class, 'targetAttribute' => ['assetID' => 'id']],
         ];
     }
@@ -46,20 +43,37 @@ class Assetaccessories extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
-            'name' => 'Name',
-            'description' => 'Description',
+            'accessorylistID' => 'Accessorylist ID',
             'assetID' => 'Asset ID',
         ];
     }
 
     /**
+     * Gets query for [[Accessorylist]].
+     *
+     * @return \yii\db\ActiveQuery|\common\models\query\AccessorylistQuery
+     */
+    public function getAccessorylist()
+    {
+        return $this->hasOne(Accessorylist::class, ['id' => 'accessorylistID']);
+    }
+
+    /**
      * Gets query for [[Asset]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\IctassetsQuery
      */
     public function getAsset()
     {
         return $this->hasOne(Ictassets::class, ['id' => 'assetID']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\AssetaccessoriesQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\AssetaccessoriesQuery(get_called_class());
     }
 }

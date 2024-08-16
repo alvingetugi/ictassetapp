@@ -2,6 +2,7 @@
 
 use common\models\Rap;
 use common\models\Rapcommitments;
+use common\models\Rapschedules;
 use kartik\depdrop\DepDrop;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
@@ -25,13 +26,13 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rapID')->dropDownList(Rap::getRaps(),
         ['prompt' => 'Select RAP', 'id' => 'rap-id']) ?>
 
-    <?= $form->field($model, 'commitmentID')->widget(DepDrop::classname(), [
-            'data' => Rapcommitments::getCommitmentsList($model->commitmentID),
-            'options' => ['id' => 'commitment-id', 'prompt' => 'Select Commitment'],
+    <?= $form->field($model, 'scheduleID')->widget(DepDrop::classname(), [
+            'data' => Rapschedules::getSchedulesList($model->scheduleID),
+            'options' => ['id' => 'schedule-id', 'prompt' => 'Select Schedule'],
             'pluginOptions' => [
                 'depends' => ['rap-id'],
-                'placeholder' => 'Select Commitment',
-                'url' => Url::to(['/rappayments/commitments']) //Url::to(['/controller/action'])
+                'placeholder' => 'Select Schedule',
+                'url' => Url::to(['/rappayments/schedules']) //Url::to(['/controller/action'])
             ]
         ]); ?>
 

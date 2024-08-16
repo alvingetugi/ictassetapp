@@ -198,9 +198,9 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>RAPs</span>
                             </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/rapcommitments/index']) ?>">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/rapschedules/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>RAP Commitments</span>
+                                <span>RAP Schedules</span>
                             </a>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/rappayments/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>

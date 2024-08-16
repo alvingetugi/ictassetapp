@@ -18,7 +18,7 @@ class AssetmodelsSearch extends Assetmodels
     {
         return [
             [['id'], 'integer'],
-            [['code', 'name', 'description','categoryID', 'makeID'], 'safe'],
+            [['code', 'name', 'categoryID', 'makeID'], 'safe'],
         ];
     }
 
@@ -80,8 +80,7 @@ class AssetmodelsSearch extends Assetmodels
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID])
-            ->andFilterWhere(['like', 'assetmakes.name', $this->makeID])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'assetmakes.name', $this->makeID]);
 
         return $dataProvider;
     }

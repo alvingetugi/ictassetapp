@@ -5,12 +5,11 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%assetmodels}}".
+ * This is the model class for table "assetmodels".
  *
  * @property int $id
  * @property string $code
  * @property string $name
- * @property string $description
  * @property int $categoryID
  * @property int $makeID
  *
@@ -25,7 +24,7 @@ class Assetmodels extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%assetmodels}}';
+        return 'assetmodels';
     }
 
     /**
@@ -34,10 +33,11 @@ class Assetmodels extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description', 'categoryID', 'makeID'], 'required'],
+            [['name', 'categoryID', 'makeID'], 'required'],
             [['categoryID', 'makeID'], 'integer'],
             [['code'], 'string', 'max' => 50],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
             [['code'], 'unique'],
             [['categoryID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetcategories::class, 'targetAttribute' => ['categoryID' => 'id']],
             [['makeID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetmakes::class, 'targetAttribute' => ['makeID' => 'id']],
@@ -53,7 +53,6 @@ class Assetmodels extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'description' => 'Description',
             'categoryID' => 'Category',
             'makeID' => 'Make',
         ];

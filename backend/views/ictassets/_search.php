@@ -25,17 +25,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'modelID') ?>
 
-    <?php // echo $form->field($model, 'serialnumber') ?>
+    <?php // echo $form->field($model, 'name') ?>
 
     <?php // echo $form->field($model, 'tag_number') ?>
 
-    <?php // echo $form->field($model, 'storage') ?>
+    <?php // echo $form->field($model, 'storageID') ?>
 
-    <?php // echo $form->field($model, 'ram') ?>
+    <?php // echo $form->field($model, 'ramID') ?>
 
-    <?php // echo $form->field($model, 'operating_system') ?>
-
-    <?php // echo $form->field($model, 'date_of_delivery') ?>
+    <?php // echo $form->field($model, 'osID') ?>
 
     <?php // echo $form->field($model, 'locationID') ?>
 

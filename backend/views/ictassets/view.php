@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Assetaccessories;
 use common\models\Assetcategories;
 use common\models\Assetmakes;
@@ -7,13 +8,17 @@ use common\models\Assetmodels;
 use common\models\Assetstatus;
 use common\models\Ictassets;
 use common\models\Locations;
+use common\models\Operatingsystem;
+use common\models\Ram;
+use common\models\Storage;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
 /** @var common\models\Ictassets $model */
 
-$this->title = $model->name;
+$this->title = Assetmodels::findOne(['id'=>$model->modelID])->name.'-'.$model->name;;
 $this->params['breadcrumbs'][] = ['label' => 'Ictassets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -58,10 +63,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'name',
             'tag_number',
-            'storage',
-            'ram',
-            'operating_system',
-            'date_of_delivery',
+            [
+                'label' => 'Storage',
+                'value' => function ($data){
+                    return Storage::findOne(['id'=>$data->storageID])->name;
+                }
+            ],
+            [
+                'label' => 'RAM',
+                'value' => function ($data){
+                    return Ram::findOne(['id'=>$data->ramID])->name;
+                }
+            ],
+            [
+                'label' => 'Operating System',
+                'value' => function ($data){
+                    return Operatingsystem::findOne(['id'=>$data->osID])->name;
+                }
+            ],
             [
                 'label' => 'Location',
                 'value' => function ($data){
@@ -74,28 +93,38 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Assetstatus::findOne(['id'=>$data->assetstatus])->name;
                 }
             ],
-            'assetcondition',
+            'assetcondition',         
+            [
+                'label' => 'Created By',
+                'attribute' => 'createdBy.displayname'
+            ],
             'created_at:datetime',
+            [
+                'label' => 'Updated By',
+                'attribute' => 'updatedBy.displayname'
+            ],
             'updated_at:datetime',
-            'createdBy.username',
-            'updatedBy.username',
+            
         ],
     ]) ?>
 
 <div class="panel-heading"><h4><i class="fa fa-tasks"></i> Accessories:</h4></div>
 
-<div class="card">
-    <?php foreach ($modelsAssetaccessories as $modelAssetaccessories):?>
-    <?= DetailView::widget([
-        'model' => $modelAssetaccessories,
-        'attributes' => [
-            // 'assetID',
-            'code',
-            'name',
-            'description:html',
+<?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        // 'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            [
+                'label' => 'Tag Number',
+                'attribute' => 'accessorylist.tag_number'
+            ],
+            [
+                'label' => 'Accessory',
+                'attribute' => 'accessorylist.name'
+            ],
         ],
-    ]) ?>
-    <?php endforeach; ?>
-    </div>
+    ]); ?>
 
 </div>

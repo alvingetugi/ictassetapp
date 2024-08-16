@@ -24,7 +24,7 @@ use yii\helpers\FileHelper;
  * @property int|null $updated_by
  *
  * @property User $createdBy
- * @property Rapcommitments[] $rapcommitments
+ * @property Rapschedules[] $rapschedules
  * @property Rappayments[] $rappayments
  * @property Schemes $scheme
  * @property Raptypes $type
@@ -51,7 +51,7 @@ class Rap extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['typeID', 'schemeID', 'status', 'amount', 'startdate', 'enddate', 'comments', 'rapdocument'], 'required'],
+            [['typeID', 'schemeID', 'amount', 'startdate', 'enddate', 'comments', 'rapdocument'], 'required'],
             [['typeID', 'schemeID', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
             [['startdate', 'enddate'], 'safe'],
@@ -99,14 +99,14 @@ class Rap extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
 
-    /**
-     * Gets query for [[Rapcommitments]].
-     *
-     * @return \yii\db\ActiveQuery|\common\models\query\RapcommitmentsQuery
-     */
-    public function getRapcommitments()
-    {
-        return $this->hasMany(Rapcommitments::class, ['rapID' => 'id']);
+	/** 
+    * Gets query for [[Rapschedules]]. 
+    * 
+    * @return \yii\db\ActiveQuery|\common\models\query\RapschedulesQuery 
+    */ 
+    public function getRapschedules() 
+    { 
+        return $this->hasMany(Rapschedules::class, ['rapID' => 'id']); 
     }
 
     /**

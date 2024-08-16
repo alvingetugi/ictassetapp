@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Surrenders $model */
 
-$this->title = 'Create Surrenders';
+$this->title = 'Create Surrender';
 $this->params['breadcrumbs'][] = ['label' => 'Surrenders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

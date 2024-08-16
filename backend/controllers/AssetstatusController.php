@@ -71,6 +71,8 @@ class AssetstatusController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+                $model->code = 'STAT' . '-' . $model->id;
+                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {

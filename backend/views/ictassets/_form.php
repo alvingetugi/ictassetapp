@@ -1,9 +1,13 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Assetcategories;
 use common\models\Assetmakes;
 use common\models\Assetmodels;
 use common\models\Locations;
+use common\models\Operatingsystem;
+use common\models\Ram;
+use common\models\Storage;
 use dosamigos\ckeditor\CKEditor;
 use kartik\depdrop\DepDrop;
 use wbraganca\dynamicform\DynamicFormWidget;
@@ -15,65 +19,10 @@ use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Ictassets $model */
-/** @var common\models\Assetaccessories $modelsAssetAccessory */
 /** @var yii\widgets\ActiveForm $form */
-
-$js = '
-jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
-    jQuery(".dynamicform_wrapper .panel-title-detail").each(function(index) {
-        jQuery(this).html("Accessory: " + (index + 1))
-    });
-});
-
-jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
-    jQuery(".dynamicform_wrapper .panel-title-detail").each(function(index) {
-        jQuery(this).html("Accessory: " + (index + 1))
-    });
-});
-
-$(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
-    if (! confirm("Are you sure you want to delete this item?")) {
-        return false;
-    }
-    return true;
-});
-
-$(".dynamicform_wrapper").on("afterDelete", function(e) {
-    console.log("Deleted item!");
-});
-
-jQuery(".dynamicform_wrapper").on("limitReached", function(e, item) {
-    alert("Limit reached");
-});
-';
-
-$this->registerJs($js);
-
-// $script = <<<JS
-//   var getCode = function (length) {
-//         var tranStr = parseInt($('#transaction-transaction_type').val());
-//         var transvalue = isNaN(tranStr) ? 0 : tranStr;
-//         var code = transvalue;
-//         var url_string = window.location.href; 
-//         var url = new URL(url_string);
-//         var c = url.searchParams.get("id");
-//         let result = '';
-//         let counter = 0;
-//             if (code == 1) {
-//                 result += "ISS-"+ c;
-//                 } else {
-//                     result = '-';
-//                     }  
-//         $('#transaction-code').val(result);
-//     };
-//     $(document).on('click', '#transaction-transaction_type', function () {
-//         getCode();
-//     });
-// JS;
-// $this->registerJs($script);
 ?>
 
-<div class="customer-form">
+<div class="ictassets-form">
 
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
@@ -114,58 +63,45 @@ $this->registerJs($js);
         <div class="col">
             <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
         </div>
-    </div>
-
-    <div class="col">
-            <?= $form->field($model, 'tag_number')->hiddenInput()->label(false) ?>
-    </div>
-
-    <div class="row">
         <div class="col">
-            <?= $form->field($model, 'storage')->textInput(['readonly' => !$model->isNewRecord]) ?>
-        </div>
-
-        <div class="col">
-            <?= $form->field($model, 'ram')->textInput(['readonly' => !$model->isNewRecord]) ?>
-        </div>
-
-        <div class="col">
-            <?= $form->field($model, 'operating_system')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
+            <?= $form->field($model, 'tag_number')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
         </div>
     </div>
 
     <div class="row">
         <div class="col">
-            <?= $form->field($model, 'date_of_delivery')->widget(\kartik\date\DatePicker::classname(), [
-                'readonly' => !$model->isNewRecord,
-                'disabled' => !$model->isNewRecord,
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'daysOfWeekDisabled' => [0, 6],
-                    'format' => 'yyyy-mm-dd',
-                    'todayHighlight' => true
-                ]
-            ]); ?>
-        </div>
-        <div class="col">
-            <?= $form->field($model, 'assetcondition')->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
-        </div>
-
-        <div class="col">
-            <?= $form->field($model, 'locationID')->dropDownList(
-                ArrayHelper::map(Locations::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
-                ['prompt' => 'Select Location', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]                          // options
+            <?= $form->field($model, 'storageID')->dropDownList(
+                ArrayHelper::map(Storage::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
+                ['prompt' => 'Select Storage']                          // options
             ); ?>
         </div>
-
-        <?= $form->field($model, 'assetstatus')->hiddenInput()->label(false) ?>
-        
-        
+        <div class="col">
+            <?= $form->field($model, 'ramID')->dropDownList(
+                ArrayHelper::map(Ram::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
+                ['prompt' => 'Select RAM']                          // options
+            ); ?>
+        </div>
+        <div class="col">
+            <?= $form->field($model, 'osID')->dropDownList(
+                ArrayHelper::map(Operatingsystem::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
+                ['prompt' => 'Select Operating System']                          // options
+            ); ?>
+        </div>
     </div>
+
+    <?= $form->field($model, 'locationID')->dropDownList(
+        ArrayHelper::map(Locations::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
+        ['prompt' => 'Select Location']                          // options
+    ); ?>
+
+    <?= $form->field($model, 'assetstatus')->hiddenInput(['value' => $model->isNewRecord ? 1 : $model->assetstatus])->label(false)  ?>
+
+    <?= $form->field($model, 'assetcondition')->textInput(['maxlength' => true]) ?>
 
     <div class="padding-v-md">
         <div class="line line-dashed"></div>
     </div>
+
     <?php DynamicFormWidget::begin([
         'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
         'widgetBody' => '.container-items', // required: css class selector
@@ -182,7 +118,8 @@ $this->registerJs($js);
             'description',
         ],
     ]); ?>
-    <div class="panel panel-default">
+
+<div class="panel panel-default">
         <div class="mt-4 p-2 bg-primary text-white rounded">
             <i class="fa fa-tasks"></i> Accessory List
             <button type="button" class="float-right add-item btn btn-success btn-xs"><i class="fa fa-plus"></i> Add
@@ -206,15 +143,13 @@ $this->registerJs($js);
                         if (!$modelAssetaccessories->isNewRecord) {
                             echo Html::activeHiddenInput($modelAssetaccessories, "[{$index}]id");
                         }
-                        ?>
-                        <?= $form->field($modelAssetaccessories, "[{$index}]code")->hiddenInput()->label(false) ?>
-
+                        ?>                        
                         <div class="row">
                             <div class="col">
-                                <?= $form->field($modelAssetaccessories, "[{$index}]name")->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
-                            </div>
-                            <div class="col">
-                                <?= $form->field($modelAssetaccessories, "[{$index}]description")->textInput(['maxlength' => true, 'readonly' => !$model->isNewRecord]) ?>
+                                <?= $form->field($modelAssetaccessories, "[{$index}]accessorylistID")->dropDownList(
+        ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),  // Flat array ('id'=>'label')
+        ['prompt' => 'Select Accessory']                          // options
+    ); ?>
                             </div>
                         </div><!-- end:row -->
                     </div>

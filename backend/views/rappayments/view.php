@@ -2,6 +2,7 @@
 
 use common\models\Rap;
 use common\models\Rapcommitments;
+use common\models\Rapschedules;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -41,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Commitment',
                 'value' => function ($data){
-                    return Rapcommitments::findOne(['id'=>$data->commitmentID])->name;
+                    return Rapschedules::findOne(['id'=>$data->scheduleID])->name;
                 }
             ],
             // 'name',
@@ -52,7 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'document',
                 'format' => ['html'],
                 'value' => fn() => Html::a('Download', [
-                    'rapcommitments/pdf',
+                    'rappayments/pdf',
                     'id' => $model->id,
                 ], [
                     'class' => 'btn btn-primary',

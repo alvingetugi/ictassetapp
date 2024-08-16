@@ -5,12 +5,11 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "{{%locations}}".
+ * This is the model class for table "locations".
  *
  * @property int $id
  * @property string $code
  * @property string $name
- * @property string $description
  *
  * @property Ictassets[] $ictassets
  */
@@ -21,7 +20,7 @@ class Locations extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return '{{%locations}}';
+        return 'locations';
     }
 
     /**
@@ -30,9 +29,10 @@ class Locations extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'description'], 'required'],
+            [['name'], 'required'],
             [['code'], 'string', 'max' => 50],
-            [['name', 'description'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
+            [['name'], 'unique'],
             [['code'], 'unique'],
         ];
     }
@@ -46,7 +46,6 @@ class Locations extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'description' => 'Description',
         ];
     }
 
