@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property string $code
  * @property string $name
- * @property string|null $tag_number
+ * @property string|null $model_or_part_number
  *
  * @property Assetaccessories[] $assetaccessories
  */
@@ -31,10 +31,9 @@ class Accessorylist extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['code', 'tag_number'], 'string', 'max' => 50],
+            [['code', 'model_or_part_number'], 'string', 'max' => 50],
             [['name'], 'string', 'max' => 255],
-            [['tag_number'], 'unique'],
-            [['name'], 'unique'],
+            // [['model_or_part_number'], 'unique'],
             [['code'], 'unique'],
         ];
     }
@@ -48,7 +47,7 @@ class Accessorylist extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'tag_number' => 'Tag or serial',
+            'tag_number' => 'Model or part number',
         ];
     }
 

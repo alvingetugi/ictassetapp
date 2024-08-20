@@ -47,6 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'user.displayName'
             ],
             //'comments',
+            // 'accessorylistID'
             //'created_at',
             //'updated_at',
             //'created_by',

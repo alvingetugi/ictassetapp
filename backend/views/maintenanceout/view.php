@@ -35,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'categoryID',
             'modelID',
             'serialnumber',
+            'accessorylistID',
             'userID',
             'comments',
             'created_at',

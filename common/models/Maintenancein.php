@@ -13,6 +13,7 @@ use Yii;
  * @property int $categoryID
  * @property int $modelID
  * @property int $serialnumber
+ * @property int|null $accessorylistID
  * @property int $userID
  * @property string $comments
  * @property int|null $created_at
@@ -41,7 +42,7 @@ class Maintenancein extends \yii\db\ActiveRecord
         return [
             [['code', 'inwarddate', 'categoryID', 'modelID', 'serialnumber', 'userID', 'comments'], 'required'],
             [['inwarddate'], 'safe'],
-            [['categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['categoryID', 'modelID', 'serialnumber', 'accessorylistID', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 50],
             [['comments'], 'string', 'max' => 255],
             [['code'], 'unique'],
@@ -62,6 +63,7 @@ class Maintenancein extends \yii\db\ActiveRecord
             'categoryID' => 'Category ID',
             'modelID' => 'Model ID',
             'serialnumber' => 'Serialnumber',
+            'accessorylistID' => 'Accessorylist ID',
             'userID' => 'User ID',
             'comments' => 'Comments',
             'created_at' => 'Created At',
@@ -74,7 +76,7 @@ class Maintenancein extends \yii\db\ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
      */
     public function getCreatedBy()
     {
@@ -84,10 +86,19 @@ class Maintenancein extends \yii\db\ActiveRecord
     /**
      * Gets query for [[UpdatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|\common\models\query\UserQuery
      */
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\MaintenanceinQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new \common\models\query\MaintenanceinQuery(get_called_class());
     }
 }

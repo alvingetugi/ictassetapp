@@ -18,7 +18,7 @@ class AccessorylistSearch extends Accessorylist
     {
         return [
             [['id'], 'integer'],
-            [['code', 'name', 'tag_number'], 'safe'],
+            [['code', 'name', 'model_or_part_number'], 'safe'],
         ];
     }
 
@@ -63,7 +63,7 @@ class AccessorylistSearch extends Accessorylist
 
         $query->andFilterWhere(['like', 'code', $this->code])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'tag_number', $this->tag_number]);
+            ->andFilterWhere(['like', 'model_or_part_number', $this->model_or_part_number]);
 
         return $dataProvider;
     }

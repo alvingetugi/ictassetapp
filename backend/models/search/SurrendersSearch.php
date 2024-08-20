@@ -18,7 +18,7 @@ class SurrendersSearch extends Surrenders
     {
         return [
             [['id', 'categoryID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
-            [['code', 'surrenderdate', 'comments', 'modelID', 'serialnumber','userID'], 'safe'],
+            [['code', 'surrenderdate', 'comments', 'modelID', 'serialnumber', 'accessorylistID', 'userID'], 'safe'],
         ];
     }
 
@@ -78,6 +78,7 @@ class SurrendersSearch extends Surrenders
             'categoryID' => $this->categoryID,
             // 'modelID' => $this->modelID,
             // 'serialnumber' => $this->serialnumber,
+            // 'accessorylistID' => $this->accessorylistID,
             // 'userID' => $this->userID,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

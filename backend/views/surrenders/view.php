@@ -60,6 +60,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return User::findOne(['id'=>$data->userID])->username;
                 }
             ],
+            'accessorylistID',
             'comments',
             'created_at:datetime',
             'updated_at:datetime',

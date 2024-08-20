@@ -65,6 +65,8 @@ use yii\widgets\ActiveForm;
         ]); ?>
 </div>
 
+<?= $form->field($model, 'accessorylistID')->textInput() ?>
+
 </div>
 
 <?= $form->field($model, 'userID')->dropDownList(        

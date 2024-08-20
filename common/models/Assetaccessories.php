@@ -43,7 +43,7 @@ class Assetaccessories extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'accessorylistID' => 'Accessorylist ID',
+            'accessorylistID' => 'Accessory',
             'assetID' => 'Asset ID',
         ];
     }

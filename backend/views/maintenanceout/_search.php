@@ -27,6 +27,8 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'serialnumber') ?>
 
+    <?php // echo $form->field($model, 'accessorylistID') ?>
+
     <?php // echo $form->field($model, 'userID') ?>
 
     <?php // echo $form->field($model, 'comments') ?>

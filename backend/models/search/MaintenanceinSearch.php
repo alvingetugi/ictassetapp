@@ -17,7 +17,7 @@ class MaintenanceinSearch extends Maintenancein
     public function rules()
     {
         return [
-            [['id', 'categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['id', 'categoryID', 'modelID', 'serialnumber', 'accessorylistID', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code', 'inwarddate', 'comments'], 'safe'],
         ];
     }
@@ -63,6 +63,7 @@ class MaintenanceinSearch extends Maintenancein
             'categoryID' => $this->categoryID,
             'modelID' => $this->modelID,
             'serialnumber' => $this->serialnumber,
+            'accessorylistID' => $this->accessorylistID,
             'userID' => $this->userID,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

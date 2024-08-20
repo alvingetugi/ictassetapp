@@ -66,6 +66,8 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
+    <?= $form->field($model, 'accessorylistID')->textInput() ?>
+
     <?= $form->field($model, 'userID')->dropDownList(        
         ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
         ['prompt' => 'Select Staff', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]

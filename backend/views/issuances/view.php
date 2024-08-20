@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Ictassets::findOne(['id'=>$data->serialnumber])->name;
                 }
             ],
+            'accessorylistID',
             'user.displayName',
             'comments',
             'created_at:datetime',

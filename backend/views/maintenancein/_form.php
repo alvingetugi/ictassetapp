@@ -22,6 +22,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'serialnumber')->textInput() ?>
 
+    <?= $form->field($model, 'accessorylistID')->textInput() ?>
+
     <?= $form->field($model, 'userID')->textInput() ?>
 
     <?= $form->field($model, 'comments')->textInput(['maxlength' => true]) ?>
