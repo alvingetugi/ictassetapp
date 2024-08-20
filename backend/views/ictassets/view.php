@@ -117,8 +117,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'label' => 'Tag Number',
-                'attribute' => 'accessorylist.tag_number'
+                'label' => 'Model or part Number',
+                'attribute' => 'accessorylist.model_or_part_number'
             ],
             [
                 'label' => 'Accessory',
