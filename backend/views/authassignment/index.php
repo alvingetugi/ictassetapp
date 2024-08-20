@@ -1,19 +1,19 @@
 <?php
 
-use common\models\Accessorylist;
+use common\models\Authassignment;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /** @var yii\web\View $this */
-/** @var backend\models\search\AccessorylistSearch $searchModel */
+/** @var backend\models\search\AuthassignmentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Accessories';
+$this->title = 'Role Assignments';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="accessorylist-index">
+<div class="authassignment-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,14 +29,17 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            // 'id',
-            // 'code',
-            'name',
-            'tag_number',
+            'item_name',
+            [
+                'label' => 'Staff',
+                'attribute' => 'user_id',
+                'value' => 'user.displayName'
+            ],
+            // 'created_at',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Accessorylist $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
+                'urlCreator' => function ($action, Authassignment $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'item_name' => $model->item_name, 'user_id' => $model->user_id]);
                  }
             ],
         ],

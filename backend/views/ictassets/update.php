@@ -1,11 +1,12 @@
 <?php
 
+use common\models\Assetmodels;
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var common\models\Ictassets $model */
 
-$this->title = 'Update Ictassets: ' . $model->name;
+$this->title = 'Update Asset: ' . Assetmodels::findOne(['id'=>$model->modelID])->name.'-'.$model->name;;
 $this->params['breadcrumbs'][] = ['label' => 'Ictassets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

@@ -48,7 +48,7 @@ class Accessorylist extends \yii\db\ActiveRecord
             'id' => 'ID',
             'code' => 'Code',
             'name' => 'Name',
-            'tag_number' => 'Tag Number',
+            'tag_number' => 'Tag or serial',
         ];
     }
 

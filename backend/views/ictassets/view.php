@@ -18,7 +18,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Ictassets $model */
 
-$this->title = Assetmodels::findOne(['id'=>$model->modelID])->name.'-'.$model->name;;
+$this->title = Assetmodels::findOne(['id'=>$model->modelID])->name.'-'.$model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Ictassets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);

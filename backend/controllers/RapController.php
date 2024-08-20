@@ -79,7 +79,7 @@ class RapController extends Controller
             if ($this->request->isPost) {
                 if ($model->load($this->request->post()) && $model->save()) {
                     $scheme = Schemes::find()->where(['id'=>$model->schemeID])->one();
-                    $model->name = 'RAP' . '-' . $model->id . '-' . $scheme->name;
+                    $model->name = 'RAP' . '-' . $model->id . '-' . $scheme->ref;
                     $model->save();
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

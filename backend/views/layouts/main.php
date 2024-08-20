@@ -95,6 +95,10 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Assets</span>
                             </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/accessorylist/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Accessory List</span>
+                            </a>
                         </div>
                     </div>
                 </li>
@@ -166,6 +170,18 @@ AppAsset::register($this);
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/departments/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Departments</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/authassignment/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Roles</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/authitem/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Authorizations</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/authitemchild/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Authorization Sets</span>
                             </a>
                         </div>
                     </div>
