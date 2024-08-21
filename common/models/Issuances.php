@@ -16,7 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $categoryID
  * @property int $modelID
  * @property int $serialnumber
- * @property int|null $accessorylistID 
+ * @property string|null $accessorylistID 
  * @property int $userID
  * @property string $comments
  * @property int|null $created_at
@@ -52,10 +52,11 @@ class Issuances extends \yii\db\ActiveRecord
     {
         return [
             [['issuancedate','categoryID', 'modelID', 'serialnumber', 'userID', 'comments'], 'required'],
-            [['issuancedate'], 'safe'],
-            [['categoryID', 'modelID', 'serialnumber', 'accessorylistID', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['issuancedate', 'accessorylistID'], 'safe'],
+            [['categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 50],
             [['comments'], 'string', 'max' => 255],
+            // [['accessorylistID'], 'string', 'max' => 300],
             [['code'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],

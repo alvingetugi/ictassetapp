@@ -1,10 +1,12 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Assetcategories;
 use common\models\Assetmodels;
 use common\models\Ictassets;
 use common\models\User;
 use kartik\depdrop\DepDrop;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -19,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'code')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'ISS' . '-' . $model->id : $model->code])->label(false) ?>
     <div class="row">
         <div class="col">
             <?= $form->field($model, 'issuancedate')->widget(\kartik\date\DatePicker::classname(), [
@@ -37,14 +39,14 @@ use yii\widgets\ActiveForm;
         <div class="col">
             <?= $form->field($model, 'categoryID')->dropDownList(
                 Assetcategories::getCategories(),
-                ['prompt' => 'Select Category', 'id' => 'cat-id', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]
+                ['prompt' => 'Select Category', 'id' => 'cat-id']
             ) ?>
         </div>
 
         <div class="col">
             <?= $form->field($model, 'modelID')->widget(DepDrop::classname(), [
                 'data' => Assetmodels::getModelListissuance($model->categoryID),
-                'options' => ['id' => 'model-id', 'prompt' => 'Select Model', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord],
+                'options' => ['id' => 'model-id', 'prompt' => 'Select Model'],
                 'pluginOptions' => [
                     'depends' => ['cat-id'],
                     'placeholder' => 'Select Model',
@@ -56,7 +58,7 @@ use yii\widgets\ActiveForm;
         <div class="col">
             <?= $form->field($model, 'serialnumber')->widget(DepDrop::classname(), [
                 'data' => Ictassets::getSerialsList($model->categoryID, $model->modelID),
-                'options' => ['id' => 'serialnumber', 'prompt' => 'Select Serial Number', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord],
+                'options' => ['id' => 'serialnumber', 'prompt' => 'Select Serial Number'],
                 'pluginOptions' => [
                     'depends' => ['cat-id', 'model-id'],
                     'placeholder' => 'Select Serial Number',
@@ -66,14 +68,21 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?= $form->field($model, 'accessorylistID')->textInput() ?>
+    <?=  $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),
+        'options' => ['placeholder' => 'Select accessory', 'multiple' => true],
+        'pluginOptions' => [
+            'tags' => true,
+            'maximumInputLength' => 10
+        ],
+    ]) ?>
 
     <?= $form->field($model, 'userID')->dropDownList(        
         ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
-        ['prompt' => 'Select Staff', 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]
+        ['prompt' => 'Select Staff']
     ); ?>
 
-    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
+    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6]) ?>
 
 
     <div class="form-group">

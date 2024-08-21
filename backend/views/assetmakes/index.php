@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Make', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -38,11 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             
             [
-                'class' => ActionColumn::className(),
-                'template'=>'{view}{update}',
-                'urlCreator' => function ($action, Assetmakes $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
         ],
     ]); ?>

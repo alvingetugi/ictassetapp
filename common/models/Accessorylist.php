@@ -69,4 +69,9 @@ class Accessorylist extends \yii\db\ActiveRecord
     {
         return new \common\models\query\AccessorylistQuery(get_called_class());
     }
+
+    public static function getAccessories()
+    {
+        return self::find()->select(['name', 'id'])->indexBy('id')->column();
+    }
 }

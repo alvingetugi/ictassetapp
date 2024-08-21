@@ -26,7 +26,8 @@
         "wbraganca/yii2-dynamicform": "2.0.1",
         "kartik-v/yii2-widget-datepicker": "dev-master",
         "kartik-v/yii2-widget-select2": "dev-master",
-        "kartik-v/yii2-widget-fileinput": "dev-master"
+        "kartik-v/yii2-widget-fileinput": "dev-master",
+        "2amigos/yii2-multi-select-widget": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Accessorylist $model */
 
-$this->title = 'Create Accessorylist';
+$this->title = 'Create Accessory';
 $this->params['breadcrumbs'][] = ['label' => 'Accessorylists', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

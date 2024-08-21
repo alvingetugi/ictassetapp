@@ -34,10 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'model_or_part_number',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Accessorylist $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
         ],
     ]); ?>
