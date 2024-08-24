@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'ISS' . '-' . $model->id : $model->code])->label(false) ?>
+    <?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'ISS' . '_' . Yii::$app->security->generateRandomString(5) . '_' . time() : $model->code])->label(false) ?>
     <div class="row">
         <div class="col">
             <?= $form->field($model, 'issuancedate')->widget(\kartik\date\DatePicker::classname(), [

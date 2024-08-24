@@ -1,10 +1,12 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Assetcategories;
 use common\models\Assetmodels;
 use common\models\Ictassets;
 use common\models\User;
 use kartik\depdrop\DepDrop;
+use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -19,7 +21,7 @@ use yii\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($model, 'code')->hiddenInput()->label(false) ?>
+<?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'SUR' . '_' . Yii::$app->security->generateRandomString(5) . '_' . time() : $model->code])->label(false) ?>
 <div class="row">
 <div class="col">
         <?= $form->field($model, 'surrenderdate')->widget(\kartik\date\DatePicker::classname(), [
@@ -65,7 +67,14 @@ use yii\widgets\ActiveForm;
         ]); ?>
 </div>
 
-<?= $form->field($model, 'accessorylistID')->textInput() ?>
+<?=  $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),
+        'options' => ['placeholder' => 'Select accessory', 'multiple' => true],
+        'pluginOptions' => [
+            'tags' => true,
+            'maximumInputLength' => 10
+        ],
+    ]) ?>
 
 </div>
 

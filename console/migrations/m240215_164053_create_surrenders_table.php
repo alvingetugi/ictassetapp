@@ -19,7 +19,7 @@ class m240215_164053_create_surrenders_table extends Migration
             'categoryID' => $this->integer()->notNull(),
             'modelID' => $this->integer()->notNull(),
             'serialnumber' => $this->integer()->notNull(),
-            'accessorylistID' => $this->integer(),
+            'accessorylistID' => $this->string(300),
             'userID' => $this->integer()->notNull(),
             'comments' => $this->string(255)->notNull(),
             'created_at' => $this->integer(11),

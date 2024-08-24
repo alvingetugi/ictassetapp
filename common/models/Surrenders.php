@@ -15,7 +15,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int $categoryID
  * @property int $modelID
  * @property int $serialnumber
- *  @property int|null $accessorylistID 
+ * @property string|null $accessorylistID 
  * @property int $userID
  * @property string $comments
  * @property int|null $created_at
@@ -51,8 +51,8 @@ class Surrenders extends \yii\db\ActiveRecord
     {
         return [
             [['surrenderdate', 'categoryID', 'modelID', 'serialnumber', 'userID', 'comments'], 'required'],
-            [['surrenderdate'], 'safe'],
-            [['categoryID', 'modelID', 'serialnumber', 'accessorylistID', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
+            [['surrenderdate', 'accessorylistID'], 'safe'],
+            [['categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 50],
             [['comments'], 'string', 'max' => 255],
             [['code'], 'unique'],

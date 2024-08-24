@@ -71,12 +71,14 @@ class SurrendersController extends Controller
         $model = new Surrenders();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                $model->code = 'SURR' . '-' . $model->id;
+            if ($model->load($this->request->post())) {
+                $model->accessorylistID = implode(',', $model->accessorylistID);        
                 $model->save();
+               
                 $asset = Ictassets::find()->where(['id'=>$model->serialnumber])->one();//finds the asset being issued based on serial number
                 $asset->assetstatus = 3;//sets the asset status to Surrendered
                 $asset->save();
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -99,13 +101,17 @@ class SurrendersController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $model->accessorylistID = implode(',', $model->accessorylistID);        
+            $model->save();
 
-        return $this->render('update', [
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            $model->accessorylistID= explode(',', $model->accessorylistID);
+            return $this->render('update', [
             'model' => $model,
         ]);
+        }
     }
 
     /**

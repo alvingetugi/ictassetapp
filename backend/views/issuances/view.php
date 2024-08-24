@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Assetcategories;
 use common\models\Assetmodels;
 use common\models\Ictassets;
@@ -54,7 +55,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Ictassets::findOne(['id'=>$data->serialnumber])->name;
                 }
             ],
-            'accessorylistID',
+            [
+                'attribute' => 'accessorylistID',
+                'value' => $model->getAccessoryListNames("\n"),
+            ],
             'user.displayName',
             'comments',
             'created_at:datetime',

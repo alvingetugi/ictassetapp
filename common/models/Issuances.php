@@ -56,7 +56,6 @@ class Issuances extends \yii\db\ActiveRecord
             [['categoryID', 'modelID', 'serialnumber', 'userID', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 50],
             [['comments'], 'string', 'max' => 255],
-            // [['accessorylistID'], 'string', 'max' => 300],
             [['code'], 'unique'],
             [['created_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['created_by' => 'id']],
             [['updated_by'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['updated_by' => 'id']],
@@ -129,4 +128,25 @@ class Issuances extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'userID']);
     }
+
+    public static function getAccessoryName($code)
+    {
+        if (array_key_exists($code, Accessorylist::find()->select(['name', 'id'])->indexBy('id')->column())) {
+            return Accessorylist::find()->select(['name', 'id'])->indexBy('id')->column()[$code];
+        } else {
+            return $code;
+        }
+    }
+
+    public function getAccessoryListNames($glue)
+    {
+        $codes = preg_split('/[\s,]+/', $this->accessorylistID);
+        $names = [];
+        foreach($codes as $code) {
+            $names[] = self::getAccessoryName($code);
+        }
+        return implode($glue, $names);
+    }
+
+
 }
