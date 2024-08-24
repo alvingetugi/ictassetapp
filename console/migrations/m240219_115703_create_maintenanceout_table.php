@@ -19,7 +19,7 @@ class m240219_115703_create_maintenanceout_table extends Migration
             'categoryID' => $this->integer()->notNull(),
             'modelID' => $this->integer()->notNull(),
             'serialnumber' => $this->integer()->notNull(),
-            'accessorylistID' => $this->integer(),
+            'accessorylistID' => $this->string(300),
             'userID' => $this->integer()->notNull(),
             'comments' => $this->string(255)->notNull(),
             'created_at' => $this->integer(11),
