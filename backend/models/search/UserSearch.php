@@ -38,7 +38,7 @@ class UserSearch extends User
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $pageSize = 10)
     {
         $query = User::find();
 
@@ -46,6 +46,9 @@ class UserSearch extends User
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => $pageSize,  // no pagination if it is 0
+                ],
         ]);
 
         $this->load($params);

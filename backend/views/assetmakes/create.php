@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Assetmakes $model */
 
-$this->title = 'Create Makes';
+$this->title = 'Create Make';
 $this->params['breadcrumbs'][] = ['label' => 'Assetmakes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

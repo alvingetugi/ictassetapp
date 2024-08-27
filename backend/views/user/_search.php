@@ -15,16 +15,6 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'username') ?>
-
-    <?= $form->field($model, 'auth_key') ?>
-
-    <?= $form->field($model, 'password_hash') ?>
-
-    <?= $form->field($model, 'password_reset_token') ?>
-
     <?php // echo $form->field($model, 'email') ?>
 
     <?php // echo $form->field($model, 'status') ?>
@@ -42,6 +32,11 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'department') ?>
 
     <div class="form-group">
+        <?= Html::label('Page Size', ['class' => 'control-label']) ?>
+        <?= Html::dropDownList('pageSize', $pageSize, 
+            [0 => 'ALL', 10 => '10', 20 => '20', 50 => '50'],
+            ['class' => 'form-control']) ?>
+ 
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>

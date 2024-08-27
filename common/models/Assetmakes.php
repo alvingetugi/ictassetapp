@@ -36,7 +36,6 @@ class Assetmakes extends \yii\db\ActiveRecord
             [['categoryID'], 'integer'],
             [['code'], 'string', 'max' => 50],
             [['name'], 'string', 'max' => 255],
-            [['name'], 'unique'],
             [['code'], 'unique'],
             [['categoryID'], 'exist', 'skipOnError' => true, 'targetClass' => Assetcategories::class, 'targetAttribute' => ['categoryID' => 'id']],
         ];

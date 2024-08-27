@@ -38,14 +38,16 @@ class UserController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex($pageSize = 10)
     {
         $searchModel = new UserSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider = $searchModel->search($this->request->queryParams, $pageSize);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'pageSize' => $pageSize,
+
         ]);
     }
 

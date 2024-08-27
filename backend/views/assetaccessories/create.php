@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var common\models\Assetaccessories $model */
 
-$this->title = 'Create Assetaccessories';
+$this->title = 'Create Accessory';
 $this->params['breadcrumbs'][] = ['label' => 'Assetaccessories', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

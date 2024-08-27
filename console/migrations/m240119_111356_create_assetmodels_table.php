@@ -15,7 +15,7 @@ class m240119_111356_create_assetmodels_table extends Migration
         $this->createTable('{{%assetmodels}}', [
             'id' => $this->primaryKey(),
             'code' => $this->string(50)->notNull()->unique(),
-            'name' => $this->string(255)->notNull()->unique(),
+            'name' => $this->string(255)->notNull(),
             'categoryID' => $this->integer()->notNull(),
             'makeID' => $this->integer()->notNull(), 
         ]);

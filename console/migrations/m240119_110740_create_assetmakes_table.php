@@ -15,7 +15,7 @@ class m240119_110740_create_assetmakes_table extends Migration
         $this->createTable('{{%assetmakes}}', [
             'id' => $this->primaryKey(),
             'code' => $this->string(50)->notNull()->unique(),
-            'name' => $this->string(255)->notNull()->unique(),
+            'name' => $this->string(255)->notNull(),
             'categoryID' => $this->integer()->notNull(),
         ]);
 

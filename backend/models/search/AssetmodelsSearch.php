@@ -78,7 +78,7 @@ class AssetmodelsSearch extends Assetmodels
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'assetmodels.name', $this->name])
             ->andFilterWhere(['like', 'assetcategories.name', $this->categoryID])
             ->andFilterWhere(['like', 'assetmakes.name', $this->makeID]);
 
