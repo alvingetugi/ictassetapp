@@ -69,11 +69,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ], 
             [
                 'label' => 'Schedule Amount',
-                'attribute' => 'expectedamount'
+                'attribute' => 'total'
             ], 
             [
                 'label' => 'Paid',
-                'attribute' => 'totalpayments'
+                'attribute' => 'totalpaid'
             ], 
             [
                 'label' => 'Balance',

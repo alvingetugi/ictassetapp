@@ -9,6 +9,7 @@ use common\models\Schemes;
 use backend\models\search\SchemesSearch;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
+Use yii\db\Expression;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -59,20 +60,78 @@ class SchemesController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
-    {
-            $schemeraps = (new Query())
-                ->select(['r.id AS rap_id', 'r.schemeID AS scheme_id', 'r.typeID AS typeID', 'r.status AS status', 'r.amount As amount', 'r.startdate as startdate', 'sum(s.expectedamount) AS expectedamount'])
-                ->from(['rap r'])
-                ->join('LEFT JOIN', 'rapschedules s', 'r.id = s.rapID')
-                ->where(['r.schemeID'=> $id])
-                ->groupBy('r.id, r.schemeID, r.typeID, r.status, r.amount, r.startdate')
-                ->all();
+    {            
 
         // Get all raps
-        $query = new Query();        
-        $query = Rapreport::find()
-         ->select('*')
-         ->where(['schemeID'=> $id]);
+        $raps = (new Query())
+         ->select([
+          'rap.id as rapID', 
+          'rap.schemeID',
+          'rap.name AS rapref', 
+          'raptypes.name AS raptype', 
+          new Expression("CASE WHEN rap.status = 1 THEN 'Active' ELSE 'Inactive' END AS rapstatus"),
+          'rap.amount AS deficit', 
+          'rap.startdate', 
+          'rap.enddate'
+        ])
+        ->from('raptypes')
+        ->join('INNER JOIN', 'rap', 'raptypes.id = rap.typeID');
+
+         // Get all schedules
+        $schedules = (new Query())
+        ->select([
+         'id', 
+         'rapID AS schedulerapID',
+         new Expression('SUM(expectedamount) AS totalexpectedamount'),
+       ])
+       ->from('rapschedules')
+       ->groupBy('id, rapID');
+
+       // Get all raps with their schedules
+       $rapswithschedules = (new Query())
+       ->select([
+        'raps.rapID',
+        'raps.schemeID',
+        'raps.rapref',
+        'raps.raptype',
+        'raps.rapstatus',
+        'raps.deficit',
+        'raps.startdate',
+        'raps.enddate',
+        new Expression('SUM(ISNULL(schedules.totalexpectedamount, 0)) AS total')
+      ])
+      ->from(['raps' => $raps])
+      ->join('FULL OUTER JOIN', ['schedules' => $schedules], 'raps.rapID = schedules.schedulerapID')
+      ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate']);
+       
+      // Get all payments
+      $payments = (new Query())
+      ->select([
+       'id', 
+       'rapID',
+       'scheduleID',
+       new Expression('SUM(amount) AS payments')
+     ])
+     ->from('rappayments')
+     ->groupBy('id, rapID, scheduleID');
+
+     // Get all raps with their payments
+     $rapswithpayments = (new Query())
+     ->select([
+      'rapswithschedules.rapID',
+      'rapswithschedules.schemeID',
+      'rapswithschedules.rapref',
+      'rapswithschedules.raptype',
+      'rapswithschedules.rapstatus',
+      'rapswithschedules.deficit',
+      'rapswithschedules.startdate',
+      'rapswithschedules.enddate',
+      'rapswithschedules.total',
+      new Expression('SUM(ISNULL(payments.payments, 0)) AS totalpayments')
+    ])
+    ->from(['payments' => $payments])
+    ->join('FULL OUTER JOIN', ['rapswithschedules' => $rapswithschedules], 'payments.rapID = rapswithschedules.rapID')
+    ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -83,7 +142,6 @@ class SchemesController extends Controller
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'schemeraps' => $schemeraps,
             'dataProvider' => $dataProvider,
         ]);
     }
