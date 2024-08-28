@@ -3,6 +3,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use kartik\tabs\TabsX;
 
 /** @var yii\web\View $this */
 /** @var common\models\Schemes $model */
@@ -41,45 +42,137 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'label' => 'RAP',
-                'attribute' => 'rapref'
-            ],
-            [
-                'label' => 'Type',
-                'attribute' => 'raptype'
-            ],
-            [
-                'label' => 'Status',
-                'attribute' => 'rapstatus'
-            ],
-            [
-                'label' => 'Deficit',
-                'attribute' => 'deficit'
-            ],
-            [
-                'label' => 'Start',
-                'attribute' => 'startdate'
-            ], 
-            [
-                'label' => 'Schedule Amount',
-                'attribute' => 'expectedamount'
-            ], 
-            [
-                'label' => 'Paid',
-                'attribute' => 'totalpayments'
-            ], 
-            [
-                'label' => 'Balance',
-                'attribute' => 'balance'
-            ], 
+<?= TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+    'align' => TabsX::ALIGN_LEFT,
+    'items' => [
+        [
+            'label' => 'Remedial Action Plans',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+        
+                    [
+                        'label' => 'REF',
+                        'attribute' => 'rapref'
+                    ],
+                    [
+                        'label' => 'Type',
+                        'attribute' => 'raptype'
+                    ],
+                    [
+                        'label' => 'Status',
+                        'attribute' => 'rapstatus'
+                    ],
+                    [
+                        'label' => 'Deficit',
+                        'attribute' => 'deficit'
+                    ],
+                    [
+                        'label' => 'Start',
+                        'attribute' => 'startdate'
+                    ], 
+                    [
+                        'label' => 'End',
+                        'attribute' => 'enddate'
+                    ],
+                ],
+            ]),
+            'active' => true
         ],
-    ]); ?>
+        [
+            'label' => 'RAP Schedules',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+        
+                    [
+                        'label' => 'REF',
+                        'attribute' => 'rapref'
+                    ],
+                    [
+                        'label' => 'Type',
+                        'attribute' => 'raptype'
+                    ],
+                    [
+                        'label' => 'Deficit',
+                        'attribute' => 'deficit'
+                    ],
+                    [
+                        'label' => 'Schedule Amount',
+                        'attribute' => 'expectedamount'
+                    ],
+                    
+                ],
+            ]),
+
+        ],
+        [
+            'label' => 'Report',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+        
+                    [
+                        'label' => 'RAP',
+                        'attribute' => 'rapref'
+                    ],
+                    [
+                        'label' => 'Type',
+                        'attribute' => 'raptype'
+                    ],
+                    [
+                        'label' => 'Status',
+                        'attribute' => 'rapstatus'
+                    ],
+                    [
+                        'label' => 'Deficit',
+                        'attribute' => 'deficit'
+                    ],
+                    [
+                        'label' => 'Start',
+                        'attribute' => 'startdate'
+                    ], 
+                    [
+                        'label' => 'Schedule Amount',
+                        'attribute' => 'expectedamount'
+                    ], 
+                    [
+                        'label' => 'Paid',
+                        'attribute' => 'totalpayments'
+                    ], 
+                    [
+                        'label' => 'Balance',
+                        'attribute' => 'balance'
+                    ], 
+                ],
+            ]),
+        ],
+        
+        [
+            'label' => 'Dropdown',
+            'items' => [
+                 [
+                     'label' => 'DropdownA',
+                     'content' => 'DropdownA, Anim pariatur cliche...',
+                 ],
+                 [
+                     'label' => 'DropdownB',
+                     'content' => 'DropdownB, Anim pariatur cliche...',
+                 ],
+            ],
+        ],
+    ],
+    ]) ?>
+
 
 </div>

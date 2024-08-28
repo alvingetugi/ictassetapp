@@ -27,7 +27,9 @@
         "kartik-v/yii2-widget-datepicker": "dev-master",
         "kartik-v/yii2-widget-select2": "dev-master",
         "kartik-v/yii2-widget-fileinput": "dev-master",
-        "2amigos/yii2-multi-select-widget": "*"
+        "2amigos/yii2-multi-select-widget": "*",
+        "kartik-v/yii2-tabs-x": "dev-master",
+        "kartik-v/yii2-bootstrap5-dropdown": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
