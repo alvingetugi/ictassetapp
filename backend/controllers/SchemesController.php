@@ -98,7 +98,7 @@ class SchemesController extends Controller
         'raps.deficit',
         'raps.startdate',
         'raps.enddate',
-        new Expression('SUM(ISNULL(schedules.totalexpectedamount, 0)) AS total')
+        new Expression('SUM(ISNULL(schedules.totalexpectedamount, 0)) AS expectedamount')
       ])
       ->from(['raps' => $raps])
       ->join('FULL OUTER JOIN', ['schedules' => $schedules], 'raps.rapID = schedules.schedulerapID')
@@ -126,12 +126,30 @@ class SchemesController extends Controller
       'rapswithschedules.deficit',
       'rapswithschedules.startdate',
       'rapswithschedules.enddate',
-      'rapswithschedules.total',
+      'rapswithschedules.expectedamount',
       new Expression('SUM(ISNULL(payments.payments, 0)) AS totalpayments')
     ])
     ->from(['payments' => $payments])
     ->join('FULL OUTER JOIN', ['rapswithschedules' => $rapswithschedules], 'payments.rapID = rapswithschedules.rapID')
-    ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate']);
+    ->groupBy(['rapswithschedules.rapID', 'rapswithschedules.schemeID', 'rapswithschedules.rapref', 'rapswithschedules.raptype', 'rapswithschedules.rapstatus', 'rapswithschedules.deficit', 'rapswithschedules.startdate', 'rapswithschedules.enddate', 'rapswithschedules.expectedamount']);
+
+    // Get a full report
+    $query = (new Query())
+    ->select([
+     'rapID',
+     'schemeID',
+     'rapref',
+     'raptype',
+     'rapstatus',
+     new Expression("FORMAT(deficit, 'N', 'en-us') AS deficit"),
+     'startdate',
+     'enddate',
+     new Expression("FORMAT(expectedamount, 'N', 'en-us') AS expectedamount"),
+     new Expression("FORMAT(totalpayments, 'N', 'en-us') AS totalpayments"),
+     new Expression("FORMAT(deficit - totalpayments, 'N', 'en-us') AS balance")
+   ])
+   ->from(['rapswithpayments' => $rapswithpayments])
+   ->where(['schemeID'=> $id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
