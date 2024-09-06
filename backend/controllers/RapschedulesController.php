@@ -74,16 +74,29 @@ class RapschedulesController extends Controller
         ->join('INNER JOIN', 'rappayments', 'rapschedules.id = rappayments.scheduleID');
 
         // Get all schedules with their running balances
-       $query = (new Query())
+       $runningbalance = (new Query())
        ->select([
         'scheduleID',
         'duedate', 
         'paymentdate',
-        'amount',
-        'comments',
+        new Expression("CASE WHEN ROW_NUMBER() OVER (ORDER BY paymentdate, scheduleID) = 1 THEN expectedamount WHEN comments = 'Interest' THEN +amount ELSE 0 END AS debits"),
+        new Expression("CASE WHEN comments = 'Interest' THEN 0 ELSE +amount END AS credits"),
+        new Expression("CASE WHEN ROW_NUMBER() OVER (ORDER BY paymentdate, scheduleID) = 1 THEN 'Openning Balance' ELSE comments END AS comments"),
         new Expression("expectedamount + SUM(CASE WHEN comments = 'Payment' THEN -amount WHEN comments = 'Interest' THEN +amount ELSE 0 END) OVER (PARTITION BY scheduleID ORDER BY paymentdate) AS runningbalance")
     ])
-    ->from(['scheduleswithpayments' => $scheduleswithpayments])
+    ->from(['scheduleswithpayments' => $scheduleswithpayments]);
+     
+     $query = (new Query())
+     ->select([
+        'scheduleID',
+        'duedate', 
+        'paymentdate',
+        'debits',
+        'credits',
+        'comments',
+        'runningbalance'
+    ])
+    ->from(['runningbalance' => $runningbalance])
     ->where(['scheduleID'=> $id]);
 
         $dataProvider = new ActiveDataProvider([

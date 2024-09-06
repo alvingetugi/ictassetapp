@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
     'align' => TabsX::ALIGN_LEFT,
     'items' => [
         [
-            'label' => 'Trial Balance',
+            'label' => 'Schedule Statement',
             'headerOptions' => ['style'=>'font-weight:bold'],
             'content' => GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -69,11 +69,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'label' => 'Debits',
-                        'attribute' => 'amount'
+                        'attribute' => 'debits'
                     ],
                     [
                         'label' => 'Credits',
-                        'attribute' => 'amount'
+                        'attribute' => 'credits'
                     ],
                     [
                         'label' => 'Balance',
