@@ -9,6 +9,9 @@ use common\models\Schemes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use yii\db\Query;
+Use yii\db\Expression;
 
 /**
  * RapschedulesController implements the CRUD actions for Rapschedules model.
@@ -57,8 +60,42 @@ class RapschedulesController extends Controller
      */
     public function actionView($id)
     {
+        // Get all raps with payments
+        $scheduleswithpayments = (new Query())
+         ->select([
+          'rapschedules.id AS scheduleID',
+          'rapschedules.duedate', 
+          'rapschedules.expectedamount',
+          'rappayments.paymentdate',
+          'rappayments.amount',
+          'rappayments.comments'
+        ])
+        ->from('rapschedules')
+        ->join('INNER JOIN', 'rappayments', 'rapschedules.id = rappayments.scheduleID');
+
+        // Get all schedules with their running balances
+       $query = (new Query())
+       ->select([
+        'scheduleID',
+        'duedate', 
+        'paymentdate',
+        'amount',
+        'comments',
+        new Expression("expectedamount + SUM(CASE WHEN comments = 'Payment' THEN -amount WHEN comments = 'Interest' THEN +amount ELSE 0 END) OVER (PARTITION BY scheduleID ORDER BY paymentdate) AS runningbalance")
+    ])
+    ->from(['scheduleswithpayments' => $scheduleswithpayments])
+    ->where(['scheduleID'=> $id]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'dataProvider' => $dataProvider,
         ]);
     }
 

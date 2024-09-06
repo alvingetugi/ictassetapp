@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
 use kartik\tabs\TabsX;
 
@@ -107,6 +108,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'label' => 'Schedule Amount',
                         'attribute' => 'expectedamount'
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template' => '{view}',
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                    return (Html::a('View', Url::to(['rapschedules/view', 'id' => $model['scheduleID']]), ['class' => 'btn btn-primary']));
+                            },
+                        ],
                     ],
                     
                 ],
