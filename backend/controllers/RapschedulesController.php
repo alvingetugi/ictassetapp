@@ -64,6 +64,7 @@ class RapschedulesController extends Controller
         $scheduleswithpayments = (new Query())
          ->select([
           'rapschedules.id AS scheduleID',
+          'rapschedules.rapscheduletypeID',
           'rapschedules.duedate', 
           'rapschedules.expectedamount',
           'rappayments.paymentdate',
@@ -77,6 +78,7 @@ class RapschedulesController extends Controller
        $runningbalance = (new Query())
        ->select([
         'scheduleID',
+        'rapscheduletypeID',
         'duedate', 
         'paymentdate',
         new Expression("CASE WHEN ROW_NUMBER() OVER (PARTITION BY scheduleID ORDER BY paymentdate) = 1 THEN expectedamount 

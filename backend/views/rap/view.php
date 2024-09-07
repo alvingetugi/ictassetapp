@@ -2,6 +2,8 @@
 
 use common\models\Raptypes;
 use common\models\Schemes;
+use kartik\tabs\TabsX;
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -75,6 +77,43 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_by',
             // 'updated_by',
         ],
+    ]) ?>
+
+<?= TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+    'align' => TabsX::ALIGN_LEFT,
+    'items' => [
+        [
+            'label' => 'Statement',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                           
+                    [
+                        'label' => 'Description',
+                        'attribute' => 'description'
+                    ],
+                    [
+                        'label' => 'Debits',
+                        'attribute' => 'debits'
+                    ],
+                    [
+                        'label' => 'Credits',
+                        'attribute' => 'credits'
+                    ],
+                    [
+                        'label' => 'Balance',
+                        'attribute' => 'balance'
+                    ],
+                ],
+            ]),
+            'active' => true
+        ],    
+
+    ],
     ]) ?>
 
 </div>
