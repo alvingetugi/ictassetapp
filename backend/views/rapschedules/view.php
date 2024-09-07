@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Rap;
+use common\models\Rapscheduletypes;
 use kartik\tabs\TabsX;
 use yii\grid\GridView;
 use yii\helpers\Html;
@@ -34,9 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             // 'id',
             [
-                'label' => 'RAP',
+                'label' => 'Remedial Action Plan',
                 'value' => function ($data){
                     return Rap::findOne(['id'=>$data->rapID])->name;
+                }
+            ],
+            [
+                'label' => 'Schedule Type',
+                'value' => function ($data){
+                    return Rapscheduletypes::findOne(['id'=>$data->rapscheduletypeID])->name;
                 }
             ],
             'name',

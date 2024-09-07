@@ -4,12 +4,12 @@ namespace backend\models\search;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Rapschedules;
+use common\models\Rapscheduletypes;
 
 /**
- * RapschedulesSearch represents the model behind the search form of `common\models\Rapschedules`.
+ * RapscheduletypesSearch represents the model behind the search form of `common\models\Rapscheduletypes`.
  */
-class RapschedulesSearch extends Rapschedules
+class RapscheduletypesSearch extends Rapscheduletypes
 {
     /**
      * {@inheritdoc}
@@ -17,9 +17,8 @@ class RapschedulesSearch extends Rapschedules
     public function rules()
     {
         return [
-            [['id', 'rapID', 'rapscheduletypeID'], 'integer'],
-            [['name', 'duedate', 'comments'], 'safe'],
-            [['expectedamount'], 'number'],
+            [['id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,7 +40,7 @@ class RapschedulesSearch extends Rapschedules
      */
     public function search($params)
     {
-        $query = Rapschedules::find();
+        $query = Rapscheduletypes::find();
 
         // add conditions that should always apply here
 
@@ -60,14 +59,9 @@ class RapschedulesSearch extends Rapschedules
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'rapID' => $this->rapID,
-            'rapscheduletypeID' => $this->rapscheduletypeID,
-            'duedate' => $this->duedate,
-            'expectedamount' => $this->expectedamount,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'comments', $this->comments]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

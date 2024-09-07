@@ -1,6 +1,7 @@
 <?php
 
 use common\models\Rap;
+use common\models\Rapscheduletypes;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -16,6 +17,11 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rapID')->dropDownList(
                 Rap::getRaps(),
                 ['prompt' => 'Select RAP']
+            ) ?>
+
+    <?= $form->field($model, 'rapscheduletypeID')->dropDownList(
+                Rapscheduletypes::getSchedules(),
+                ['prompt' => 'Select Schedule Type']
             ) ?>
 
     <?= $form->field($model, 'name')->hiddenInput()->label(false) ?>

@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var backend\models\search\RapschedulesSearch $model */
+/** @var backend\models\search\RapscheduletypesSearch $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
 
-<div class="rapschedules-search">
+<div class="rapscheduletypes-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -17,17 +17,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'rapID') ?>
-
-    <?= $form->field($model, 'rapscheduletypeID') ?> 
-
     <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'duedate') ?>
-
-    <?= $form->field($model, 'expectedamount') ?>
-
-    <?php // echo $form->field($model, 'comments') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
