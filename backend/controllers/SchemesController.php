@@ -88,12 +88,11 @@ class SchemesController extends Controller
         'raps.deficit',
         'raps.startdate',
         'raps.enddate',
-        'rapschedules.id AS scheduleID',
         new Expression('SUM(ISNULL(rapschedules.expectedamount, 0)) AS expectedamount')
       ])
       ->from(['raps' => $raps])
-      ->join('FULL OUTER JOIN', 'rapschedules', 'raps.rapID = rapschedules.id')
-      ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate', 'rapschedules.id']);
+      ->join('RIGHT JOIN', 'rapschedules', 'raps.rapID = rapschedules.rapID')
+      ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate']);
 
      // Get all raps with their payments
      $payments = (new Query())
@@ -107,19 +106,17 @@ class SchemesController extends Controller
       'schedules.startdate',
       'schedules.enddate',
       'schedules.enddate',
-      'schedules.scheduleID',
       'schedules.expectedamount',
       new Expression('SUM(ISNULL(rappayments.amount, 0)) AS totalpayments')
     ])
     ->from(['schedules' => $schedules])
     ->join('FULL OUTER JOIN', 'rappayments', 'rappayments.rapID = schedules.rapID')
-    ->groupBy(['schedules.rapID', 'schedules.schemeID', 'schedules.rapref', 'schedules.raptype', 'schedules.rapstatus', 'schedules.deficit', 'schedules.startdate', 'schedules.enddate', 'schedules.expectedamount','schedules.scheduleID']);
+    ->groupBy(['schedules.rapID', 'schedules.schemeID', 'schedules.rapref', 'schedules.raptype', 'schedules.rapstatus', 'schedules.deficit', 'schedules.startdate', 'schedules.enddate', 'schedules.expectedamount']);
 
     // Get a full report
     $query = (new Query())
     ->select([
      'rapID',
-     'scheduleID',
      'schemeID',
      'rapref',
      'raptype',
