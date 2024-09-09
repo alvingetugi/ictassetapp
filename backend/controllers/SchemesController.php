@@ -126,7 +126,7 @@ class SchemesController extends Controller
      'enddate',
      new Expression("FORMAT(expectedamount, 'N', 'en-us') AS expectedamount"),
      new Expression("FORMAT(totalpayments, 'N', 'en-us') AS totalpayments"),
-     new Expression("FORMAT(deficit - totalpayments, 'N', 'en-us') AS balance")
+     new Expression("FORMAT(expectedamount - totalpayments, 'N', 'en-us') AS balance")
    ])
    ->from(['payments' => $payments])
    ->where(['schemeID'=> $id]);
