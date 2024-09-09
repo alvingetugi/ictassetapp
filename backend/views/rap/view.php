@@ -91,22 +91,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 // 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-                           
+                      
+                    [
+                        'label' => 'Date',
+                        'attribute' => 'transdate'
+                    ],
                     [
                         'label' => 'Description',
-                        'attribute' => 'description'
+                        'attribute' => 'ref'
                     ],
                     [
-                        'label' => 'Debits',
-                        'attribute' => 'debits'
+                        'label' => 'Debit',
+                        'attribute' => 'debit'
                     ],
                     [
-                        'label' => 'Credits',
-                        'attribute' => 'credits'
+                        'label' => 'Credit',
+                        'attribute' => 'credit'
                     ],
+                    // [
+                    //     'label' => 'Previous Balance',
+                    //     'attribute' => 'openningbalance'
+                    // ],
                     [
-                        'label' => 'Balance',
-                        'attribute' => 'balance'
+                        'label' => 'Closing Balance',
+                        'attribute' => 'closingbalance'
                     ],
                 ],
             ]),

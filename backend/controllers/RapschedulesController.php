@@ -60,59 +60,9 @@ class RapschedulesController extends Controller
      */
     public function actionView($id)
     {
-        // Get all raps with payments
-        $scheduleswithpayments = (new Query())
-         ->select([
-          'rapschedules.id AS scheduleID',
-          'rapschedules.rapscheduletypeID',
-          'rapschedules.duedate', 
-          'rapschedules.expectedamount',
-          'rappayments.paymentdate',
-          'rappayments.amount',
-          'rappayments.comments'
-        ])
-        ->from('rapschedules')
-        ->join('INNER JOIN', 'rappayments', 'rapschedules.id = rappayments.scheduleID');
-
-        // Get all schedules with their running balances
-       $runningbalance = (new Query())
-       ->select([
-        'scheduleID',
-        'rapscheduletypeID',
-        'duedate', 
-        'paymentdate',
-        new Expression("CASE WHEN ROW_NUMBER() OVER (PARTITION BY scheduleID ORDER BY paymentdate) = 1 THEN expectedamount 
-                             WHEN comments = 'Interest' THEN +amount ELSE 0 END AS debits"),
-        new Expression("CASE WHEN comments = 'Interest' THEN 0 ELSE +amount END AS credits"),
-        new Expression("CASE WHEN ROW_NUMBER() OVER (PARTITION BY scheduleID ORDER BY paymentdate) = 1 THEN 'Openning Balance'        
-                             ELSE comments END AS comments"),
-        new Expression("expectedamount + SUM(CASE WHEN comments = 'Payment' THEN -amount WHEN comments = 'Interest' THEN +amount ELSE 0 END) OVER (PARTITION BY scheduleID ORDER BY paymentdate) AS runningbalance")
-    ])
-    ->from(['scheduleswithpayments' => $scheduleswithpayments]);
-     
-     $query = (new Query())
-     ->select([
-        'scheduleID',
-        'duedate', 
-        'paymentdate',
-        'debits',
-        'credits',
-        'comments',
-        'runningbalance'
-    ])
-    ->from(['runningbalance' => $runningbalance])
-    ->where(['scheduleID'=> $id]);
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ]
-        ]);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'dataProvider' => $dataProvider,
+            
         ]);
     }
 

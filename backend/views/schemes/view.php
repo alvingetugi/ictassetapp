@@ -80,48 +80,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'End',
                         'attribute' => 'enddate'
                     ],
-                ],
-            ]),
-            'active' => true
-        ],
-        [
-            'label' => 'RAP Schedules',
-            'headerOptions' => ['style'=>'font-weight:bold'],
-            'content' => GridView::widget([
-                'dataProvider' => $dataProvider,
-                // 'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-        
-                    [
-                        'label' => 'REF',
-                        'attribute' => 'rapref'
-                    ],
-                    [
-                        'label' => 'Type',
-                        'attribute' => 'raptype'
-                    ],
-                    [
-                        'label' => 'Deficit',
-                        'attribute' => 'deficit'
-                    ],
-                    [
-                        'label' => 'Schedule Amount',
-                        'attribute' => 'expectedamount'
-                    ],
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template' => '{view}',
                         'buttons' => [
                             'view' => function ($url, $model) {
-                                    return (Html::a('View', Url::to(['rapschedules/view', 'id' => $model['scheduleID']]), ['class' => 'btn btn-primary']));
+                                    return (Html::a('View', Url::to(['rap/view', 'id' => $model['rapID']]), ['class' => 'btn btn-primary']));
                             },
                         ],
                     ],
-                    
                 ],
             ]),
-
+            'active' => true
         ],
         [
             'label' => 'Report',
@@ -168,19 +138,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ]),
         ],
         
-        [
-            'label' => 'Dropdown',
-            'items' => [
-                 [
-                     'label' => 'DropdownA',
-                     'content' => 'DropdownA, Anim pariatur cliche...',
-                 ],
-                 [
-                     'label' => 'DropdownB',
-                     'content' => 'DropdownB, Anim pariatur cliche...',
-                 ],
-            ],
-        ],
+        // [
+        //     'label' => 'Dropdown',
+        //     'items' => [
+        //          [
+        //              'label' => 'DropdownA',
+        //              'content' => 'DropdownA, Anim pariatur cliche...',
+        //          ],
+        //          [
+        //              'label' => 'DropdownB',
+        //              'content' => 'DropdownB, Anim pariatur cliche...',
+        //          ],
+        //     ],
+        // ],
     ],
     ]) ?>
 
