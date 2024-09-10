@@ -155,7 +155,7 @@ class RappaymentsController extends Controller
         return Yii::$app->response->sendFile($completePath, $model->proof);
     }
 
-    //Handles the dependency action for selecting a make
+    //Handles the dependency action for selecting a schedule
     public function actionSchedules() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
