@@ -97,22 +97,22 @@ class RapController extends Controller
       ->from('rappayments');
 
      $transactions = (new Query())
-     ->from(['transactions' => $raps->union($schedules)->union($payments)]);  
+     ->from(['transactions' => $raps->union($schedules)->union($payments)]);
 
      $referencedtransactions = (new Query())
      ->select([
         'rapID',
-        new Expression("CASE WHEN ROW_NUMBER() OVER (PARTITION BY rapID ORDER BY transdate) = 1 THEN 'Openning Balance'        
-                            WHEN ref LIKE '%PMT-%' THEN 'Payment'
-                            WHEN ref LIKE '%SCHDL-%' THEN comments
-                            ELSE ref
-                            END AS ref"),
+        new Expression("CASE WHEN ref NOT LIKE '%-RAP-%' THEN 'Openning Balance'        
+                                WHEN ref LIKE '%PMT-%' THEN 'Payment'
+                                WHEN ref LIKE '%SCHDL-%' THEN comments
+                                ELSE 'No Ref'
+                                END AS ref"),
         'amount', 
         'transdate',
         'comments'
     ])
     ->from(['transactions' => $transactions]);
-
+   
     $closingbalance = (new Query())
      ->select([
         'rapID',
@@ -121,11 +121,12 @@ class RapController extends Controller
         'transdate',
         'comments',
         new Expression("SUM(CASE WHEN ref = 'Openning Balance' OR ref = 'Penalty' THEN amount 
-        WHEN ref = 'Installment' Then 0
-        ELSE -amount END) 
+        WHEN ref = 'Payment' Then -amount
+        ELSE 0 END) 
         OVER (ORDER BY transdate, rapID) AS closingbalance")
     ])
-    ->from(['referencedtransactions' => $referencedtransactions]);
+    ->from(['referencedtransactions' => $referencedtransactions])
+    ->where(['rapID'=> $id]); 
 
     $openningbalance = (new Query())
      ->select([
@@ -143,7 +144,8 @@ class RapController extends Controller
                              ELSE 0
                             END AS credit")
     ])
-    ->from(['closingbalance' => $closingbalance]);
+    ->from(['closingbalance' => $closingbalance])
+    ->where(['rapID'=> $id]);
 
     $query = (new Query())
      ->select([
@@ -159,7 +161,8 @@ class RapController extends Controller
     ])
     ->from(['openningbalance' => $openningbalance])
     ->orderBy(['transdate' => SORT_ASC])
-    ->where(['rapID'=> $id]);
+    ->where(['rapID'=> $id])
+    ->andWhere(['!=', 'ref', 'Installment']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
