@@ -64,105 +64,107 @@ class RapController extends Controller
     {
         // Get all raps
         $raps = (new Query())
-        ->select([
-         'rap.id AS rapID', 
-         'rap.name AS ref', 
-         'rap.amount', 
-         'rap.startdate AS transdate', 
-         'rap.comments'        
-       ])
-       ->from('rap');
+            ->select([
+                'rap.id AS rapID',
+                'rap.name AS ref',
+                'rap.amount',
+                'rap.startdate AS transdate',
+                'rap.comments'
+            ])
+            ->from('rap');
 
         // Get all schedules
         $schedules = (new Query())
-        ->select([
-         'rapschedules.rapID',
-         'rapschedules.name AS ref',
-         'rapschedules.expectedamount as amount',
-         'rapschedules.duedate AS transdate',
-         'rapscheduletypes.name AS comments'               
-       ])
-       ->from('rapschedules')
-       ->join('INNER JOIN', 'rapscheduletypes', 'rapscheduletypes.id = rapschedules.rapscheduletypeID');
+            ->select([
+                'rapschedules.rapID',
+                'rapschedules.name AS ref',
+                'rapschedules.expectedamount as amount',
+                'rapschedules.duedate AS transdate',
+                'rapscheduletypes.name AS comments'
+            ])
+            ->from('rapschedules')
+            ->join('INNER JOIN', 'rapscheduletypes', 'rapscheduletypes.id = rapschedules.rapscheduletypeID');
 
-       // Get all payments
-       $payments = (new Query())
-       ->select([
-        'rappayments.rapID',
-        'rappayments.name AS ref',
-        'rappayments.amount',
-        'rappayments.paymentdate AS transdate',
-        'rappayments.comments AS comments'             
-      ])
-      ->from('rappayments');
+        // Get all payments
+        $payments = (new Query())
+            ->select([
+                'rappayments.rapID',
+                'rappayments.name AS ref',
+                'rappayments.amount',
+                'rappayments.paymentdate AS transdate',
+                'rappayments.comments AS comments'
+            ])
+            ->from('rappayments');
 
-     $transactions = (new Query())
-     ->from(['transactions' => $raps->union($schedules)->union($payments)]);
+        $transactions = (new Query())
+            ->from(['transactions' => $raps->union($schedules)->union($payments)]);
 
-     $referencedtransactions = (new Query())
-     ->select([
-        'rapID',
-        new Expression("CASE WHEN ref NOT LIKE '%-RAP-%' THEN 'Openning Balance'        
-                                WHEN ref LIKE '%PMT-%' THEN 'Payment'
-                                WHEN ref LIKE '%SCHDL-%' THEN comments
+        $referencedtransactions = (new Query())
+            ->select([
+                'rapID',
+                new Expression("CASE WHEN ref LIKE '%RAP%' THEN 'Openning Balance'        
+                                WHEN ref LIKE '%PMT%' THEN 'Payment'
+                                WHEN comments = 'Penalty' THEN 'Penalty'
                                 ELSE 'No Ref'
                                 END AS ref"),
-        'amount', 
-        'transdate',
-        'comments'
-    ])
-    ->from(['transactions' => $transactions]);
-   
-    $closingbalance = (new Query())
-     ->select([
-        'rapID',
-        'ref',
-        'amount',       
-        'transdate',
-        'comments',
-        new Expression("SUM(CASE WHEN ref = 'Openning Balance' OR ref = 'Penalty' THEN amount 
+                'amount',
+                'transdate',
+                'comments'
+            ])
+            ->from(['transactions' => $transactions]);
+
+        $closingbalance = (new Query())
+            ->select([
+                'rapID',
+                'ref',
+                'amount',
+                'transdate',
+                'comments',
+                new Expression("SUM(CASE WHEN ref = 'Openning Balance' OR ref = 'Penalty' THEN amount 
         WHEN ref = 'Payment' Then -amount
         ELSE 0 END) 
         OVER (ORDER BY transdate, rapID) AS closingbalance")
-    ])
-    ->from(['referencedtransactions' => $referencedtransactions])
-    ->where(['rapID'=> $id]); 
+            ])
+            ->from(['referencedtransactions' => $referencedtransactions])
+            ->where(['rapID' => $id]);
 
-    $openningbalance = (new Query())
-     ->select([
-        'rapID',
-        'ref',
-        'amount',       
-        'transdate',
-        'comments',
-        'closingbalance',
-        new Expression("LAG(closingbalance) OVER (PARTITION BY rapID ORDER BY transdate) AS openningbalance"),
-        new Expression("CASE WHEN ref = 'Openning Balance' or ref = 'Installment' or ref = 'Penalty' THEN amount 
+        $openningbalance = (new Query())
+            ->select([
+                'rapID',
+                'ref',
+                'amount',
+                'transdate',
+                'comments',
+                'closingbalance',
+                new Expression("LAG(closingbalance) OVER (PARTITION BY rapID ORDER BY transdate) AS openningbalance"),
+                new Expression("CASE WHEN ref = 'Openning Balance' or ref = 'Schedule' or ref = 'Penalty' THEN amount 
                              ELSE 0
-                            END AS debit"),  
-        new Expression("CASE WHEN ref = 'Payment' THEN amount 
+                            END AS debit"),
+                new Expression("CASE WHEN ref = 'Payment' THEN amount 
                              ELSE 0
                             END AS credit")
-    ])
-    ->from(['closingbalance' => $closingbalance])
-    ->where(['rapID'=> $id]);
+            ])
+            ->from(['closingbalance' => $closingbalance])
+            ->where(['rapID' => $id]);
 
-    $query = (new Query())
-     ->select([
-        'rapID',
-        'ref',
-        new Expression("FORMAT(amount, 'N', 'en-us') AS amount"),
-        new Expression("FORMAT(debit, 'N', 'en-us') AS debit"),
-        new Expression("FORMAT(credit, 'N', 'en-us') AS credit"),       
-        'transdate',
-        'comments',
-        new Expression("FORMAT(closingbalance, 'N', 'en-us') AS closingbalance"),    
-        new Expression("FORMAT(openningbalance, 'N', 'en-us') AS openningbalance")
-    ])
-    ->from(['openningbalance' => $openningbalance])
-    ->orderBy(['transdate' => SORT_ASC])
-    ->where(['rapID'=> $id])
-    ->andWhere(['!=', 'ref', 'Installment']);
+        $query = (new Query())
+            ->select([
+                'rapID',
+                'ref',
+                new Expression("FORMAT(amount, 'N', 'en-us') AS amount"),
+                new Expression("FORMAT(debit, 'N', 'en-us') AS debit"),
+                new Expression("FORMAT(credit, 'N', 'en-us') AS credit"),
+                'transdate',
+                'comments',
+                new Expression("FORMAT(closingbalance, 'N', 'en-us') AS closingbalance"),
+                new Expression("FORMAT(openningbalance, 'N', 'en-us') AS openningbalance")
+            ])
+            ->from(['openningbalance' => $openningbalance])
+            ->orderBy(['transdate' => SORT_ASC])
+            ->where(['rapID' => $id])
+            ->andWhere(['=', 'ref', 'Openning Balance'])
+            ->orWhere(['=', 'ref', 'Penalty'])
+            ->orWhere(['=', 'ref', 'Payment']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

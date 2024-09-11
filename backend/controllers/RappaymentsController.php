@@ -79,8 +79,8 @@ class RappaymentsController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $rap = Rap::find()->where(['id'=>$model->rapID])->one();
-                $sch = Rapschedules::find()->where(['id'=>$model->scheduleID])->one();
-                $model->name = 'PMT' . '-' . $model->id . '-' . $rap->name . '-' . $sch->name;
+                $schedule = Rapschedules::find()->where(['id'=>$model->scheduleID])->one();
+                $model->name = 'PMT' . '-' . $model->id . '-' . $rap->id . '-' . $schedule->id;
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }

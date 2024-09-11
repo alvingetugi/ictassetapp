@@ -78,7 +78,7 @@ class RapschedulesController extends Controller
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 $rap = Rap::find()->where(['id'=>$model->rapID])->one();
-                $model->name = 'SCHDL' . '-' . $model->id . '-' . $rap->name;
+                $model->name = 'SCHDL' . '-' . $model->id . '-' . $rap->id;
                 $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
