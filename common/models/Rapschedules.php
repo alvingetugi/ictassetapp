@@ -9,7 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property int $rapID
- * @property int $rapscheduletypeID
  * @property string $name
  * @property string $duedate
  * @property float $expectedamount
@@ -17,7 +16,6 @@ use Yii;
  *
  * @property Rap $rap
  * @property Rappayments[] $rappayments
- * @property Rapscheduletypes $rapscheduletype 
  */
 class Rapschedules extends \yii\db\ActiveRecord
 {
@@ -35,14 +33,13 @@ class Rapschedules extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rapID', 'rapscheduletypeID', 'duedate', 'expectedamount', 'comments'], 'required'],
-            [['rapID', 'rapscheduletypeID'], 'integer'],
+            [['rapID', 'duedate', 'expectedamount', 'comments'], 'required'],
+            [['rapID'], 'integer'],
             [['duedate'], 'safe'],
             [['expectedamount'], 'number'],
             [['name'], 'string', 'max' => 255],
             [['comments'], 'string', 'max' => 50],
-            [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],
-            [['rapscheduletypeID'], 'exist', 'skipOnError' => true, 'targetClass' => Rapscheduletypes::class, 'targetAttribute' => ['rapscheduletypeID' => 'id']],
+            [['rapID'], 'exist', 'skipOnError' => true, 'targetClass' => Rap::class, 'targetAttribute' => ['rapID' => 'id']],            
         ];
     }
 
@@ -54,7 +51,6 @@ class Rapschedules extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'rapID' => 'Remedial Action Plan',
-            'rapscheduletypeID' => 'Schedule Type',
             'name' => 'Schedule Ref',
             'duedate' => 'Due Date',
             'expectedamount' => 'Expected Amount',
@@ -71,16 +67,6 @@ class Rapschedules extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Rap::class, ['id' => 'rapID']);
     }
-
-    /**
-    * Gets query for [[Rapscheduletype]].
-    *
-    * @return \yii\db\ActiveQuery|\common\models\query\RapscheduletypesQuery
-    */
-   public function getRapscheduletype()
-   {
-    return $this->hasOne(Rapscheduletypes::class, ['id' => 'rapscheduletypeID']);
-   }
 
     /**
      * Gets query for [[Rappayments]].

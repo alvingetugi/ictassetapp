@@ -80,10 +80,9 @@ class RapController extends Controller
                 'rapschedules.name AS ref',
                 'rapschedules.expectedamount as amount',
                 'rapschedules.duedate AS transdate',
-                'rapscheduletypes.name AS comments'
+                'rapschedules.comments AS comments'
             ])
-            ->from('rapschedules')
-            ->join('INNER JOIN', 'rapscheduletypes', 'rapscheduletypes.id = rapschedules.rapscheduletypeID');
+            ->from('rapschedules');
 
         // Get all payments
         $payments = (new Query())
@@ -104,8 +103,7 @@ class RapController extends Controller
                 'rapID',
                 new Expression("CASE WHEN ref LIKE '%RAP%' THEN 'Openning Balance'        
                                 WHEN ref LIKE '%PMT%' THEN 'Payment'
-                                WHEN comments = 'Penalty' THEN 'Penalty'
-                                ELSE 'No Ref'
+                                ELSE ref
                                 END AS ref"),
                 'amount',
                 'transdate',

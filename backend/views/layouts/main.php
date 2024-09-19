@@ -226,10 +226,6 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>RAP Types</span>
                             </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/rapscheduletypes/index']) ?>">
-                                <i class="fas fa-fw fa-chart-area"></i>
-                                <span>RAP Schedule Types</span>
-                            </a>
                         </div>
                     </div>
                 </li>

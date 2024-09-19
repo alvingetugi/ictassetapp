@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use common\models\ExcelUploadForm;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 use Yii;
 
@@ -78,9 +79,6 @@ class RapschedulesController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                $rap = Rap::find()->where(['id'=>$model->rapID])->one();
-                $model->name = 'SCHDL' . '-' . $model->id . '-' . $rap->id;
-                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -154,28 +152,26 @@ class RapschedulesController extends Controller
 
                 // Get the active sheet
                 $sheet = $spreadsheet->getActiveSheet();
-                $data = $sheet->toArray();
-
-                // Process each row
-                foreach ($data as $row) {
-                    // Skip header row
-                    if ($row[0] === 'Header1') {
-                        continue;
-                    }
-
-                    // Process data and save to the database
+                $max = $sheet->getHighestRow();
+                $start = 2;                
+                
+                // Process data and save to the database
+                for ($row = $start; $row <= $max; $row++) {       
+                    
                     $model = new Rapschedules();
-                    $model->rapID = $row[0];
-                    $model->rapscheduletypeID = $row[1];
-                    $model->name = $row[2];
-                    $model->duedate = $row[3];
-                    $model->expectedamount = $row[4];
-                    $model->comments = $row[5];
+                    $model->rapID = $sheet->getCell('A' . $row)->getValue();
+                    $model->name = $sheet->getCell('B' . $row)->getValue();
+                    $DateCell = $sheet->getCell('C' . $row);
+                    $timestamp = Date::excelToTimestamp($DateCell->getValue());
+                    $model->duedate  = date('Y-m-d', $timestamp);
+                    $model->expectedamount = $sheet->getCell('D' . $row)->getValue();
+                    $model->comments = $sheet->getCell('E' . $row)->getValue();
                     $model->save();
+
                 }
 
                 Yii::$app->session->setFlash('success', 'Data imported successfully.');
-                return $this->redirect(['import']);
+                return $this->redirect(['rap/view', 'id' => $model['rapID']]);
             }
         }
 

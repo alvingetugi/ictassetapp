@@ -40,12 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Rap::findOne(['id'=>$data->rapID])->name;
                 }
             ],
-            [
-                'label' => 'Schedule Type',
-                'value' => function ($data){
-                    return Rapscheduletypes::findOne(['id'=>$data->rapscheduletypeID])->name;
-                }
-            ],
             'name',
             'duedate',
             'expectedamount',

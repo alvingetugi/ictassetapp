@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 <div class="site-import">
     <h1>Import Excel Data</h1>
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['rapschedules/import'], 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'file')->fileInput() ?>
 

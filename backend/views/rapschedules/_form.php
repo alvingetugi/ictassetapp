@@ -1,7 +1,6 @@
 <?php
 
 use common\models\Rap;
-use common\models\Rapscheduletypes;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -19,12 +18,7 @@ use yii\widgets\ActiveForm;
                 ['prompt' => 'Select RAP']
             ) ?>
 
-    <?= $form->field($model, 'rapscheduletypeID')->dropDownList(
-                Rapscheduletypes::getSchedules(),
-                ['prompt' => 'Select Schedule Type']
-            ) ?>
-
-    <?= $form->field($model, 'name')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'duedate')->widget(\kartik\date\DatePicker::classname(), [
         'pluginOptions' => [

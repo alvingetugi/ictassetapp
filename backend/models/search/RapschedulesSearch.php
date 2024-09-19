@@ -17,7 +17,7 @@ class RapschedulesSearch extends Rapschedules
     public function rules()
     {
         return [
-            [['id', 'rapID', 'rapscheduletypeID'], 'integer'],
+            [['id', 'rapID'], 'integer'],
             [['name', 'duedate', 'comments'], 'safe'],
             [['expectedamount'], 'number'],
         ];
@@ -61,7 +61,6 @@ class RapschedulesSearch extends Rapschedules
         $query->andFilterWhere([
             'id' => $this->id,
             'rapID' => $this->rapID,
-            'rapscheduletypeID' => $this->rapscheduletypeID,
             'duedate' => $this->duedate,
             'expectedamount' => $this->expectedamount,
         ]);
