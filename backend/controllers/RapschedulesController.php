@@ -5,13 +5,14 @@ namespace backend\controllers;
 use common\models\Rap;
 use common\models\Rapschedules;
 use backend\models\search\RapschedulesSearch;
-use common\models\Schemes;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
-use yii\db\Query;
-Use yii\db\Expression;
+use yii\web\UploadedFile;
+use common\models\ExcelUploadForm;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+use Yii;
 
 /**
  * RapschedulesController implements the CRUD actions for Rapschedules model.
@@ -139,5 +140,45 @@ class RapschedulesController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionImport()
+    {
+        $model = new ExcelUploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->validate()) {
+                // Load the spreadsheet
+                $spreadsheet = IOFactory::load($model->file->tempName);
+
+                // Get the active sheet
+                $sheet = $spreadsheet->getActiveSheet();
+                $data = $sheet->toArray();
+
+                // Process each row
+                foreach ($data as $row) {
+                    // Skip header row
+                    if ($row[0] === 'Header1') {
+                        continue;
+                    }
+
+                    // Process data and save to the database
+                    $model = new Rapschedules();
+                    $model->rapID = $row[0];
+                    $model->rapscheduletypeID = $row[1];
+                    $model->name = $row[2];
+                    $model->duedate = $row[3];
+                    $model->expectedamount = $row[4];
+                    $model->comments = $row[5];
+                    $model->save();
+                }
+
+                Yii::$app->session->setFlash('success', 'Data imported successfully.');
+                return $this->redirect(['import']);
+            }
+        }
+
+        return $this->render('import', ['model' => $model]);
     }
 }

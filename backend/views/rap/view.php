@@ -1,8 +1,11 @@
 <?php
 
+use common\models\ExcelUploadForm;
+use common\models\Rapschedules;
 use common\models\Raptypes;
 use common\models\Schemes;
 use kartik\tabs\TabsX;
+use yii\bootstrap5\Modal;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -14,6 +17,7 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Raps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
 ?>
 <div class="rap-view">
 
@@ -78,6 +82,43 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'updated_by',
         ],
     ]) ?>
+
+<P>Use the button below to upload a schedule(s) for the remedial action plan</P>
+
+<!-- Modal -->
+<?php
+
+            Modal::begin([
+
+                'toggleButton' => [
+
+                    'label' => '<i class="glyphicon glyphicon-plus"></i> Import RAP Schedules',
+
+                    'class' => 'btn btn-outline-success btn-block',
+
+                    'style' => 'text-transform: none;'
+
+                ],
+
+                'closeButton' => [
+
+                  'label' => 'Close',
+
+                  'class' => 'float-right add-item btn btn-danger btn-xs',
+
+                ],
+
+                'size' => 'modal-lg',
+
+            ]);
+
+            $exceluploadform = new ExcelUploadForm();
+
+            echo $this->render('/rapschedules/import', ['model' => $exceluploadform]);
+
+            Modal::end();
+
+        ?>
 
 <?= TabsX::widget([
     'position' => TabsX::POS_ABOVE,
