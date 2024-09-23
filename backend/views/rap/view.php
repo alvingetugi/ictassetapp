@@ -83,8 +83,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-<P>Use the button below to upload a schedule(s) for the remedial action plan</P>
-
 <!-- Modal -->
 <?php
 
@@ -92,9 +90,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 'toggleButton' => [
 
-                    'label' => '<i class="glyphicon glyphicon-plus"></i> Import RAP Schedules',
+                    'label' => '<i class="glyphicon glyphicon-plus"></i> Import Schedules',
 
-                    'class' => 'btn btn-outline-success btn-block',
+                    'class' => 'btn btn-info float-right',
 
                     'style' => 'text-transform: none;'
 
@@ -108,7 +106,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 ],
 
-                'size' => 'modal-lg',
+                'size' => 'modal-sm',
+	'clientOptions' => [
+		'backdrop' => 'static', 'keyboard' => true
+	]
+
 
             ]);
 
