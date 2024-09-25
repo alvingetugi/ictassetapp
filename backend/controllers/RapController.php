@@ -2,7 +2,11 @@
 
 namespace backend\controllers;
 
+use common\models\ExcelUploadForm;
+use common\models\Rapschedules;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use yii\web\UploadedFile;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Yii;
 use common\models\Rap;
 use backend\models\search\RapSearch;
@@ -270,5 +274,43 @@ class RapController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionImport()
+    {
+        $model = new ExcelUploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->file = UploadedFile::getInstance($model, 'file');
+            if ($model->validate()) {
+                // Load the spreadsheet
+                $spreadsheet = IOFactory::load($model->file->tempName);
+
+                // Get the active sheet
+                $sheet = $spreadsheet->getActiveSheet();
+                $max = $sheet->getHighestRow();
+                $start = 2;                
+                
+                // Process data and save to the database
+                for ($row = $start; $row <= $max; $row++) {       
+                    
+                    $model = new Rapschedules();
+                    $model->rapID = $sheet->getCell('A' . $row)->getValue();
+                    $model->name = $sheet->getCell('B' . $row)->getValue();
+                    $DateCell = $sheet->getCell('C' . $row);
+                    $timestamp = Date::excelToTimestamp($DateCell->getValue());
+                    $model->duedate  = date('Y-m-d', $timestamp);
+                    $model->expectedamount = $sheet->getCell('D' . $row)->getValue();
+                    $model->comments = $sheet->getCell('E' . $row)->getValue();
+                    $model->save();
+
+                }
+
+                Yii::$app->session->setFlash('success', 'Data imported successfully.');
+                return $this->redirect(['rap/view', 'id' => $model['rapID']]);
+            }
+        }
+
+        return $this->render('import', ['model' => $model]);
     }
 }

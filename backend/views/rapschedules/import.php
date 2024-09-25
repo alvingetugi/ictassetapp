@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
 <div class="site-import">
 
 
-    <?php $form = ActiveForm::begin(['action' => ['rapschedules/import'], 'options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['action' => ['rap/import'], 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'file')->fileInput() ?>
 

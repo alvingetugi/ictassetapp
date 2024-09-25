@@ -83,41 +83,25 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-<!-- Modal -->
-<?php
+        <!-- Modal -->
+        <?php
 
             Modal::begin([
-
+                'id' => 'importModal',
                 'toggleButton' => [
-
                     'label' => '<i class="glyphicon glyphicon-plus"></i> Import Schedules',
-
                     'class' => 'btn btn-info float-right',
-
                     'style' => 'text-transform: none;'
-
-                ],
-
-                'closeButton' => [
-
-                  'label' => 'Close',
-
-                  'class' => 'float-right add-item btn btn-danger btn-xs',
-
-                ],
+                ],               
 
                 'size' => 'modal-sm',
-	'clientOptions' => [
-		'backdrop' => 'static', 'keyboard' => true
-	]
-
-
+	            'clientOptions' => [
+		        'backdrop' => 'static', 'keyboard' => true
+	            ]
             ]);
 
             $exceluploadform = new ExcelUploadForm();
-
             echo $this->render('/rapschedules/import', ['model' => $exceluploadform]);
-
             Modal::end();
 
         ?>
