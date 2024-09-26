@@ -91,7 +91,7 @@ class SchemesController extends Controller
         new Expression('SUM(ISNULL(rapschedules.expectedamount, 0)) AS expectedamount')
       ])
       ->from(['raps' => $raps])
-      ->join('RIGHT JOIN', 'rapschedules', 'raps.rapID = rapschedules.rapID')
+      ->join('FULL OUTER JOIN', 'rapschedules', 'raps.rapID = rapschedules.rapID')
       ->groupBy(['raps.rapID', 'raps.schemeID', 'raps.rapref', 'raps.raptype', 'raps.rapstatus', 'raps.deficit', 'raps.startdate', 'raps.enddate']);
 
      // Get all raps with their payments

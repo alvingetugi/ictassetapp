@@ -132,7 +132,7 @@ $this->registerJs($js);
     'align' => TabsX::ALIGN_LEFT,
     'items' => [
         [
-            'label' => 'Statement',
+            'label' => 'Schedules',
             'headerOptions' => ['style'=>'font-weight:bold'],
             'content' => GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -167,7 +167,44 @@ $this->registerJs($js);
                 ],
             ]),
             'active' => true
-        ],    
+        ], 
+        
+        [
+            'label' => 'Statement',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                      
+                    [
+                        'label' => 'Date',
+                        'attribute' => 'transdate'
+                    ],
+                    [
+                        'label' => 'Description',
+                        'attribute' => 'ref'
+                    ],
+                    [
+                        'label' => 'Debit',
+                        'attribute' => 'debit'
+                    ],
+                    [
+                        'label' => 'Credit',
+                        'attribute' => 'credit'
+                    ],
+                    // [
+                    //     'label' => 'Previous Balance',
+                    //     'attribute' => 'openningbalance'
+                    // ],
+                    [
+                        'label' => 'Closing Balance',
+                        'attribute' => 'closingbalance'
+                    ],
+                ],
+            ]),
+        ],
 
     ],
     ]) ?>

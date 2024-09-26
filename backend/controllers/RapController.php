@@ -122,12 +122,12 @@ class RapController extends Controller
                 'transdate',
                 'comments',
                 new Expression("SUM(CASE WHEN ref = 'Openning Balance' OR ref = 'Penalty' THEN amount 
-        WHEN ref = 'Payment' Then -amount
-        ELSE 0 END) 
-        OVER (ORDER BY transdate, rapID) AS closingbalance")
-            ])
-            ->from(['referencedtransactions' => $referencedtransactions])
-            ->where(['rapID' => $id]);
+                                WHEN ref = 'Payment' Then -amount
+                                ELSE 0 END) 
+                                OVER (ORDER BY transdate, rapID) AS closingbalance")
+                            ])
+                            ->from(['referencedtransactions' => $referencedtransactions])
+                            ->where(['rapID' => $id]);
 
         $openningbalance = (new Query())
             ->select([
