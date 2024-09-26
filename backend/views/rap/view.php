@@ -1,14 +1,12 @@
 <?php
 
-use common\models\ExcelUploadForm;
-use common\models\Rapschedules;
 use common\models\Raptypes;
 use common\models\Schemes;
 use kartik\tabs\TabsX;
-use yii\bootstrap5\Modal;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Rap $model */
@@ -17,6 +15,14 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Raps', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$js = <<<JS
+    // Reset modal form when closed
+    $('#importModal').on('hidden.bs.modal', function () {
+        $(this).find('form')[0].reset();
+    });
+JS;
+$this->registerJs($js);
 
 ?>
 <div class="rap-view">
@@ -83,28 +89,43 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-        <!-- Modal -->
-        <?php
+<div class="site-import">
 
-            Modal::begin([
-                'id' => 'importModal',
-                'toggleButton' => [
-                    'label' => '<i class="glyphicon glyphicon-plus"></i> Import Schedules',
-                    'class' => 'btn btn-info float-right',
-                    'style' => 'text-transform: none;'
-                ],               
+<!-- Button to trigger modal -->
+<?= Html::button('Import Schedules', [
+    'class' => 'btn btn-info float-right',
+    'data-toggle' => 'modal',
+    'data-target' => '#importModal'
+]) ?>
 
-                'size' => 'modal-sm',
-	            'clientOptions' => [
-		        'backdrop' => 'static', 'keyboard' => true
-	            ]
-            ]);
+<!-- Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="importModalLabel">Upload Excel File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?php $form = ActiveForm::begin([
+                    'action' => ['rap/import', 'id' => $model->id], // Include the ID in the action
+                    'options' => ['enctype' => 'multipart/form-data']
+                ]); ?>
 
-            $exceluploadform = new ExcelUploadForm();
-            echo $this->render('/rapschedules/import', ['model' => $exceluploadform]);
-            Modal::end();
+                <?= $form->field($model, 'file')->fileInput()->label('Choose Excel File') ?>
 
-        ?>
+                <div class="form-group">
+                    <?= Html::submitButton('Import', ['class' => 'btn btn-success']) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 <?= TabsX::widget([
     'position' => TabsX::POS_ABOVE,

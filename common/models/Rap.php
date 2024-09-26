@@ -36,6 +36,7 @@ class Rap extends \yii\db\ActiveRecord
      * @var \yii\web\UploadedFile
      */
     public $rapfile;
+    public $file;
 
     /**
      * {@inheritdoc}
@@ -57,6 +58,7 @@ class Rap extends \yii\db\ActiveRecord
             [['startdate', 'enddate'], 'safe'],
             [['name', 'comments'], 'string', 'max' => 255],
             [['rapdocument'], 'string', 'max' => 2000],
+            [['file'], 'file', 'extensions' => 'xlsx, xls'],
             [['rapfile'], 'file', 'extensions' => 'pdf, jpg'],
             [['typeID'], 'exist', 'skipOnError' => true, 'targetClass' => Raptypes::class, 'targetAttribute' => ['typeID' => 'id']],
             [['schemeID'], 'exist', 'skipOnError' => true, 'targetClass' => Schemes::class, 'targetAttribute' => ['schemeID' => 'id']],
