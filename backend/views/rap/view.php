@@ -7,6 +7,7 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\Rap $model */
@@ -81,6 +82,14 @@ $this->registerJs($js);
                     'class' => 'btn btn-primary',
                     'target' => '_blank',
                 ]),
+            ],
+            [
+                'attribute' => 'rapdocument', // Column with the PDF file path
+                'format' => 'raw', // Use raw format to display HTML
+                'value' => function ($model) {
+                    $pdfUrl = Url::to('@web/storage'.$model->rapdocument); // Adjust if needed
+                    return "<iframe src='{$pdfUrl}' style='width:100%; height:200px;' frameborder='0'></iframe>";
+                },
             ],
             // 'created_at',
             // 'updated_at',
