@@ -72,23 +72,24 @@ $this->registerJs($js);
             'startdate',
             'enddate',
             'comments',
-            [
-                'attribute' => 'rapdocument',
-                'format' => ['html'],
-                'value' => fn() => Html::a('Download', [
-                    'rap/pdf',
-                    'id' => $model->id,
-                ], [
-                    'class' => 'btn btn-primary',
-                    'target' => '_blank',
-                ]),
-            ],
+            // [
+            //     'attribute' => 'rapdocument',
+            //     'format' => ['html'],
+            //     'value' => fn() => Html::a('Download', [
+            //         'rap/pdf',
+            //         'id' => $model->id,
+            //     ], [
+            //         'class' => 'btn btn-primary',
+            //         'target' => '_blank',
+            //     ]),
+            // ],
             [
                 'attribute' => 'rapdocument', // Column with the PDF file path
                 'format' => 'raw', // Use raw format to display HTML
                 'value' => function ($model) {
                     $pdfUrl = Url::to('@web/storage'.$model->rapdocument); // Adjust if needed
-                    return "<iframe src='{$pdfUrl}' style='width:100%; height:200px;' frameborder='0'></iframe>";
+                    return "<iframe src='{$pdfUrl}' style='width:200px; height:260px;' frameborder='0'></iframe> </br>" .
+                    "<a href='{$pdfUrl}' target='_blank'>View PDF</a> | " . "<a href='{$pdfUrl}' download>Download</a>";
                 },
             ],
             // 'created_at',
