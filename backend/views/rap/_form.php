@@ -58,6 +58,7 @@ use yii\widgets\ActiveForm;
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'yyyy-mm-dd',
+                    'startDate' => date('Y-m-d'), // Prevents past dates
                     'todayHighlight' => true
                 ]
             ]); ?>
@@ -68,6 +69,7 @@ use yii\widgets\ActiveForm;
                 'pluginOptions' => [
                     'autoclose' => true,
                     'format' => 'yyyy-mm-dd',
+                    'startDate' => date('Y-m-d'), // Prevents past dates
                     'todayHighlight' => true
                 ]
             ]); ?>

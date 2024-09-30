@@ -56,6 +56,7 @@ class Rap extends \yii\db\ActiveRecord
             [['typeID', 'schemeID', 'status', 'created_at', 'updated_at', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
             [['startdate', 'enddate'], 'safe'],
+            ['enddate', 'compare', 'compareAttribute' => 'startdate', 'operator' => '>=', 'message' => 'End date must be greater than or equal to start date.'],
             [['name', 'comments'], 'string', 'max' => 255],
             [['rapdocument'], 'string', 'max' => 2000],
             [['file'], 'file', 'extensions' => 'xlsx, xls'],
