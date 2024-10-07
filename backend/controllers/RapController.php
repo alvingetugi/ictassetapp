@@ -167,16 +167,38 @@ class RapController extends Controller
             ->orWhere(['=', 'ref', 'Penalty'])
             ->orWhere(['=', 'ref', 'Payment']);
 
+        // Get all schedules for rap view
+        $rapschedules = (new Query())
+        ->select([
+            'rapschedules.rapID',
+            'rapschedules.name AS ref',
+            'rapschedules.expectedamount as amount',
+            'rapschedules.duedate AS transdate',
+            'rapschedules.comments AS comments'
+        ])
+        ->from('rapschedules')
+        ->where(['rapID' => $id]);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => 10,
             ]
+            
+        ]);
+
+        $dataProvider2 = new ActiveDataProvider([
+            'query' => $rapschedules,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+            
         ]);
 
          return $this->render('view', [
             'model' => $this->findModel($id),
             'dataProvider' => $dataProvider,
+            'dataProvider2' => $dataProvider2,
         ]);
     }
 

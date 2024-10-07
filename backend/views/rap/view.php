@@ -145,34 +145,26 @@ $this->registerJs($js);
             'label' => 'Schedules',
             'headerOptions' => ['style'=>'font-weight:bold'],
             'content' => GridView::widget([
-                'dataProvider' => $dataProvider,
+                'dataProvider' => $dataProvider2,
                 // 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                       
                     [
-                        'label' => 'Date',
+                        'label' => 'Due Date',
                         'attribute' => 'transdate'
                     ],
                     [
-                        'label' => 'Description',
+                        'label' => 'Reference',
                         'attribute' => 'ref'
                     ],
                     [
-                        'label' => 'Debit',
-                        'attribute' => 'debit'
+                        'label' => 'Expected Amount',
+                        'attribute' => 'amount'
                     ],
                     [
-                        'label' => 'Credit',
-                        'attribute' => 'credit'
-                    ],
-                    // [
-                    //     'label' => 'Previous Balance',
-                    //     'attribute' => 'openningbalance'
-                    // ],
-                    [
-                        'label' => 'Closing Balance',
-                        'attribute' => 'closingbalance'
+                        'label' => 'Comments',
+                        'attribute' => 'comments'
                     ],
                 ],
             ]),
