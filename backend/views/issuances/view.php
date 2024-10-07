@@ -35,8 +35,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'id',
-            'code',
-            'issuancedate',
+            [
+                'label' => 'Transaction Ref',
+                'attribute' => 'code'
+            ],
+            [
+                'label' => 'Issuance Date',
+                'attribute' => 'issuancedate',
+                'format' => ['date', 'php:d/M/Y'],
+            ],
             [
                 'label' => 'Category',
                 'value' => function ($data){
@@ -59,12 +66,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'accessorylistID',
                 'value' => $model->getAccessoryListNames(),
             ],
-            'user.displayName',
+            [
+                'label' => 'User Allocated',
+                'attribute' => 'user.displayName'
+            ],
             'comments',
             'created_at:datetime',
             'updated_at:datetime',
-            'createdBy.username',
-            'updatedBy.username',
+            [
+                'label' => 'Issued by',
+                'attribute' => 'createdBy.displayName'
+            ],
+            [
+                'label' => 'Updated by',
+                'attribute' => 'updatedBy.displayName'
+            ],
         ],
     ]) ?>
 

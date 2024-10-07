@@ -76,8 +76,8 @@ class Surrenders extends \yii\db\ActiveRecord
             'accessorylistID' => 'Accessories',
             'userID' => 'Staff',
             'comments' => 'Comments',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_at' => 'Transaction Date and Time',
+            'updated_at' => 'Update Date and Time',
             'created_by' => 'Created By',
             'updated_by' => 'Updated By',
         ];
@@ -116,5 +116,24 @@ class Surrenders extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'userID']);
+    }
+
+    public static function getAccessoryName($code)
+    {
+        if (array_key_exists($code, Accessorylist::find()->select(['name', 'id'])->indexBy('id')->column())) {
+            return Accessorylist::find()->select(['name', 'id'])->indexBy('id')->column()[$code];
+        } else {
+            return $code;
+        }
+    }
+
+    public function getAccessoryListNames()
+    {
+        $codes = preg_split('/[\s,]+/', $this->accessorylistID);
+        $names = [];
+        foreach($codes as $code) {
+            $names[] = self::getAccessoryName($code);
+        }
+        return implode(', ', $names);
     }
 }

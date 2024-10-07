@@ -1,5 +1,6 @@
 <?php
 
+use common\models\Departments;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -55,52 +56,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'verification_token',
             'firstname',
             'lastname',
-             ['attribute'=>'department','value'=>function($model){
-                if($model->department == 1)
+             ['attribute'=>'department', 'value'=> function($data){
+                if($data->department === null)
                         {
-                        return 'Finance and Accounts';
-                        } 
-                        else if ($model->department == 2){
-                            return 'Internal Audit and Risk Assurance';
-                        }
-                        else if ($model->department == 3){
-                            return 'Corporation Secretary and Legal Services';
-                        }
-                        else if ($model->department == 4){
-                            return 'Information and Communication Technology';
-                        }
-                        else if ($model->department == 5){
-                            return 'Market Conduct and Industry Development';
-                        }
-                        else if ($model->department == 6){
-                            return 'Supervision';
-                        }
-                        else if ($model->department == 7){
-                            return 'Corporate Communications';
-                        }
-                        else if ($model->department == 8){
-                            return 'Procurement and Supply Chain';
-                        }
-                        else if ($model->department == 9){
-                            return 'Human Resource and Administration';
-                        }
-                        else if ($model->department == 10){
-                            return 'Research, Strategy and Planning';
-                        }
-                        else if ($model->department == 11){
-                            return 'Executive';
-                        }
-                        else if ($model->department == 12){
-                            return 'Management Representative';
-                        }
-                        else if ($model->department == 13){
-                            return 'Tribunal';
-                        }
-                        else if ($model->department == 13){
-                            return 'Board';
-                        }
-                        else {
                         return 'No Department';
+                        } 
+                        else {
+                        return Departments::findOne(['id'=>$data->department])->name;
                         }
             }],
         ],

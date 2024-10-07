@@ -34,8 +34,15 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             // 'id',
-            'code',
-            'surrenderdate',
+            [
+                'label' => 'Transaction Ref',
+                'attribute' => 'code'
+            ],
+            [
+                'label' => 'Surrender Date',
+                'attribute' => 'surrenderdate',
+                'format' => ['date', 'php:d/M/Y'],
+            ],
             [
                 'label' => 'Category',
                 'value' => function ($data){
@@ -55,17 +62,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'label' => 'Staff',
-                'value' => function ($data){
-                    return User::findOne(['id'=>$data->userID])->username;
-                }
+                'attribute' => 'accessorylistID',
+                'value' => $model->getAccessoryListNames(),
             ],
-            // 'accessorylistID',
+            [
+                'label' => 'User Allocated',
+                'attribute' => 'user.displayName'
+            ],
             'comments',
             'created_at:datetime',
             'updated_at:datetime',
-            'createdBy.username',
-            'updatedBy.username',
+            [
+                'label' => 'Surrendered by',
+                'attribute' => 'createdBy.displayName'
+            ],
+            [
+                'label' => 'Updated by',
+                'attribute' => 'updatedBy.displayName'
+            ],
         ],
     ]) ?>
 

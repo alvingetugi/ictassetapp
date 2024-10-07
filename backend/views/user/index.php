@@ -48,11 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => 'departments.name',
             ],
             [
-                'class' => ActionColumn::className(),
-                'template'=>'{view}',
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model) {
+                            return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                ],
             ],
         ],
     ]); ?>

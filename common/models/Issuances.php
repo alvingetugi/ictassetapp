@@ -77,9 +77,9 @@ class Issuances extends \yii\db\ActiveRecord
             'accessorylistID' => 'Accessories',
             'userID' => 'Staff',
             'comments' => 'Comments',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-            'created_by' => 'Created By',
+            'created_at' => 'Transaction Date and Time',
+            'updated_at' => 'Update Date and Time',
+            'created_by' => 'Issued By',
             'updated_by' => 'Updated By',
         ];
     }
@@ -147,6 +147,4 @@ class Issuances extends \yii\db\ActiveRecord
         }
         return implode(', ', $names);
     }
-
-
 }
