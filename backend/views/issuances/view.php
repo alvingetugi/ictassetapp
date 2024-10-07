@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'accessorylistID',
-                'value' => $model->getAccessoryListNames("\n"),
+                'value' => $model->getAccessoryListNames(),
             ],
             'user.displayName',
             'comments',

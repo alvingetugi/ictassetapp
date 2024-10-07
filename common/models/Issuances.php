@@ -138,14 +138,14 @@ class Issuances extends \yii\db\ActiveRecord
         }
     }
 
-    public function getAccessoryListNames($glue)
+    public function getAccessoryListNames()
     {
-        $codes = preg_split('//', $this->accessorylistID);
+        $codes = preg_split('/[\s,]+/', $this->accessorylistID);
         $names = [];
         foreach($codes as $code) {
             $names[] = self::getAccessoryName($code);
         }
-        return implode($glue, $names);
+        return implode(', ', $names);
     }
 
 
