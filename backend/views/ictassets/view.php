@@ -11,6 +11,7 @@ use common\models\Locations;
 use common\models\Operatingsystem;
 use common\models\Ram;
 use common\models\Storage;
+use kartik\tabs\TabsX;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
@@ -63,24 +64,24 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'name',
             'tag_number',
-            [
-                'label' => 'Storage',
-                'value' => function ($data){
-                    return Storage::findOne(['id'=>$data->storageID])->name;
-                }
-            ],
-            [
-                'label' => 'RAM',
-                'value' => function ($data){
-                    return Ram::findOne(['id'=>$data->ramID])->name;
-                }
-            ],
-            [
-                'label' => 'Operating System',
-                'value' => function ($data){
-                    return Operatingsystem::findOne(['id'=>$data->osID])->name;
-                }
-            ],
+            // [
+            //     'label' => 'Storage',
+            //     'value' => function ($data){
+            //         return Storage::findOne(['id'=>$data->storageID])->name;
+            //     }
+            // ],
+            // [
+            //     'label' => 'RAM',
+            //     'value' => function ($data){
+            //         return Ram::findOne(['id'=>$data->ramID])->name;
+            //     }
+            // ],
+            // [
+            //     'label' => 'Operating System',
+            //     'value' => function ($data){
+            //         return Operatingsystem::findOne(['id'=>$data->osID])->name;
+            //     }
+            // ],
             [
                 'label' => 'Location',
                 'value' => function ($data){
@@ -108,23 +109,94 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
-<div class="panel-heading"><h4><i class="fa fa-tasks"></i> Accessories:</h4></div>
-
-<?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        // 'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            [
-                'label' => 'Model or part Number',
-                'attribute' => 'accessorylist.model_or_part_number'
-            ],
-            [
-                'label' => 'Accessory',
-                'attribute' => 'accessorylist.name'
-            ],
+<?= TabsX::widget([
+    'position' => TabsX::POS_ABOVE,
+    'align' => TabsX::ALIGN_LEFT,
+    'items' => [
+        [
+            'label' => 'Asset Specs',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $assetspecifications,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    // ['class' => 'yii\grid\SerialColumn'],
+                      
+                    [
+                        'label' => 'Storage',
+                        'attribute' => 'storage.name'
+                    ],
+                    [
+                        'label' => 'RAM',
+                        'attribute' => 'ram.name'
+                    ],
+                    [
+                        'label' => 'Operating System',
+                        'attribute' => 'os.name'
+                    ],
+                ],
+            ]),
+            'active' => true
         ],
-    ]); ?>
+
+        [
+            'label' => 'Accessories',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $dataProvider,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                      
+                    [
+                        'label' => 'Accessory',
+                        'attribute' => 'accessorylist.name'
+                    ],
+                    [
+                        'label' => 'Model or part Number',
+                        'attribute' => 'accessorylist.model_or_part_number'
+                    ],
+                    
+                ],
+            ]),
+            
+        ], 
+
+        [
+            'label' => 'Asset History',
+            'headerOptions' => ['style'=>'font-weight:bold'],
+            'content' => GridView::widget([
+                'dataProvider' => $assettransactions,
+                // 'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                      
+                    [
+                        'label' => 'Transaction Code',
+                        'attribute' => 'code'
+                    ],
+                    [
+                        'label' => 'Transaction Type',
+                        'attribute' => 'type'
+                    ],
+                    [
+                        'label' => 'User Assigned',
+                        'attribute' => 'user_assigned'
+                    ],
+                    [
+                        'label' => 'Date',
+                        'attribute' => 'transdate'
+                    ],
+                    [
+                        'label' => 'Transacted By',
+                        'attribute' => 'user_creator'
+                    ],
+                    
+                ],
+            ]),
+            
+        ], 
+    ],
+    ]) ?>
 
 </div>

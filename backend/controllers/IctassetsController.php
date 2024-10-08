@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Issuances;
+use common\models\Surrenders;
 use Yii;
 use common\models\Assetaccessories;
 use common\models\Assetmakes;
@@ -9,6 +11,7 @@ use common\models\Assetmodels;
 use common\models\Ictassets;
 use backend\models\search\IctassetsSearch;
 use yii\db\Exception;
+use yii\db\Expression;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -76,8 +79,104 @@ class IctassetsController extends Controller
          ->where(['assetaccessories.assetID' => $id])
          ->with('accessorylist');
 
+         // Get all Assets with their specifications
+         $assets = new Query();        
+         $assets = Ictassets::find()
+         ->select('ictassets.*')
+         ->leftJoin('storage', 'storage.id = ictassets.storageID')
+         ->leftJoin('ram', 'ram.id = ictassets.ramID')
+         ->leftJoin('operatingsystem', 'operatingsystem.id = ictassets.osID')
+         ->where(['ictassets.id' => $id])
+         ->with('storage')
+         ->with('ram')
+         ->with('os');
+
+         // Get all Issuances
+         $issuances = (new Query())
+            ->select([
+                'issuances.id AS transactionID',
+                'issuances.code',
+                'issuances.serialnumber AS serialnumber',
+                'issuances.userID',
+                'issuances.issuancedate AS transdate',
+                'issuances.created_by',
+                'ictassets.id AS assetID',
+            ])
+            ->from('issuances')
+            ->join('INNER JOIN', 'ictassets', 'issuances.serialnumber = ictassets.id');
+
+        // Get all Surrenders
+        $surrenders = (new Query())
+        ->select([
+            'surrenders.id AS transactionID',
+            'surrenders.code AS code',
+            'surrenders.serialnumber AS serialnumber',
+            'surrenders.userID',
+            'surrenders.surrenderdate AS transdate',
+            'surrenders.created_by',
+            'ictassets.id AS assetID',
+        ])
+        ->from('surrenders')
+        ->join('INNER JOIN', 'ictassets', 'surrenders.serialnumber = ictassets.id');
+
+        //Merge all transactions
+        $unionquery = (new Query())
+        ->from(['transactions' => $issuances->union($surrenders)]);
+
+        //Assign transaction types to all transactions
+        $transwithtypes = (new Query())
+        ->select([
+            'transactionID',
+            'code',
+            new Expression("CASE WHEN code LIKE '%ISS%' THEN 'Issuance'        
+                            WHEN code LIKE '%SUR%' THEN 'Surrender'
+                            ELSE 'No Type'
+                            END AS type"),
+            'serialnumber',
+            'userID',
+            'transdate',
+            'created_by',
+            'assetID'
+            
+        ])
+        ->from(['unionquery' => $unionquery]);
+
+        //Query All Transactions
+        $transactions = (new Query())
+        ->select([
+            'transwithtypes.transactionID',
+            'transwithtypes.code',
+            'transwithtypes.type',
+            'transwithtypes.serialnumber',
+            'transwithtypes.userID',
+            'transwithtypes.transdate',
+            'transwithtypes.created_by',
+            'transwithtypes.assetID',
+            new Expression("CONCAT(creator.firstname, ' ', creator.lastname) AS user_creator"),
+            new Expression("CONCAT(staff.firstname, ' ', staff.lastname) AS user_assigned")
+            
+        ])
+        ->from(['transwithtypes' => $transwithtypes])
+        ->leftJoin('[user] AS creator', 'creator.id = transwithtypes.created_by')
+        ->leftJoin('[user] AS staff', 'staff.id = transwithtypes.userID')
+        ->where(['assetID' => $id]); 
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
+
+        $assetspecifications = new ActiveDataProvider([
+            'query' => $assets,
+            'pagination' => [
+                'pageSize' => 10,
+            ]
+        ]);
+
+        $assettransactions = new ActiveDataProvider([
+            'query' => $transactions,
             'pagination' => [
                 'pageSize' => 10,
             ]
@@ -87,6 +186,8 @@ class IctassetsController extends Controller
             'model' => $model,
             'modelsAssetaccessories' => $modelsAssetaccessories,
             'dataProvider' => $dataProvider,
+            'assetspecifications' => $assetspecifications,
+            'assettransactions' => $assettransactions,
         ]);
     }
 
