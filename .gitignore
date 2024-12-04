@@ -43,5 +43,3 @@ phpunit.phar
 /backend/web/robots.txt
 /backend/web/storage/
 /backend/web/uploads/
-/common/models/User.php
-/backend/views/site/login.php

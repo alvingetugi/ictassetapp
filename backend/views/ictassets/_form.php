@@ -20,6 +20,37 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var common\models\Ictassets $model */
 /** @var yii\widgets\ActiveForm $form */
+
+$js = '
+jQuery(".dynamicform_wrapper").on("afterInsert", function(e, item) {
+    jQuery(".dynamicform_wrapper .panel-title-detail").each(function(index) {
+        jQuery(this).html("Accessory: " + (index + 1))
+    });
+});
+
+jQuery(".dynamicform_wrapper").on("afterDelete", function(e) {
+    jQuery(".dynamicform_wrapper .panel-title-detail").each(function(index) {
+        jQuery(this).html("Accessory: " + (index + 1))
+    });
+});
+
+$(".dynamicform_wrapper").on("beforeDelete", function(e, item) {
+    if (! confirm("Are you sure you want to delete this item?")) {
+        return false;
+    }
+    return true;
+});
+
+$(".dynamicform_wrapper").on("afterDelete", function(e) {
+    console.log("Deleted item!");
+});
+
+jQuery(".dynamicform_wrapper").on("limitReached", function(e, item) {
+    alert("Limit reached");
+});
+';
+
+$this->registerJs($js);
 ?>
 
 <div class="ictassets-form">
