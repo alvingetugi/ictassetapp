@@ -25,6 +25,10 @@ $('.issue-asset').click(function () {
     var issuancecategoryID = $(this).data('issuancecategory');
     var issuancemodelID = $(this).data('issuancemodel');
     var issuanceserialnumber = $(this).data('issuanceserial');
+    var issuancecategoryname = $(this).data('issuancecategoryname');
+    var issuancemodelname = $(this).data('issuancemodelname');
+    var issuanceserialname = $(this).data('issuanceserialnumber');
+    var issuanceTitle = 'Issuance for: ' + issuancemodelname + ' ' + 'with serial number' + ' ' + issuanceserialname;
 
     // Send an AJAX request to fetch the form data
     $.ajax({
@@ -32,12 +36,14 @@ $('.issue-asset').click(function () {
         type: 'GET',
         success: function (response) {
             $('#issuance-modal-content').html(response); // Insert the form into the modal
+            $('#issuancemodal .modal-title').text(issuanceTitle);
             $('#issuancemodal').modal('show'); // Show the modal
 
             // Pre-populate the form fields
             $('#issuance-form-categoryID').val(issuancecategoryID); // Populate categoryID field
             $('#issuance-form-modelID').val(issuancemodelID); // Populate modelID field
             $('#issuance-form-serialnumber').val(issuanceserialnumber); // Populate serialNumber field
+           
         }
     });
 });
@@ -47,6 +53,10 @@ $('.surrender-asset').click(function () {
     var surrendercategoryID = $(this).data('surrendercategory');
     var surrendermodelID = $(this).data('surrendermodel');
     var surrenderserialnumber = $(this).data('surrenderserial');
+    var surrendercategoryname = $(this).data('surrendercategoryname');
+    var surrendermodelname = $(this).data('surrendermodelname');
+    var surrenderserialname = $(this).data('surrenderserialnumber');
+    var surrenderTitle = 'Surrender for: ' + surrendermodelname + ' ' + 'with serial number' + ' ' + surrenderserialname;
 
     // Send an AJAX request to fetch the form data
     $.ajax({
@@ -54,6 +64,7 @@ $('.surrender-asset').click(function () {
         type: 'GET',
         success: function (response) {
             $('#surrender-modal-content').html(response); // Insert the form into the modal
+            $('#surrendermodal .modal-title').text(surrenderTitle);
             $('#surrendermodal').modal('show'); // Show the modal
 
             // Pre-populate the form fields
@@ -72,7 +83,8 @@ Modal::begin([
     'size' => 'modal-lg',
 ]);
 
-echo '<div id="issuance-modal-content"></div>';
+echo '<div id="issuance-modal-content">
+</div>';
 
 Modal::end();
 
@@ -155,6 +167,9 @@ Modal::end();
                                 'data-issuancecategory' => $model->categoryID,
                                 'data-issuancemodel' => $model->modelID,
                                 'data-issuanceserial' => $model->id,
+                                'data-issuancecategoryname' => $model->categoryID ? $model->category->name : 'Unknown Category',
+                                'data-issuancemodelname' => $model->modelID ? $model->model->name : 'Unknown Model',
+                                'data-issuanceserialnumber' => $model->name,
                             ]);
                         }
                     },
@@ -167,6 +182,9 @@ Modal::end();
                                 'data-surrendercategory' => $model->categoryID,
                                 'data-surrendermodel' => $model->modelID,
                                 'data-surrenderserial' => $model->id,
+                                'data-surrendercategoryname' => $model->categoryID ? $model->category->name : 'Unknown Category',
+                                'data-surrendermodelname' => $model->modelID ? $model->model->name : 'Unknown Model',
+                                'data-surrenderserialnumber' => $model->name,
                             ]);
                         }
                     },

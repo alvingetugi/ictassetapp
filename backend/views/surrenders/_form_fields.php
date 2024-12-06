@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
 <?php $form = ActiveForm::begin(); ?>
 
 <?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'SUR' . '_' . Yii::$app->security->generateRandomString(5) . '_' . time() : $model->code])->label(false) ?>
+<?= $form->field($model, 'categoryID')->hiddenInput(['id' => 'surrender-form-categoryID'])->label(false) ?>
+<?= $form->field($model, 'modelID')->hiddenInput(['id' => 'surrender-form-modelID'])->label(false) ?>
+<?= $form->field($model, 'serialnumber')->hiddenInput(['id' => 'surrender-form-serialnumber'])->label(false) ?>
+
 <div class="row">
 <div class="col">
         <?= $form->field($model, 'surrenderdate')->widget(\kartik\date\DatePicker::classname(), [
@@ -35,18 +39,6 @@ use yii\widgets\ActiveForm;
             ]
         ]); ?>
 </div>
-
-<div class="col">
-        <?= $form->field($model, 'categoryID')->textInput(['id' => 'surrender-form-categoryID', 'readonly' => true]) ?>
-        </div>
-
-        <div class="col">
-        <?= $form->field($model, 'modelID')->textInput(['id' => 'surrender-form-modelID', 'readonly' => true]) ?>
-        </div>
-
-        <div class="col">
-        <?= $form->field($model, 'serialnumber')->textInput(['id' => 'surrender-form-serialnumber', 'readonly' => true]) ?>
-        </div>
 
 <?=  $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
         'data' => ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),
@@ -67,9 +59,9 @@ use yii\widgets\ActiveForm;
 <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6, 'readonly' => !$model->isNewRecord, 'disabled' => !$model->isNewRecord]) ?>
 
 
-<div class="form-group">
-    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-</div>
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Surrender' : 'Update', ['class' => 'btn btn-success']) ?>
+    </div>
 
 <?php ActiveForm::end(); ?>
 

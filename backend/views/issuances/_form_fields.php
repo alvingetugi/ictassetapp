@@ -22,6 +22,10 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'code')->hiddenInput(['value' => $model->isNewRecord ? 'ISS' . '_' . Yii::$app->security->generateRandomString(5) . '_' . time() : $model->code])->label(false) ?>
+    <?= $form->field($model, 'categoryID')->hiddenInput(['id' => 'issuance-form-categoryID'])->label(false) ?>
+    <?= $form->field($model, 'modelID')->hiddenInput(['id' => 'issuance-form-modelID'])->label(false) ?>
+    <?= $form->field($model, 'serialnumber')->hiddenInput(['id' => 'issuance-form-serialnumber'])->label(false) ?>
+
     <div class="row">
         <div class="col">
             <?= $form->field($model, 'issuancedate')->widget(\kartik\date\DatePicker::classname(), [
@@ -34,18 +38,6 @@ use yii\widgets\ActiveForm;
                     'todayHighlight' => true
                 ]
             ]); ?>
-        </div>
-
-        <div class="col">
-        <?= $form->field($model, 'categoryID')->textInput(['id' => 'issuance-form-categoryID', 'readonly' => true]) ?>
-        </div>
-
-        <div class="col">
-        <?= $form->field($model, 'modelID')->textInput(['id' => 'issuance-form-modelID', 'readonly' => true]) ?>
-        </div>
-
-        <div class="col">
-        <?= $form->field($model, 'serialnumber')->textInput(['id' => 'issuance-form-serialnumber', 'readonly' => true]) ?>
         </div>
     </div>
 
@@ -66,7 +58,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Issue' : 'Update', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
