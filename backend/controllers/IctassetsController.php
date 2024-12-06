@@ -406,22 +406,22 @@ class IctassetsController extends Controller
         return json_encode(['output' => '', 'selected' => '']);
     }
     
-    public function actionGetserialnumber($id)
-    {
-        // Find the related record using the passed ID
-        $relatedRecord = Ictassets::findOne($id); // Replace `RelatedModel` with your actual model
+    // public function actionGetserialnumber($id)
+    // {
+    //     // Find the related record using the passed ID
+    //     $relatedRecord = Ictassets::findOne($id); // Replace `RelatedModel` with your actual model
     
-        if ($relatedRecord) {
-            // Return the serial number as JSON
-            return $this->asJson([
-                'success' => true,
-                'serial_number' => $relatedRecord->name, // Adjust field name as needed
-            ]);
-        } else {
-            return $this->asJson([
-                'success' => false,
-                'message' => 'Record not found',
-            ]);
-        }
-    }
+    //     if ($relatedRecord) {
+    //         // Return the serial number as JSON
+    //         return $this->asJson([
+    //             'success' => true,
+    //             'serialnumber' => $relatedRecord->name, // Adjust field name as needed
+    //         ]);
+    //     } else {
+    //         return $this->asJson([
+    //             'success' => false,
+    //             'message' => 'Record not found',
+    //         ]);
+    //     }
+    // }
 }

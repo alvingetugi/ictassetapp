@@ -30,7 +30,8 @@ class AppAsset extends AssetBundle
         'js/add.js',
         'js/installments.js',
         'js/overdue.js',
-        'js/nextdue.js'
+        'js/nextdue.js',
+        'js/issuance.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

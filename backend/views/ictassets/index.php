@@ -1,11 +1,16 @@
 <?php
 
+use common\models\Accessorylist;
 use common\models\Ictassets;
+use common\models\User;
+use kartik\date\DatePicker;
+use kartik\select2\Select2;
 use yii\bootstrap4\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var backend\models\search\IctassetsSearch $searchModel */
@@ -14,70 +19,70 @@ use yii\grid\GridView;
 $this->title = 'ICT Assets';
 $this->params['breadcrumbs'][] = $this->title;
 
-$this->registerJs("
-    $(document).on('click', '.issue-button', function() {
-        var recordId = $(this).data('id'); // Get the ID of the related record
-        
-        // Show the modal
-        $('#issuance-modal').modal('show');
-        
-        // Send AJAX request to fetch serial number data
-        $.ajax({
-            url: '" . Url::to(['ictassets/getserialnumber']) . "', // Replace with actual controller action
-            type: 'GET',
-            data: { id: recordId }, // Pass the ID to the controller
-            success: function(response) {
-                if (response.success) {
-                    // Populate the serial number field in the modal's form
-                    $('#serial_number_field').val(response.serial_number);
-                } else {
-                    alert('Failed to fetch serial number');
-                }
-            },
-            error: function() {
-                alert('Error in AJAX request');
-            }
-        });
+$script = <<<JS
+// When the Issuance modal button is clicked
+$('.issue-asset').click(function () {
+    var issuancecategoryID = $(this).data('issuancecategory');
+    var issuancemodelID = $(this).data('issuancemodel');
+    var issuanceserialnumber = $(this).data('issuanceserial');
+
+    // Send an AJAX request to fetch the form data
+    $.ajax({
+        url: $(this).attr('value'), // URL to load the form fields
+        type: 'GET',
+        success: function (response) {
+            $('#issuance-modal-content').html(response); // Insert the form into the modal
+            $('#issuancemodal').modal('show'); // Show the modal
+
+            // Pre-populate the form fields
+            $('#issuance-form-categoryID').val(issuancecategoryID); // Populate categoryID field
+            $('#issuance-form-modelID').val(issuancemodelID); // Populate modelID field
+            $('#issuance-form-serialnumber').val(issuanceserialnumber); // Populate serialNumber field
+        }
     });
-", \yii\web\View::POS_READY);
+});
 
-$this->registerJs("
-    $(document).on('submit', '#issuance-form', function(e) {
-        e.preventDefault(); // Prevent normal form submission
+// When the Surrender modal button is clicked
+$('.surrender-asset').click(function () {
+    var surrendercategoryID = $(this).data('surrendercategory');
+    var surrendermodelID = $(this).data('surrendermodel');
+    var surrenderserialnumber = $(this).data('surrenderserial');
 
-        // Send form data via AJAX
-        $.ajax({
-            url: '" . Url::to(['isuances/create']) . "', // Replace with the actual issue action
-            type: 'POST',
-            data: $(this).serialize(),
-            success: function(response) {
-                if (response.success) {
-                    alert('Serial number issued successfully');
-                    $('#issuance-modal').modal('hide'); // Close the modal
-                } else {
-                    alert('Failed to issue serial number');
-                }
-            },
-            error: function() {
-                alert('Error in form submission');
-            }
-        });
+    // Send an AJAX request to fetch the form data
+    $.ajax({
+        url: $(this).attr('value'), // URL to load the form fields
+        type: 'GET',
+        success: function (response) {
+            $('#surrender-modal-content').html(response); // Insert the form into the modal
+            $('#surrendermodal').modal('show'); // Show the modal
+
+            // Pre-populate the form fields
+            $('#surrender-form-categoryID').val(surrendercategoryID); // Populate categoryID field
+            $('#surrender-form-modelID').val(surrendermodelID); // Populate modelID field
+            $('#surrender-form-serialnumber').val(surrenderserialnumber); // Populate serialNumber field
+        }
     });
-", \yii\web\View::POS_READY);
-
+});
+JS;
+$this->registerJs($script);
 
 Modal::begin([
-    'id' => 'issuance-modal',
-   
+    'id' => 'issuancemodal',
+    'title' => 'Issuance Form',
     'size' => 'modal-lg',
 ]);
 
-// The form for issuing a serial number
-echo Html::beginForm('', 'post', ['id' => 'issuances-form']);
-echo Html::input('text', 'serial_number', '', ['id' => 'serial_number_field', 'class' => 'form-control', 'readonly' => true]);
+echo '<div id="issuance-modal-content"></div>';
 
-echo Html::submitButton('Issue', ['class' => 'btn btn-primary']);
-echo Html::endForm();
+Modal::end();
+
+Modal::begin([
+    'id' => 'surrendermodal',
+    'title' => 'Surrender Form',
+    'size' => 'modal-lg',
+]);
+
+echo '<div id="surrender-modal-content"></div>';
 
 Modal::end();
 
@@ -143,19 +148,25 @@ Modal::end();
                 'buttons' => [
                     'issue' => function ($url, $model, $key) {
                         // Check if status is 1 to show the "Surrender" button
-                        if ($model->assetstatus == 1) {
+                        if ($model->assetstatus == 1 || $model->assetstatus == 3) {
                             return Html::a('Issue', '#', [
-                                'class' => 'btn btn-warning issue-button',
-                                'data-id' => $model->id, // Pass the record ID
+                                'class' => 'btn btn-warning issue-asset',
+                                'value' => Url::to(['/issuances/createwithmodal', 'id' => $model->id]),
+                                'data-issuancecategory' => $model->categoryID,
+                                'data-issuancemodel' => $model->modelID,
+                                'data-issuanceserial' => $model->id,
                             ]);
                         }
                     },
                     'surrender' => function ($url, $model, $key) {
-                        // Check if status is 2 to show the "Issue" button
+                        // Check if status is 1 to show the "Surrender" button
                         if ($model->assetstatus == 2) {
-                            return Html::a('Return', $url, [
-                                'class' => 'btn btn-success',
-                                'title' => 'Return',
+                            return Html::a('Surrender', '#', [
+                                'class' => 'btn btn-success surrender-asset',
+                                'value' => Url::to(['/surrenders/createwithmodal', 'id' => $model->id]),
+                                'data-surrendercategory' => $model->categoryID,
+                                'data-surrendermodel' => $model->modelID,
+                                'data-surrenderserial' => $model->id,
                             ]);
                         }
                     },

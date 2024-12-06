@@ -28,7 +28,7 @@ use yii\behaviors\TimestampBehavior;
  * @property User $updatedBy
  */
 class Issuances extends \yii\db\ActiveRecord
-{
+{ 
     /**
      * {@inheritdoc}
      */

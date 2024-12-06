@@ -8,6 +8,8 @@ use backend\models\search\IssuancesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
+use yii\web\Response;
 
 /**
  * IssuancesController implements the CRUD actions for Issuances model.
@@ -144,4 +146,34 @@ class IssuancesController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    /**
+     * Creates a new Issuances model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreatewithmodal()
+    {
+        $model = new Issuances();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {  
+                $model->accessorylistID = implode(',', $model->accessorylistID);        
+                $model->save();
+                
+                $asset = Ictassets::find()->where(['id'=>$model->serialnumber])->one();//finds the asset being issued based on serial number
+                $asset->assetstatus = 2;//sets the asset status to issued
+                $asset->save();
+                
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->renderAjax('_form_fields', [
+            'model' => $model,
+        ]);
+    }
 }
+
+

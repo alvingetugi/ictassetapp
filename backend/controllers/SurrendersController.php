@@ -143,4 +143,33 @@ class SurrendersController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * Creates a new Surrenders model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreatewithmodal()
+    {
+        $model = new Surrenders();
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->accessorylistID = implode(',', $model->accessorylistID);        
+                $model->save();
+               
+                $asset = Ictassets::find()->where(['id'=>$model->serialnumber])->one();//finds the asset being issued based on serial number
+                $asset->assetstatus = 3;//sets the asset status to Surrendered
+                $asset->save();
+
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->renderAjax('_form_fields', [
+            'model' => $model,
+        ]);
+    }
 }
