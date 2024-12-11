@@ -137,9 +137,33 @@ Modal::end();
             //'ramID',
             //'osID',
             //'locationID',
+            // [
+            //     'attribute' => 'assetstatus',
+            //     'value' => 'assetStatus.name'
+            // ],
             [
-                'attribute' => 'assetstatus',
-                'value' => 'assetStatus.name'
+                'attribute' => 'assetstatus',  // Attribute to check the status
+                'label' => 'Asset Status',
+                'format' => 'raw',  // Important: ensure raw format for HTML rendering
+                'value' => function($model) {
+                    // Check the asset's status
+                    if ($model->assetstatus == 1) {
+                        // If status is 1, show "New" with a green badge
+                        return Html::tag('span', 'New', [
+                            'class' => 'badge badge-success', // Bootstrap class for green badge
+                        ]);
+                    } elseif ($model->assetstatus == 2) {
+                        // If status is 2, show "Issued" with a red badge
+                        return Html::tag('span', 'Issued', [
+                            'class' => 'badge badge-warning', // Bootstrap class for red badge
+                        ]);
+                    } else {
+                        // If neither 1 or 2, show "Surrendered" with a grey badge
+                        return Html::tag('span', 'Surrendered', [
+                            'class' => 'badge badge-secondary', // Bootstrap class for gray badge
+                        ]);
+                    }
+                },
             ],
             //'assetcondition',
             //'created_at',
