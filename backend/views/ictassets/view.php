@@ -165,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'label' => 'Asset History',
             'headerOptions' => ['style'=>'font-weight:bold'],
-            'content' => GridView::widget([
+            'content' => '<div class="table-responsive">' . GridView::widget([
                 'dataProvider' => $assettransactions,
                 // 'filterModel' => $searchModel,
                 'columns' => [
@@ -193,7 +193,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     
                 ],
-            ]),
+            ]) .'</div>',
             
         ], 
     ],
