@@ -66,19 +66,45 @@ AppAsset::register($this);
 
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    Asset Management
+                    Asset Central
                 </div>
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item">
+                    
+                    <a class="nav-link" href="<?php echo \yii\helpers\Url::to(['/ictassets/index']) ?>">
+                        <i class="fas fa-fw fa-tachometer-alt"></i>
+                        <span>Assets</span>
+                    </a>
+
+                  
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                        aria-expanded="true" aria-controls="collapseTwo">
+                        <i class="fas fa-fw fa-cog"></i>
+                        <span>Asset Movements</span>
+                    </a>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Movements:</h6>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/issuances/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Issuances</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/surrenders/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Surrenders</span>
+                            </a>
+                        </div>
+                    </div>
+                
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
                         aria-expanded="true" aria-controls="collapseOne">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Manage Asset Info</span>
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Asset Setups</span>
                     </a>
                     <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Asset Management:</h6>
+                            <h6 class="collapse-header">Setups:</h6>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetcategories/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Categories</span>
@@ -91,48 +117,30 @@ AppAsset::register($this);
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Models</span>
                             </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/ictassets/index']) ?>">
-                                <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Assets</span>
-                            </a>
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/accessorylist/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Accessory List</span>
+                                <span>Accessories</span>
                             </a>
-                        </div>
-                    </div>
-                </li>
-
-                 <!-- Divider -->
-                 <hr class="sidebar-divider">
-
-                <!-- Heading -->
-                <div class="sidebar-heading">
-                    Asset Movements
-                </div>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                        aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Transactions</span>
-                    </a>
-                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Actions:</h6>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/issuances/index']) ?>">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/ram/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Issuances</span>
+                                <span>RAM</span>
                             </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/surrenders/index']) ?>">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/storage/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Surrenders</span>
+                                <span>Storage</span>
                             </a>
-                            <!-- <a class="collapse-item" href="#">
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/operatingsystem/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Surrenders</span>
-                            </a> -->
+                                <span>Operating System</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/locations/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Asset Locations</span>
+                            </a>
+                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetstatus/index']) ?>">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>Asset Status</span>
+                            </a>
                         </div>
                     </div>
                 </li>
@@ -142,7 +150,7 @@ AppAsset::register($this);
                 <?php if (Yii::$app->user->can('admin', [], true)): ?>
                 <!-- Heading -->
                 <div class="sidebar-heading">
-                    General Settings
+                    Security Settings
                 </div>
 
                 <!-- Nav Item - Charts -->
@@ -150,19 +158,12 @@ AppAsset::register($this);
                     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree"
                         aria-expanded="true" aria-controls="collapseThree">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Settings</span>
+                        <span>Security Settings</span>
                     </a>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Options:</h6>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/locations/index']) ?>">
-                                <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Locations</span>
-                            </a>
-                            <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/assetstatus/index']) ?>">
-                                <i class="fas fa-fw fa-chart-area"></i>
-                                <span>Asset Status</span>
-                            </a>
+                            <h6 class="collapse-header">Security Settings:</h6>
+                           
                             <a class="collapse-item" href="<?php echo \yii\helpers\Url::to(['/user/index']) ?>">
                                 <i class="fas fa-fw fa-chart-area"></i>
                                 <span>Users</span>

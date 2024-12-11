@@ -14,7 +14,7 @@ use Yii;
  *
  * @property AuthItem[] $authItems
  */
-class AuthRule extends \yii\db\ActiveRecord
+class Authrule extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -63,10 +63,10 @@ class AuthRule extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\AuthRuleQuery the active query used by this AR class.
+     * @return \common\models\query\AuthruleQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\AuthRuleQuery(get_called_class());
+        return new \common\models\query\AuthruleQuery(get_called_class());
     }
 }

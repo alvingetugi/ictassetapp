@@ -3,11 +3,11 @@
 namespace common\models\query;
 
 /**
- * This is the ActiveQuery class for [[\common\models\AuthRule]].
+ * This is the ActiveQuery class for [[\common\models\Authrule]].
  *
- * @see \common\models\AuthRule
+ * @see \common\models\Authrule
  */
-class AuthRuleQuery extends \yii\db\ActiveQuery
+class AuthruleQuery extends \yii\db\ActiveQuery
 {
     /*public function active()
     {
@@ -16,7 +16,7 @@ class AuthRuleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\AuthRule[]|array
+     * @return \common\models\Authrule[]|array
      */
     public function all($db = null)
     {
@@ -25,7 +25,7 @@ class AuthRuleQuery extends \yii\db\ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return \common\models\AuthRule|array|null
+     * @return \common\models\Authrule|array|null
      */
     public function one($db = null)
     {
