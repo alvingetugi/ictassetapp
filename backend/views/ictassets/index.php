@@ -110,7 +110,7 @@ Modal::end();
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <div class="table-responsive">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -223,6 +223,7 @@ Modal::end();
             ],
         ],
     ]); ?>
+    </div>
 
 
 </div>
