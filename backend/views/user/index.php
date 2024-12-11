@@ -49,10 +49,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{view}',
+                'template' => '{view} {assign-roles}',
+                'header' => 'Actions',  // Optional header
+                'contentOptions' => ['style' => 'white-space: nowrap;'],  // Ensure buttons are in a single line
+                'headerOptions' => ['style' => 'white-space: nowrap;'],  // Optional, makes header aligned
                 'buttons' => [
                     'view' => function ($url, $model) {
                             return (Html::a('View', ['view', 'id' => $model->id], ['class' => 'btn btn-primary']));
+                    },
+                    'assign-roles' => function ($url, $model, $key) {
+                        return Html::a('Roles', 
+                            ['user/assignroles', 'id' => $model->id], 
+                            [
+                                'title' => Yii::t('app', 'Assign Roles'),
+                                'class' => 'btn btn-primary',
+                                'aria-label' => Yii::t('app', 'Assign Roles'),
+                                'data-pjax' => '0', // Prevent PJAX from refreshing the grid
+                            ]);
                     },
                 ],
             ],

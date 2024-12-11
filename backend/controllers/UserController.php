@@ -149,4 +149,50 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
+
+    // Action to display user roles
+    public function actionAssignroles($id)
+    {
+        $auth = Yii::$app->authManager;
+        
+        // Find the user
+        $user = User::findOne($id);
+        if (!$user) {
+            throw new NotFoundHttpException("User not found");
+        }
+
+        // Get the roles the user currently has
+        $userRoles = $auth->getRolesByUser($id);
+
+        // Get all available roles
+        $roles = $auth->getRoles();
+
+        // Handle form submission for role assignment
+        if (Yii::$app->request->post()) {
+            $selectedRoles = Yii::$app->request->post('roles', []);
+            
+            // Remove existing roles
+            foreach ($userRoles as $role) {
+                $auth->revoke($role, $id);
+            }
+
+            // Assign new roles
+            foreach ($selectedRoles as $roleName) {
+                $role = $auth->getRole($roleName);
+                if ($role) {
+                    $auth->assign($role, $id);
+                }
+            }
+
+            Yii::$app->session->setFlash('success', 'Roles updated successfully.');
+            return $this->refresh();
+        }
+
+        // Render the view to assign roles
+        return $this->render('assignroles', [
+            'user' => $user,
+            'userRoles' => $userRoles,
+            'roles' => $roles,
+        ]);
+    }
 }
