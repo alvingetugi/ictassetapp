@@ -147,7 +147,7 @@ AppAsset::register($this);
 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-                <?php if (Yii::$app->user->can('admin', [], true)): ?>
+                <?php if (Yii::$app->user->can('admin', [], true) || Yii::$app->user->can('ictofficer', [], true)): ?>
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Security Settings
@@ -191,7 +191,7 @@ AppAsset::register($this);
                 
                 <!-- Divider -->
                 <hr class="sidebar-divider">
-                <?php if (Yii::$app->user->can('createRap', [], true)): ?>
+                <?php if (Yii::$app->user->can('admin', [], true) || Yii::$app->user->can('supervisionofficer', [], true)): ?>
                 <!-- Heading -->
                 <div class="sidebar-heading">
                     Remedial Action Plans
