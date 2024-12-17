@@ -8,6 +8,7 @@ use backend\models\search\SurrendersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * SurrendersController implements the CRUD actions for Surrenders model.
@@ -152,6 +153,7 @@ class SurrendersController extends Controller
     public function actionCreatewithmodal()
     {
         $model = new Surrenders();
+        $surrenderserialnumberID = Yii::$app->request->get('surrenderserialnumberID'); // Get the serial number from query params
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -170,6 +172,7 @@ class SurrendersController extends Controller
 
         return $this->renderAjax('_form_fields', [
             'model' => $model,
+            'surrenderserialnumberID' => $surrenderserialnumberID,
         ]);
     }
 }

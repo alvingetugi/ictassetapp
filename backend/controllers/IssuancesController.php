@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Accessorylist;
+use common\models\Assetaccessories;
 use common\models\Ictassets;
 use common\models\Issuances;
 use backend\models\search\IssuancesSearch;
@@ -154,6 +156,7 @@ class IssuancesController extends Controller
     public function actionCreatewithmodal()
     {
         $model = new Issuances();
+        $issuanceserialnumberID = Yii::$app->request->get('issuanceserialnumberID'); // Get the serial number from query params
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {  
@@ -172,6 +175,7 @@ class IssuancesController extends Controller
 
         return $this->renderAjax('_form_fields', [
             'model' => $model,
+            'issuanceserialnumberID' => $issuanceserialnumberID,
         ]);
     }
 }

@@ -34,6 +34,9 @@ $('.issue-asset').click(function () {
     $.ajax({
         url: $(this).attr('value'), // URL to load the form fields
         type: 'GET',
+        data: {
+            issuanceserialnumberID: issuanceserialnumber // Pass the Asset ID to bind it to its serial to the controller
+        },
         success: function (response) {
             $('#issuance-modal-content').html(response); // Insert the form into the modal
             $('#issuancemodal .modal-title').text(issuanceTitle);
@@ -62,6 +65,9 @@ $('.surrender-asset').click(function () {
     $.ajax({
         url: $(this).attr('value'), // URL to load the form fields
         type: 'GET',
+        data: {
+            surrenderserialnumberID: surrenderserialnumber // Pass the Asset ID to bind it to its serial to the controller
+        },
         success: function (response) {
             $('#surrender-modal-content').html(response); // Insert the form into the modal
             $('#surrendermodal .modal-title').text(surrenderTitle);

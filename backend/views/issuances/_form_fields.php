@@ -1,15 +1,11 @@
 <?php
 
 use common\models\Accessorylist;
-use common\models\Assetcategories;
-use common\models\Assetmodels;
-use common\models\Ictassets;
+use common\models\Assetaccessories;
 use common\models\User;
-use kartik\depdrop\DepDrop;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
@@ -26,6 +22,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'modelID')->hiddenInput(['id' => 'issuance-form-modelID'])->label(false) ?>
     <?= $form->field($model, 'serialnumber')->hiddenInput(['id' => 'issuance-form-serialnumber'])->label(false) ?>
 
+    <?php
+    $serialID = $issuanceserialnumberID; // Retrieves asset ID to be used as query parameter in select 2 
+    ?>
+
     <div class="row">
         <div class="col">
             <?= $form->field($model, 'issuancedate')->widget(\kartik\date\DatePicker::classname(), [
@@ -41,21 +41,32 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?=  $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),
+    <?= $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(
+            Accessorylist::find()
+                ->where([
+                    'id' => Assetaccessories::find()
+                        ->select('accessorylistID')
+                        ->where(['assetID' => $serialID])
+                ]) // Use $serialnumber value here
+                ->all(),
+            'id',
+            'name'
+        ),
         'options' => ['placeholder' => 'Select accessory', 'multiple' => true],
         'pluginOptions' => [
             'tags' => true,
             'maximumInputLength' => 10
         ],
-    ]) ?>
+    ]); ?>
 
-    <?= $form->field($model, 'userID')->dropDownList(        
-        ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
+    <?= $form->field($model, 'userID')->dropDownList(
+        ArrayHelper::map(User::find()->all(), 'id', function ($array, $default) {
+            return $array['firstname'] . ' ' . $array['lastname']; }),
         ['prompt' => 'Select Staff']
-    ); ?>  
+    ); ?>
 
-    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6]) ?>
+    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Issue' : 'Update', ['class' => 'btn btn-success']) ?>
