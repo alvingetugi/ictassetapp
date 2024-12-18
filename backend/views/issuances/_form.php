@@ -68,21 +68,28 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
-    <?=  $form->field($model, 'accessorylistID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Accessorylist::find()->all(), 'id', 'name'),
-        'options' => ['placeholder' => 'Select accessory', 'multiple' => true],
-        'pluginOptions' => [
-            'tags' => true,
-            'maximumInputLength' => 10
+    <?= $form->field($model, 'accessorylistID')->widget(DepDrop::classname(), [
+        'data' => Ictassets::getAccessoryList($model->categoryID, $model->modelID, $model->serialnumber),
+        'options' => [
+            'id' => 'accessorylist-id',
+            'prompt' => 'Select Accessories',
+            'multiple' => true,
+            'size' => 5
         ],
-    ]) ?>
+        'pluginOptions' => [
+            'depends' => ['cat-id', 'model-id', 'serialnumber'],
+            'placeholder' => 'Select Accessories',
+            'url' => Url::to(['/ictassets/accessorylist'])
+        ]
+    ]); ?>
 
-    <?= $form->field($model, 'userID')->dropDownList(        
-        ArrayHelper::map(User::find()->all(),'id', function($array, $default){return $array['firstname'] . ' '. $array['lastname'];}),
+    <?= $form->field($model, 'userID')->dropDownList(
+        ArrayHelper::map(User::find()->all(), 'id', function ($array, $default) {
+            return $array['firstname'] . ' ' . $array['lastname']; }),
         ['prompt' => 'Select Staff']
     ); ?>
 
-    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows'=> 6]) ?>
+    <?= $form->field($model, 'comments')->textarea(['maxlength' => true, 'rows' => 6]) ?>
 
 
     <div class="form-group">

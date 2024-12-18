@@ -5,6 +5,7 @@ namespace common\models;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "ictassets".
@@ -241,6 +242,7 @@ class Ictassets extends \yii\db\ActiveRecord
         return new \common\models\query\IctassetsQuery(get_called_class());
     }
 
+    //Fetches all assets that can be issued by their Serial Numbers
     public static function getSerialsList($cat_id, $model_id, $isAjax = false)
     {
         $model = self::find()
@@ -255,6 +257,7 @@ class Ictassets extends \yii\db\ActiveRecord
         }
     }
 
+    //Fetches all assets that have been issued for surrender purposes
     public static function getIssuedAssets($cat_id, $model_id, $isAjax = false)
     {
         $model = self::find()
@@ -266,6 +269,31 @@ class Ictassets extends \yii\db\ActiveRecord
             return $model->select(['id', 'name'])->asArray()->all();
         } else {
             return $model->select(['name'])->indexBy('id')->column();
+        }
+    }
+
+    //Fetches all accessories attached to their relevant assets
+    public static function getAccessoryList($cat_id, $model_id, $serialnumber, $isAjax = false)
+    {
+        // Example query to get accessories based on category, model, and serial number
+        $model = Accessorylist::find()
+            ->innerJoin('assetaccessories', 'assetaccessories.accessorylistID = accessorylist.id')
+            ->innerJoin('ictassets', 'assetaccessories.assetID = ictassets.id')
+            ->where([
+                'ictassets.categoryID' => $cat_id,
+                'ictassets.modelID' => $model_id,
+                'ictassets.id' => $serialnumber,
+            ]);
+        // If it's an Ajax request, return as an array with 'id' and 'name' fields
+        if ($isAjax) {
+            return $model->select(['accessorylist.id', 'accessorylist.name']) // Explicitly use the table alias
+                ->asArray()
+                ->all();
+        } else {
+            // If it's not an Ajax request, return the 'name' indexed by 'id'
+            return $model->select(['accessorylist.name']) // Explicitly use the table alias
+                ->indexBy('accessorylist.id') // Use 'accessorylist.id' to index
+                ->column();
         }
     }
 }

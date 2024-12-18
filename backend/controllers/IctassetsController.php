@@ -405,23 +405,35 @@ class IctassetsController extends Controller
         }
         return json_encode(['output' => '', 'selected' => '']);
     }
-    
-    // public function actionGetserialnumber($id)
-    // {
-    //     // Find the related record using the passed ID
-    //     $relatedRecord = Ictassets::findOne($id); // Replace `RelatedModel` with your actual model
-    
-    //     if ($relatedRecord) {
-    //         // Return the serial number as JSON
-    //         return $this->asJson([
-    //             'success' => true,
-    //             'serialnumber' => $relatedRecord->name, // Adjust field name as needed
-    //         ]);
-    //     } else {
-    //         return $this->asJson([
-    //             'success' => false,
-    //             'message' => 'Record not found',
-    //         ]);
-    //     }
-    // }
+
+     //Handles the dependency action for selecting accessories attached to their relevant assets
+     public function actionAccessorylist()
+     {
+ 
+         $out = [];
+
+          // Check if 'depdrop_parents' is set in the POST request
+         if (isset($_POST['depdrop_parents'])) {
+             $ids = $_POST['depdrop_parents'];
+
+             // Extract category_id, model_id, and serialnumber from parents
+             $cat_id = empty($ids[0]) ? null : $ids[0];
+             $model_id = empty($ids[1]) ? null : $ids[1];
+             $serialnumber = empty($ids[2]) ? null : $ids[2];
+
+             // Only proceed if category_id is provided
+             if ($cat_id != null) {
+
+                // Fetch accessories based on the provided filters
+                 $out = Ictassets::getAccessoryList($cat_id, $model_id, $serialnumber, true);
+
+                 // Format output for DepDrop (expects 'output' and 'selected' fields)
+                // The 'output' is an array of items for the dropdown, and 'selected' is the default selection
+                 return json_encode(['output' => $out, 'selected' => '']);
+             }
+         }
+
+         // Return empty output if no parents or invalid data
+         return json_encode(['output' => '', 'selected' => '']);
+     }
 }
