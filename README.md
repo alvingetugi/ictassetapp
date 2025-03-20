@@ -6,7 +6,7 @@
     <br>
 </p>
 
-This is a project built with the [Yii 2](http://www.yiiframework.com/) framewrok, best for
+This is a project built with the [Yii 2](http://www.yiiframework.com/) framework, best for
 developing complex Web applications with multiple tiers.
 
 The project includes three tiers: front end, back end, and console, each of which
